@@ -3,11 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 
 import Layout from './hoc/Layout/Layout';
+import Graph from './containers/Graph/Graph';
 
 function App() {
   return (
     <div className="App">
-      <Layout></Layout>
+      <Layout>
+        <Graph></Graph>
+      </Layout>
     </div>
   );
 }
