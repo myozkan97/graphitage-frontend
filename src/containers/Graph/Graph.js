@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
-import ReactDOM from 'react-dom';
 import CytoscapeComponent from 'react-cytoscapejs';
 
-import classes from './Graph.module.css';
 
 
 const Graph = (props) => {
