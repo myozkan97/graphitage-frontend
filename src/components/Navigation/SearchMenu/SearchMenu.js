@@ -1,9 +1,7 @@
 import React from 'react';
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-
 import { slide as Menu } from 'react-burger-menu'
+import SearchForm from './SearchForm/SearchForm';
 
 var searchMenuStyles = {
     bmBurgerButton: {
@@ -54,23 +52,7 @@ var searchMenuStyles = {
 
 const searchMenu = (props) => (
     <Menu onClose={() => props.searchClosed()} isOpen={props.search} styles={searchMenuStyles}>
-    <Form>
-      <Form.Group controlId="formBasicEmail">
-        <Form.Label>Paper Name</Form.Label>
-        <Form.Control type="email" placeholder="Paper Name" />
-      </Form.Group>
-
-      <Form.Group controlId="formBasicPassword">
-        <Form.Label>Author</Form.Label>
-        <Form.Control type="password" placeholder="Author" />
-      </Form.Group>
-      <Form.Group controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Check me out" />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-</Button>
-    </Form>
+      <SearchForm />
   </Menu>
 );
 
