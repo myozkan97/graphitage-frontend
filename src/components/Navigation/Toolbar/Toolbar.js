@@ -12,6 +12,7 @@ const toolbar = (props) =>  (
           </Nav>
           <Navbar.Brand href="#home">GRAPHITAGE</Navbar.Brand>
           <Nav>
+            <Nav.Link onClick={() => props.clearGraph()}>Clear</Nav.Link>
             <Nav.Link onClick={() => props.optionsClick()}>Options</Nav.Link>
           </Nav>
         </Navbar>
