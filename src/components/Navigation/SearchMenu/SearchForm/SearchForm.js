@@ -14,7 +14,7 @@ const SearchForm = () => {
             </Form.Group>
 
             <Form.Group controlId="searchFormPublishDate">
-                <Form.Control type="text" onfocus={() => {{ type: "date" }}} placeholder="Publish Date" />
+                <Form.Control type="text" onBlur={(e) => {e.currentTarget.type="text"; e.currentTarget.placeholder = "Publish Date"}} onFocus={(e) => e.currentTarget.type = "date"} placeholder="Publish Date" />
             </Form.Group>
 
             <Form.Group controlId="searchFormReaders">
