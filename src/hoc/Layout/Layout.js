@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { slide as SideMenu } from 'react-burger-menu'; 
+import {connect} from 'react-redux';
 
 import SearchMenu from '../../components/Navigation/SearchMenu/SearchMenu';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -7,6 +8,7 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import classes from './Layout.module.css'
 import OptionsMenu from '../../components/OptionsMenu/OptionsMenu';
 
+import * as actionTypes from '../../store/actions/actions';
 
 
 const Layout = (props) => {
@@ -32,7 +34,7 @@ const Layout = (props) => {
     }
 
     const clearGraph = () => {
-
+        props.switchClearGraph(true);
     }
 
     return (
@@ -48,5 +50,16 @@ const Layout = (props) => {
 } 
 
 
+const mapStateToProps = state => {
+    return {
+        clr: state.clearNodes
+    }
+}
 
-export default Layout; 
+const mapDispatchToProps = dispatch => {
+    return {
+        switchClearGraph: (isActive) => dispatch({type: actionTypes.CLEAR_NODES, bool: isActive})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout); 
