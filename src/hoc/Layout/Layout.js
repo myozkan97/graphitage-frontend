@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { slide as SideMenu } from 'react-burger-menu'; 
+import React, { useState } from 'react';
 import {connect} from 'react-redux';
 
 import SearchMenu from '../../components/Navigation/SearchMenu/SearchMenu';

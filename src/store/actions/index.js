@@ -1,7 +1,13 @@
 export {
     fetchDetails
-} from './details'
+} from './details';
 
 export {
     clearNodes
-} from './graph'
+} from './graph';
+
+
+export {
+    openContextMenu,
+    closeContextMenu
+} from './ui';

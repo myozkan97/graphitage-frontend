@@ -9,13 +9,15 @@ import thunk from 'redux-thunk';
 
 import graphReducer from './store/reducers/graph';
 import detailsReducer from './store/reducers/details';
+import uiReducer from './store/reducers/ui';
 
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css"
 
 const rootReducer = combineReducers({
   details: detailsReducer,
-  graph: graphReducer
+  graph: graphReducer,
+  ui: uiReducer
 })
 
 const logger = store => {
