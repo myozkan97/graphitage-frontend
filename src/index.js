@@ -4,28 +4,35 @@ import "./index.css"
 import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 import { Provider } from "react-redux"
-import { createStore, applyMiddleware, compose } from "redux"
-import reducer from './store/reducers/reducer'
-import thunk from 'redux-thunk'
+import { createStore, applyMiddleware, compose, combineReducers } from "redux"
+import thunk from 'redux-thunk';
+
+import graphReducer from './store/reducers/graph';
+import detailsReducer from './store/reducers/details';
 
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css"
 
+const rootReducer = combineReducers({
+  details: detailsReducer,
+  graph: graphReducer
+})
+
 const logger = store => {
-  return next => {
-    return action => {
-      console.log('[Middleware] Dispatching', action);
-      const result = next(action);
-      console.log('[Middleware] next state', store.getState());
-      return result;
-    }
+  return (next) => {
+      return action =>  {
+          console.log('[Middleware] Dispatching', action);
+          const result = next(action);
+          console.log('[Middleware] next state', store.getState());
+          return result;
+      }
   }
 }
 
 //for Redux DevTools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducer, composeEnhancers(applyMiddleware(logger, thunk)));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, thunk)));
 
 ReactDOM.render(
     <Provider store={store}>

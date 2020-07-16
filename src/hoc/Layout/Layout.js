@@ -8,7 +8,7 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import classes from './Layout.module.css'
 import OptionsMenu from '../../components/OptionsMenu/OptionsMenu';
 
-import * as actionTypes from '../../store/actions/actions';
+import * as actionTypes from '../../store/actions/actionTypes';
 
 
 const Layout = (props) => {

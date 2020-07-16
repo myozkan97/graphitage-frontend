@@ -2,11 +2,12 @@ import React, {useEffect} from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 
 import {connect} from 'react-redux';
-import * as actionTypes from '../../store/actions/actions';
+import * as actionCreators from '../../store/actions/index';
 
 
 const Graph = (props) => {
      useEffect(() => {
+        props.onFetchDetails();
         Graph.cy.add([
             { data: { id: 'one', label: 'Node 1' }, position: { x: 0, y: 0 } },
             { data: { id: 'two', label: 'Node 2' }, position: { x: 100, y: 0 } },
@@ -43,13 +44,14 @@ const Graph = (props) => {
 
 const mapStateToProps = state => {
     return {
-        clr: state.clearNodes
+        clr: state.graph.clearNodes
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        switchClearGraph: (isActive) => dispatch({type: actionTypes.CLEAR_NODES, bool: isActive})
+        switchClearGraph: (isActive) => dispatch({type: actionCreators.clearNodes, bool: isActive}),
+        onFetchDetails: () => dispatch({type: actionCreators.fetchDetails})
     }
 }
 
