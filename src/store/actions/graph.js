@@ -2,8 +2,9 @@ import * as actionTypes from './actionTypes';
 
 
 
-export const clearNodes = () => {
+export const clearNodes = (isActive) => {
     return {
-        type: actionTypes.CLEAR_NODES
+        type: actionTypes.CLEAR_NODES,
+        bool: isActive
     }
 }

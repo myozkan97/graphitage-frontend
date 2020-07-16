@@ -50,8 +50,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        switchClearGraph: (isActive) => dispatch({type: actionCreators.clearNodes, bool: isActive}),
-        onFetchDetails: () => dispatch({type: actionCreators.fetchDetails})
+        switchClearGraph: (isActive) => dispatch(actionCreators.clearNodes(isActive)),
+        onFetchDetails: () => dispatch(actionCreators.fetchDetails())
     }
 }
 
