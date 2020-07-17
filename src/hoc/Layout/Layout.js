@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {connect} from 'react-redux';
 
 import SearchMenu from '../../components/Navigation/SearchMenu/SearchMenu';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
+import DetailsPanel from '../../components/DetailsPanel/DetailsPanel';
+
 
 import classes from './Layout.module.css'
 import OptionsMenu from '../../components/OptionsMenu/OptionsMenu';
@@ -11,38 +13,60 @@ import * as actionTypes from '../../store/actions/actionTypes';
 
 
 const Layout = (props) => {
-    const [search, setSearch] = useState(false);
-    const [options, setOptions] = useState(false);
+    const [searchMenu, setSearch] = useState(false);
+    const [optionsMenu, setOptions] = useState(false);
+    const [detailsMenu, setdetailsMenu] = useState(false);
+    const [nodeId, setNodeId] = useState('');
 
-    const searchClosedHandler = () => {
+    const searchClosedHandler = useCallback(() => {
         setSearch(false);
-    }
+    }, [])
+        
+    
 
-    const searchClickedHandler = () => {
+    const searchClickedHandler = useCallback(() => {
         setSearch(true);
         setOptions(false);
-    }
+        setdetailsMenu(false);
+    }, []);
 
-    const optionsClosedHandler = () => {
+    const optionsClosedHandler = useCallback(() => {
         setOptions(false);
-    }
+    }, []);
 
-    const optionsClickedHandler = () => {
+    const optionsClickedHandler = useCallback(() => {
         setOptions(true);
         setSearch(false);
-    }
+        setdetailsMenu(false);
+    }, []);
 
-    const clearGraph = () => {
-        props.switchClearGraph(true);
-    }
+    const { switchClearGraph } = props;
+    const clearGraph = useCallback(() => {
+        switchClearGraph(true);
+    }, [switchClearGraph]);
+
+    const detailsPanelOpenedHandler = useCallback((id) => {
+        setdetailsMenu(true);
+        setOptions(false);
+        setSearch(false);
+        setNodeId(id);
+    }, []);
+
+    const detailsPanelClosedHandler = useCallback(() => {
+        setdetailsMenu(false);
+    }, []);
+    
+
+    
 
     return (
         <React.Fragment>
-            <SearchMenu search={search} searchClosed={searchClosedHandler}></SearchMenu>
+            <SearchMenu search={searchMenu} searchClosed={searchClosedHandler}></SearchMenu>
             <Toolbar searchClick={searchClickedHandler} optionsClick={optionsClickedHandler} clearGraph={clearGraph}></Toolbar>
-            <OptionsMenu options={options} optionsClosed={optionsClosedHandler}></OptionsMenu>
+            <OptionsMenu options={optionsMenu} optionsClosed={optionsClosedHandler}></OptionsMenu>
+            <DetailsPanel detailsClosed={detailsPanelClosedHandler} details={detailsMenu}  nodeId={nodeId}/>
             <main className={classes.Content}>
-                {props.children}
+                {React.cloneElement(props.children, { detailsMenuHandler: detailsPanelOpenedHandler })}    
             </main>
         </React.Fragment>
     );

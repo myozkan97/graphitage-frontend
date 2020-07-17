@@ -23,11 +23,13 @@ const ContextMenu = (props) => {
         [showMenu, props.outerRef, setXPos, setYPos]
     );
 
-    const { onCloseContextMenu } = props;
+    const { onCloseContextMenu, contextMenuIsOpen } = props;
     const handleClick = useCallback(() => {
-        showMenu(false);
-        onCloseContextMenu();
-    }, [onCloseContextMenu, showMenu]);
+        if (contextMenuIsOpen) {
+            showMenu(false);
+            onCloseContextMenu();
+        }
+    }, [onCloseContextMenu, showMenu, contextMenuIsOpen]);
 
     useEffect(() => {
         document.addEventListener("click", handleClick);
@@ -43,7 +45,9 @@ const ContextMenu = (props) => {
         return (
             <ul className={classes.menu} style={{ top: yPos, left: xPos }}>
                 <li onClick={() => console.log("Simple Expand")}>Simple Expand</li>
-                <li>Custom Expand</li>
+                <li>Expand by Dataset</li>
+                <li>Expand by Library</li>
+                <li>Expand by Keywords</li>
             </ul>
         );
     }

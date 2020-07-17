@@ -1,7 +1,6 @@
 import * as actionTypes from './actionTypes';
 
 
-
 const saveDetails = (res) => {
     return {
         type: actionTypes.FETCH_DETAILS,

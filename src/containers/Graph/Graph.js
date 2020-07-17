@@ -20,9 +20,11 @@ const Graph = (props) => {
         ]);
 
         Graph.cy.on('click', 'node', (event) => {
-            console.log(event.target._private.data);
-            var j = Graph.cy.$('#' + event.target._private.data.id);
-            Graph.cy.remove(j);
+            // console.log(event.target._private.data);
+            // var j = Graph.cy.$('#' + event.target._private.data.id);
+            // Graph.cy.remove(j);
+
+            props.detailsMenuHandler(event.target._private.data.id);
         });
 
         Graph.cy.on('cxttapend', 'node', (event) => {
