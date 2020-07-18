@@ -15,7 +15,7 @@ const Graph = (props) => {
     }, [onSimpleExpand]);
 
 
-    const { onOpenContextMenu, detailsMenuHandler } = props;
+    const { onOpenContextMenu, detailsMenuHandler, onFetchDetails } = props;
     useEffect(() => {
         Graph.cy.on('click', 'node', (event) => {
             // console.log(event.target._private.data);
@@ -23,6 +23,7 @@ const Graph = (props) => {
             // Graph.cy.remove(j);
 
             detailsMenuHandler(event.target._private.data.id);
+            onFetchDetails(event.target._private.data.id);
         });
 
         Graph.cy.on('cxttapend', 'node', (event) => {
@@ -35,7 +36,7 @@ const Graph = (props) => {
         //     console.log('click');
         //     Graph.cy.add([{ data: { id: 'sdads', label: 'Node 5' }, position: { x: 400, y: 0 } }]);
         // });
-    }, [onOpenContextMenu, detailsMenuHandler])
+    }, [onOpenContextMenu, detailsMenuHandler, onFetchDetails])
 
     const { elements } = props
     useEffect(() => {
@@ -76,7 +77,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onSwitchClearGraph: (isActive) => dispatch(actionCreators.clearNodes(isActive)),
-        onFetchDetails: () => dispatch(actionCreators.fetchDetails()),
+        onFetchDetails: (id) => dispatch(actionCreators.fetchDetails(id)),
         onOpenContextMenu: (nodeId) => dispatch(actionCreators.openContextMenu(nodeId)),
         onCloseContextMenu: () => dispatch(actionCreators.closeContextMenu()),
         onSimpleExpand: (nodeId) => dispatch(actionCreators.simpleExpand(nodeId))
