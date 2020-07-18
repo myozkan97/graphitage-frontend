@@ -3,7 +3,8 @@ export {
 } from './details';
 
 export {
-    clearNodes
+    clearNodes,
+    simpleExpand
 } from './graph';
 
 

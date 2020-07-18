@@ -1,7 +1,9 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
-    clearNodes: false
+    clearNodes: false,
+    elements: [],
+    error: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -9,8 +11,22 @@ const reducer = (state = initialState, action) => {
         case actionTypes.CLEAR_NODES:
             return {
                 ...state,
-                clearNodes: action.bool
+                elements: [],
+                clearNodes: action.bool,
+                error: false
             };
+        case actionTypes.SET_ELEMENTS:
+            return {
+                ...state,
+                elements: action.elements,
+                error: false
+            }
+        case actionTypes.SET_ERROR:
+            return {
+                ...state,
+                elements: [],
+                error: action.error
+            }
             
         default:
             return state;
