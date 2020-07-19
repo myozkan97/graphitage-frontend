@@ -4,7 +4,8 @@ export {
 
 export {
     clearNodes,
-    simpleExpand
+    simpleExpand,
+    addElements
 } from './graph';
 
 
@@ -12,3 +13,7 @@ export {
     openContextMenu,
     closeContextMenu
 } from './ui';
+
+export {
+    fetchSearchResultsAnd
+} from './search';

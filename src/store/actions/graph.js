@@ -46,6 +46,18 @@ export const simpleExpand = (nodeId = null) => {
     }
 }
 
+
+export const addElements = (data) => {
+    return (dispatch, getState) => {
+        if (data != null) {
+            const newGraphElements = allPapersElementCreator(Object.values(data));
+            dispatch(setElements(newGraphElements));
+        }
+    }
+}
+
+
+
 const expandByKeywords = (nodeId) => {
     // TODO get json and proccess it to create nodes
 

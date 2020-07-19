@@ -57,6 +57,17 @@ const Graph = (props) => {
         Graph.cy.elements().layout(layout).run();
     }, [elements]);
 
+    const { newNodes } = props
+    useEffect(() => {
+        console.log(newNodes);
+        let newElements= props.onAddElements(newNodes);
+        console.log(newElements);
+        // Graph.cy.add(
+        //     newElements
+        // );
+        // Graph.cy.elements().layout(layout).run();
+    }, [newNodes]);
+
     if (props.clr) { // Clears graph
         Graph.cy.elements().remove();
         props.onSwitchClearGraph(false);
@@ -77,7 +88,8 @@ const Graph = (props) => {
 const mapStateToProps = state => {
     return {
         clr: state.graph.clearNodes,
-        elements: state.graph.elements
+        elements: state.graph.elements,
+        newNodes: state.search
     }
 }
 
@@ -87,7 +99,8 @@ const mapDispatchToProps = dispatch => {
         onFetchDetails: (id) => dispatch(actionCreators.fetchDetails(id)),
         onOpenContextMenu: (nodeId) => dispatch(actionCreators.openContextMenu(nodeId)),
         onCloseContextMenu: () => dispatch(actionCreators.closeContextMenu()),
-        onSimpleExpand: (nodeId) => dispatch(actionCreators.simpleExpand(nodeId))
+        onSimpleExpand: (nodeId) => dispatch(actionCreators.simpleExpand(nodeId)),
+        onAddElements: (data) => dispatch(actionCreators.addElements(data)),
     }
 }
 

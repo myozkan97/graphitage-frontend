@@ -1,16 +1,26 @@
-import React from "react"
+import React, {useEffect} from "react"
 
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { useForm } from 'react-hook-form'
 
-const SearchForm = () => {
+import { connect } from 'react-redux';
+import * as actionCreators from '../../../../store/actions/index';
+
+const SearchForm = (props) => {
     const { register, handleSubmit, errors, watch, formState } = useForm({
         mode: "onChange"
       });
 
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+        console.log(data);
+        props.onSearchAnd(data);
+    }
     // console.log(errors);
+
+    // useEffect(() => {
+    //     console.log(props.search);
+    // }, [props.search]);
 
     const validate = () => {
         const test1 = watch("Title");
@@ -66,4 +76,17 @@ const SearchForm = () => {
     )
 }
 
-export default SearchForm
+
+const mapStateToProps = state => {
+    return {
+        search: state.search
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSearchAnd: (info) => dispatch(actionCreators.fetchSearchResultsAnd(info))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchForm); 
