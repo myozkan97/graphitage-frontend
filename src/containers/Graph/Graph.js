@@ -51,24 +51,13 @@ const Graph = (props) => {
 
     const { elements } = props
     useEffect(() => {
-        Graph.cy.elements().remove();
+        // Graph.cy.elements().remove(); //TODO: causes issues, why was this line added?
         
         Graph.cy.add(
             elements
         );
         Graph.cy.elements().layout(layout).run();
     }, [elements]);
-
-    const { newNodes } = props
-    useEffect(() => {
-        console.log(newNodes);
-        let newElements= props.onAddElements(newNodes);
-        console.log(newElements);
-        // Graph.cy.add(
-        //     newElements
-        // );
-        // Graph.cy.elements().layout(layout).run();
-    }, [newNodes]);
 
     if (props.clr) { // Clears graph
         Graph.cy.elements().remove();
@@ -90,8 +79,7 @@ const Graph = (props) => {
 const mapStateToProps = state => {
     return {
         clr: state.graph.clearNodes,
-        elements: state.graph.elements,
-        newNodes: state.search
+        elements: state.graph.elements
     }
 }
 

@@ -100,7 +100,6 @@ const SearchForm = (props) => {
 
 const mapStateToProps = state => {
     return {
-        search: state.search
     }
 }
 
