@@ -51,6 +51,8 @@ const Graph = (props) => {
 
     const { elements } = props
     useEffect(() => {
+        Graph.cy.elements().remove();
+        
         Graph.cy.add(
             elements
         );

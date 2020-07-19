@@ -5,21 +5,21 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 
 
-const stringFromArray = (array, sep) => {
+const stringFromArray = (array, sep = ", ") => {
     return array.reduce((acc, cur, index) => {
         return acc + cur + sep;
     }, "")
 }
 
-const pFromArray = (array, htmlEl = "p") => {
+const pFromArray = (array, key, htmlEl = "p") => {
     if (htmlEl === "p") {
         return array.reduce((acc, cur, index) => {
-            acc.push((<p>{cur}</p>))
+            acc.push((<p key={key + String(index)}>{cur}</p>))
             return acc;
         }, [])
     } else if (htmlEl === "list") {
         const listArr = array.reduce((acc, cur, index) => {
-            acc.push((<li>{cur}</li>))
+            acc.push((<li key={key + String(index)}>{cur}</li>))
             return acc;
         }, []);
 
@@ -61,25 +61,25 @@ const Details = (props) => {
                 {props.dtl.highlights &&
                     <div className="highlights">
                         <h3>Highlights</h3>
-                        <p>{pFromArray(props.dtl.highlights)}</p>
+                        {pFromArray(props.dtl.highlights)}
                     </div>
                 }
                 {props.dtl.contributions &&
                     <div className="contributions">
                         <h3>Contributions</h3>
-                        <p>{pFromArray(props.dtl.contributions)}</p>
+                        {pFromArray(props.dtl.contributions, "cont")}
                     </div>
                 }
                 {props.dtl.pros &&
                     <div className="pros">
                         <h3>Pros</h3>
-                        <p>{pFromArray(props.dtl.pros, "list")}</p>
+                        {pFromArray(props.dtl.pros, "pros" ,"list")}
                     </div>
                 }
                 {props.dtl.notes &&
                     <div className="notes">
                         <h3>Notes</h3>
-                        <p>{pFromArray(props.dtl.notes)}</p>
+                        {pFromArray(props.dtl.notes, "notes")}
                     </div>
                 }
                 {props.dtl.data &&
@@ -91,19 +91,19 @@ const Details = (props) => {
                 {props.dtl.libraries &&
                     <div className="libraries">
                         <h3>Libraries</h3>
-                        <p><ul>{props.dtl.libraries.map(obj => (<li><a href={obj.link}>{obj.name}</a></li>))}</ul></p>
+                        <ul>{props.dtl.libraries.map((obj, index) => (<li key={"libs" + String(index)}><a href={obj.link}>{obj.name}</a></li>))}</ul>
                     </div>
                 }
                 {props.dtl.relatedWorks &&
                     <div className="relatedWorks">
                         <h3>Related Works</h3>
-                        <p><ul>{props.dtl.relatedWorks.map(obj => (<li>{obj.title}</li>))}</ul></p>
+                        <ul>{props.dtl.relatedWorks.map((obj, index) => (<li key={"relatedW" + String(index)}>{obj.title}</li>))}</ul>
                     </div>
                 }
                 {props.dtl.reader &&
                     <div className="reader">
                         <h3>Readers</h3>
-                        <p><ul>{props.dtl.reader.map(obj => (<li>obj.readerName</li>))}</ul></p>
+                        <ul>{props.dtl.reader.map((obj, index) => (<li key={"readers" + String(index)}>obj.readerName</li>))}</ul>
                     </div>
                 }
             </div>

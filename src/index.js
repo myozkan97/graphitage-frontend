@@ -10,7 +10,6 @@ import thunk from 'redux-thunk';
 import graphReducer from './store/reducers/graph';
 import detailsReducer from './store/reducers/details';
 import uiReducer from './store/reducers/ui';
-import searchReducer from './store/reducers/search';
 
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -19,7 +18,6 @@ const rootReducer = combineReducers({
   details: detailsReducer,
   graph: graphReducer,
   ui: uiReducer,
-  search: searchReducer
 })
 
 const logger = store => {

@@ -5,7 +5,12 @@ import Button from "react-bootstrap/Button"
 import { useForm } from 'react-hook-form'
 
 import { connect } from 'react-redux';
+
 import * as actionCreators from '../../../../store/actions/index';
+import httpReq from '../../../../store/actions/utils/http';
+
+
+const baseUrl = "https://graphitage.herokuapp.com/api.graphitage.com/"
 
 const SearchForm = (props) => {
     const { register, handleSubmit, errors, watch, formState } = useForm({
@@ -13,8 +18,24 @@ const SearchForm = (props) => {
       });
 
     const onSubmit = data => {
-        console.log(data);
-        props.onSearchAnd(data);
+        httpReq(
+            baseUrl +
+                "papers/searchWithAND/" +
+                data.Title +
+                "," +
+                data.Dataset +
+                "," +
+                data.LibraryName +
+                "," +
+                data.PublishDate +
+                "," +
+                data.Readers +
+                "," +
+                data.Keywords,
+            "GET"
+        ).then((result) => {
+            props.onAddElementsToGraph(result.data)
+        })
     }
     // console.log(errors);
 
@@ -85,7 +106,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSearchAnd: (info) => dispatch(actionCreators.fetchSearchResultsAnd(info))
+        onAddElementsToGraph: (elements) => dispatch(actionCreators.addElements(elements))
     }
 }
 

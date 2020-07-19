@@ -13,7 +13,3 @@ export {
     openContextMenu,
     closeContextMenu
 } from './ui';
-
-export {
-    fetchSearchResultsAnd
-} from './search';
