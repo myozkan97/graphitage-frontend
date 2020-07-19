@@ -5,7 +5,9 @@ export {
 export {
     clearNodes,
     simpleExpand,
-    addElements
+    addElements,
+    expandByDatasets,
+    expandByReaders
 } from './graph';
 
 

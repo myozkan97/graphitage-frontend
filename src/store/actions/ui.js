@@ -2,10 +2,10 @@ import * as actionTypes from './actionTypes';
 
 
 
-export const openContextMenu = (nodeId) => {
+export const openContextMenu = (sourceNode) => {
     return {
         type: actionTypes.OPEN_CONTEXT_MENU,
-        nodeId: nodeId
+        sourceNode: sourceNode
     }
 }
 

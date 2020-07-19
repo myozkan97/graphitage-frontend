@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import httpReq from './utils/http';
-import { allPapersElementCreator } from './utils/graphElementCreator';
+import { simpleExpandElements ,allPapersElementCreator, readersElementCreator, datasetsElementCreator } from './utils/graphElementCreator';
 
 const baseUrl = 'https://graphitage.herokuapp.com/api.graphitage.com/';
 
@@ -29,9 +29,9 @@ const setError = (bool) => {
 
 
 // if nodeId is null, then get all the nodes from the server
-export const simpleExpand = (nodeId = null) => {
+export const simpleExpand = (sourceNode) => {
     return (dispatch, getState) => {
-        if (nodeId == null) {
+        if (sourceNode == null) {
             httpReq(baseUrl + 'papers', 'GET')
             .then((result) => {
                 if (result.error === true) {
@@ -40,8 +40,17 @@ export const simpleExpand = (nodeId = null) => {
                     const graphElements = allPapersElementCreator(result.data);
                     dispatch(setElements(graphElements))
                 }
-            })
-
+            });
+        } else {
+            httpReq(baseUrl + `papers/${sourceNode.data.id}/relatedWorks/`, 'GET')
+            .then((result) => {
+                if (result.error === true) {
+                    dispatch(setError(true))
+                } else {
+                    const graphElements = simpleExpandElements(result.data, sourceNode);
+                    dispatch(setElements(graphElements))
+                }
+            });
         }
     }
 }
@@ -67,20 +76,34 @@ const expandByKeywords = (nodeId) => {
     }
 }
 
-const expandByReaders = (nodeId) => {
-    // TODO get json and proccess it to create nodes
-
-    return {
-        type: actionTypes.SET_ELEMENTS,
-        nodes: []
+export const expandByReaders = (sourceNode) => {
+    return (dispatch, getState) => {
+        if (sourceNode != null) {
+            httpReq(baseUrl + `papers/${sourceNode.data.id}/readers/`, 'GET')
+            .then((result) => {
+                if (result.error === true) {
+                    dispatch(setError(true));
+                } else {
+                    const graphElements = readersElementCreator(result.data, sourceNode);
+                    dispatch(setElements(graphElements));
+                }
+            });
+        }
     }
 }
 
-const expandByDatasets = (nodeId) => {
-    // TODO get json and proccess it to create nodes
-
-    return {
-        type: actionTypes.SET_ELEMENTS,
-        nodes: []
+export const expandByDatasets = (sourceNode) => {
+    return (dispatch, getState) => {
+        if (sourceNode != null) {
+            httpReq(baseUrl + `papers/${sourceNode.data.id}/datasets/`, 'GET')
+            .then((result) => {
+                if(result.error === true) {
+                    dispatch(setError(true));
+                } else {
+                    const graphElements = datasetsElementCreator(result.data, sourceNode);
+                    dispatch(setElements(graphElements));
+                }
+            });
+        }
     }
 }

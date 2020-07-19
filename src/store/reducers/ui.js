@@ -4,7 +4,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     contextMenu: {
         isOpen: false,
-        nodeId: ''
+        sourceNode: {}
     }
 }
 
@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 contextMenu: {
                     isOpen: true,
-                    nodeId: action.nodeId
+                    sourceNode: action.sourceNode
                 }
             }
         case actionTypes.CLOSE_CONTEXT_MENU:
@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 contextMenu: {
                     isOpen: false,
-                    nodeId: ''
+                    sourceNode: {}
                 }
             }
         default :

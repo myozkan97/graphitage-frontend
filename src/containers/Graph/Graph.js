@@ -32,13 +32,14 @@ const Graph = (props) => {
             // console.log(event.target._private.data);
             // var j = Graph.cy.$('#' + event.target._private.data.id);
             // Graph.cy.remove(j);
-
-            detailsMenuHandler(event.target._private.data.id);
-            onFetchDetails(event.target._private.data.id);
+            if(event.target._private.data.type === "paper") {
+                detailsMenuHandler(event.target._private.data.id);
+                onFetchDetails(event.target._private.data.id);
+            }
         });
 
         Graph.cy.on('cxttapend', 'node', (event) => {
-            onOpenContextMenu(event.target._private.data.id);
+            onOpenContextMenu(event.target._private);
         });
 
         // Add funcs like event listeners here! Example:
@@ -51,7 +52,8 @@ const Graph = (props) => {
 
     const { elements } = props
     useEffect(() => {
-        // Graph.cy.elements().remove(); //TODO: causes issues, why was this line added?
+        // TODO Discuss this line
+        Graph.cy.elements().remove(); //TODO: causes issues, why was this line added?
         
         Graph.cy.add(
             elements
@@ -87,9 +89,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onSwitchClearGraph: (isActive) => dispatch(actionCreators.clearNodes(isActive)),
         onFetchDetails: (id) => dispatch(actionCreators.fetchDetails(id)),
-        onOpenContextMenu: (nodeId) => dispatch(actionCreators.openContextMenu(nodeId)),
+        onOpenContextMenu: (sourceNode) => dispatch(actionCreators.openContextMenu(sourceNode)),
         onCloseContextMenu: () => dispatch(actionCreators.closeContextMenu()),
-        onSimpleExpand: (nodeId) => dispatch(actionCreators.simpleExpand(nodeId)),
+        onSimpleExpand: (sourceNode) => dispatch(actionCreators.simpleExpand(sourceNode)),
         onAddElements: (data) => dispatch(actionCreators.addElements(data)),
     }
 }

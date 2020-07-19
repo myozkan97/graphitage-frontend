@@ -40,12 +40,13 @@ const ContextMenu = (props) => {
         };
     }, [handleClick, handleContextMenu]);
 
-
-    if (menu && props.contextMenuIsOpen) {
+    
+    if (menu && props.contextMenuIsOpen && props.sourceNode.data.type === 'paper') {
         return (
             <ul className={classes.menu} style={{ top: yPos, left: xPos }}>
-                <li onClick={() => console.log("Simple Expand")}>Simple Expand</li>
-                <li>Expand by Dataset</li>
+                <li onClick={() => props.onSimpleExpand(props.sourceNode)}>Simple Expand</li>
+                <li onClick={() => props.onDatasetExpand(props.sourceNode)}>Expand by Dataset</li>
+                <li onClick={() => props.onReaderExpand(props.sourceNode)}>Expand by Readers</li>
                 <li>Expand by Library</li>
                 <li>Expand by Keywords</li>
             </ul>
@@ -58,14 +59,16 @@ const ContextMenu = (props) => {
 const mapStateToProps = state => {
     return {
         contextMenuIsOpen: state.ui.contextMenu.isOpen,
-        nodeId: state.ui.contextMenu.nodeId
+        sourceNode: state.ui.contextMenu.sourceNode
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOpenContextMenu: (nodeId) => dispatch(actionCreators.openContextMenu(nodeId)),
         onCloseContextMenu: () => dispatch(actionCreators.closeContextMenu()),
+        onDatasetExpand: (sourceNode) => dispatch(actionCreators.expandByDatasets(sourceNode)),
+        onSimpleExpand: (sourceNode) => dispatch(actionCreators.simpleExpand(sourceNode)),
+        onReaderExpand: (sourceNode) => dispatch(actionCreators.expandByReaders(sourceNode))
     }
 }
 
