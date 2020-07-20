@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../../../store/actions/index';
 import httpReq from '../../../../store/actions/utils/http';
 
+import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import classes from './SearchForm.module.css';
 
 const baseUrl = "https://graphitage.herokuapp.com/api.graphitage.com/"
 
@@ -17,21 +19,53 @@ const SearchForm = (props) => {
         mode: "onChange"
       });
 
-    const onSubmit = data => {
+    const [isOn, setIsOn] = useState(false);
+    let newBase = baseUrl + "papers/searchWithOR?";
+
+    useEffect(() => {
+        if(isOn){
+            newBase= baseUrl + "papers/searchWithAND?";
+        }else{
+            newBase= baseUrl + "papers/searchWithOR?";
+        }
+    });
+
+    const onSubmit = data => { // dataset=a&keyword=a&library=a&publishDate=a&readerName=a&title=deep
+        alert(newBase);
+        let urlToSend = newBase;
+        if(data.Dataset !== ''){
+            urlToSend += "dataset=" + data.Dataset;
+        }
+        if(data.Keywords !== ''){
+            urlToSend += "&keyword=" + data.Keywords;
+        }
+        if(data.LibraryName !== ''){
+            urlToSend += "&library=" + data.LibraryName;
+        }
+        if(data.PublishDate !== ''){
+            urlToSend += "&publishData=" + data.PublishDate;
+        }
+        if(data.Readers !== ''){
+            urlToSend += "&readerName=" + data.Readers;
+        }
+        if(data.Title !== ''){
+            urlToSend += "&title=" + data.Title;
+        }
+        
         httpReq(
-            baseUrl +
-                "papers/searchWithAND/" +
-                data.Title +
-                "," +
-                data.Dataset +
-                "," +
-                data.LibraryName +
-                "," +
-                data.PublishDate +
-                "," +
-                data.Readers +
-                "," +
-                data.Keywords,
+            // newBase +
+            //     data.Title +
+            //     "," +
+            //     data.Dataset +
+            //     "," +
+            //     data.LibraryName +
+            //     "," +
+            //     data.PublishDate +
+            //     "," +
+            //     data.Readers +
+            //     "," +
+            //     data.Keywords,
+            urlToSend,
             "GET"
         ).then((result) => {
             props.onAddElementsToGraph(result.data)
@@ -89,7 +123,28 @@ const SearchForm = (props) => {
                 <Form.Control type="text" placeholder="Dataset" name="Dataset" ref={register({ validate })} />
             </Form.Group>
 
-            <Button variant="primary" type="submit" id="searchButton" name="Search" disabled="true" disabled={!formState.isValid}>
+            <Form.Group controlId="searchFormSwitch">
+                <div>
+                Search With
+                <BootstrapSwitchButton
+                    onlabel='AND'
+                    onstyle='primary'
+                    offlabel='OR'
+                    offstyle='info'
+                    style={classes.searchBttn}
+                    onChange={
+                        (checked) => { 
+                            if(checked){
+                                setIsOn(true);
+                            }else{
+                                setIsOn(false);                               
+                            }
+                        }
+                    } />
+                    </div> 
+            </Form.Group>
+
+            <Button  variant="primary" type="submit" id="searchButton" name="Search" disabled="true" disabled={!formState.isValid}>
                 Search
             </Button>
         </Form>
