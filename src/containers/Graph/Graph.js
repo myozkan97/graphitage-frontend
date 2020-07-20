@@ -54,11 +54,14 @@ const Graph = (props) => {
     useEffect(() => {
         // Graph.cy.elements().remove();
         let newStyle = "";
-        elements.forEach(function(element) {
-            if(element.data.type === "paper"){
-                newStyle += 'node[id= "' + element.data.id + '"] { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
-            }
-        });
+        // elements.forEach(function(element) {
+        //     if(element.data.type === "paper"){
+        //         console.log(element.data.id);
+        //         newStyle += 'node[id= "' + element.data.id + '"] { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
+        //     }
+        // });
+        newStyle = 'node { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
+           
         Graph.cy.add(
             elements
         );

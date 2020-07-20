@@ -31,7 +31,6 @@ const SearchForm = (props) => {
     });
 
     const onSubmit = data => { // dataset=a&keyword=a&library=a&publishDate=a&readerName=a&title=deep
-        alert(newBase);
         let urlToSend = newBase;
         if(data.Dataset !== ''){
             urlToSend += "dataset=" + data.Dataset;
