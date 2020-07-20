@@ -96,8 +96,8 @@ const SearchForm = (props) => {
       };
     
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
-            <h3>Search</h3>
+        <Form style={{color: "#142850"}} onSubmit={handleSubmit(onSubmit)}>
+            <h3 >Search</h3>
             <Form.Group controlId="searchFormTitle">
                 {/* <Form.Label>Title</Form.Label> */}
                 <Form.Control type="text" placeholder="Title" name="Title" ref={register({ validate })} />

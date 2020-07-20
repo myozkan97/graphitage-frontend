@@ -32,7 +32,7 @@ const pFromArray = (array, key, htmlEl = "p") => {
 const Details = (props) => {
     return (
         
-        <div className="Details">
+        <div style={{color: "#142850"}} className="Details">
             <h2>{props.dtl.title}</h2>
             <div className="body">
                 {props.dtl.abstractOfPaper &&

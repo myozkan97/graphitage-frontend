@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import SearchMenu from '../../components/Navigation/SearchMenu/SearchMenu';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -21,8 +21,8 @@ const Layout = (props) => {
     const searchClosedHandler = useCallback(() => {
         setSearch(false);
     }, [])
-        
-    
+
+
 
     const searchClickedHandler = useCallback(() => {
         setSearch(true);
@@ -55,22 +55,22 @@ const Layout = (props) => {
     const detailsPanelClosedHandler = useCallback(() => {
         setdetailsMenu(false);
     }, []);
-    
 
-    
+
+
 
     return (
         <React.Fragment>
             <SearchMenu search={searchMenu} searchClosed={searchClosedHandler}></SearchMenu>
-            <Toolbar searchClick={searchClickedHandler} optionsClick={optionsClickedHandler} clearGraph={clearGraph}></Toolbar>
             <OptionsMenu options={optionsMenu} optionsClosed={optionsClosedHandler}></OptionsMenu>
-            <DetailsPanel detailsClosed={detailsPanelClosedHandler} details={detailsMenu}  nodeId={nodeId}/>
+            <DetailsPanel detailsClosed={detailsPanelClosedHandler} details={detailsMenu} nodeId={nodeId} />
+            <Toolbar searchClick={searchClickedHandler} optionsClick={optionsClickedHandler} clearGraph={clearGraph}></Toolbar>
             <main className={classes.Content}>
-                {React.cloneElement(props.children, { detailsMenuHandler: detailsPanelOpenedHandler })}    
+                {React.cloneElement(props.children, { detailsMenuHandler: detailsPanelOpenedHandler })}
             </main>
         </React.Fragment>
     );
-} 
+}
 
 
 const mapStateToProps = state => {
@@ -81,7 +81,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        switchClearGraph: (isActive) => dispatch({type: actionTypes.CLEAR_NODES, bool: isActive})
+        switchClearGraph: (isActive) => dispatch({ type: actionTypes.CLEAR_NODES, bool: isActive })
     }
 }
 

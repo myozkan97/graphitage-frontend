@@ -32,7 +32,7 @@ var searchMenuStyles = {
 
     },
     bmMenu: {
-        background: '#373a47',
+        background: '#dae1e7',
         padding: '2.5em 1.5em 0',
         fontSize: '1.15em'
     },
