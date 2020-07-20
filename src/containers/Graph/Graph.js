@@ -12,7 +12,8 @@ import ContextMenu from '../../components/ContextMenu/ContextMenu';
 
 const layout = {
     name: 'cose-bilkent',
-    randomize: true
+    randomize: true,
+    idealEdgeLength: 200,
 };
 
 Cytoscape.use(CoseBilkent);
@@ -53,19 +54,22 @@ const Graph = (props) => {
     const { elements } = props
     useEffect(() => {
         // Graph.cy.elements().remove();
-        let newStyle = "";
+        
         // elements.forEach(function(element) {
         //     if(element.data.type === "paper"){
         //         console.log(element.data.id);
-        //         newStyle += 'node[id= "' + element.data.id + '"] { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
+        //         paperStyle += 'node[id= "' + element.data.id + '"] { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
         //     }
         // });
-        newStyle = 'node { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
+
+        // farkli turdeki nodelara farkli style uygulama
+        let paperStyle = 'node[type = "paper"] { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50; }';
+        paperStyle += 'node[type = "dataset"] { background-color: yellow ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50; }';
            
         Graph.cy.add(
             elements
         );
-        Graph.cy.style(newStyle);
+        Graph.cy.style(paperStyle);
         Graph.cy.elements().layout(layout).run();
     }, [elements]);
 
