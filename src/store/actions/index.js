@@ -7,7 +7,9 @@ export {
     simpleExpand,
     addElements,
     expandByDatasets,
-    expandByReaders
+    expandByReaders,
+    expandByKeywords,
+    expandByLibraries
 } from './graph';
 
 

@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import httpReq from './utils/http';
-import { simpleExpandElements ,allPapersElementCreator, readersElementCreator, datasetsElementCreator } from './utils/graphElementCreator';
+import {librariesElementCreator, keywordsElementCreator, simpleExpandElements ,allPapersElementCreator, readersElementCreator, datasetsElementCreator } from './utils/graphElementCreator';
 
 const baseUrl = 'https://graphitage.herokuapp.com/api.graphitage.com/';
 
@@ -26,6 +26,9 @@ const setError = (bool) => {
         error: bool
     }
 }
+
+
+
 
 
 // if nodeId is null, then get all the nodes from the server
@@ -66,13 +69,37 @@ export const addElements = (data) => {
 }
 
 
+export const expandByLibraries = (sourceNode) => {
+    return (dispatch, getState) => {
+        if (sourceNode != null) {
+            httpReq(baseUrl + `papers/${sourceNode.data.id}/libraries/`, 'GET')
+            .then((result) => {
+                if (result.error === true) {
+                    dispatch(setError(true));
+                } else {
+                    const graphElements = librariesElementCreator(result.data, sourceNode);
+                    dispatch(setElements(graphElements));
+                }
+            });
+        }
+    }
+}
 
-const expandByKeywords = (nodeId) => {
-    // TODO get json and proccess it to create nodes
 
-    return {
-        type: actionTypes.SET_ELEMENTS,
-        nodes: []
+
+export const expandByKeywords = (sourceNode) => {
+    return (dispatch, getState) => {
+        if (sourceNode != null) {
+            httpReq(baseUrl + `papers/${sourceNode.data.id}/keywords/`, 'GET')
+            .then((result) => {
+                if (result.error === true) {
+                    dispatch(setError(true));
+                } else {
+                    const graphElements = keywordsElementCreator(result.data, sourceNode);
+                    dispatch(setElements(graphElements));
+                }
+            });
+        }
     }
 }
 

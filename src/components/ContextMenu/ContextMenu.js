@@ -45,10 +45,10 @@ const ContextMenu = (props) => {
         return (
             <ul className={classes.menu} style={{ top: yPos, left: xPos }}>
                 <li onClick={() => props.onSimpleExpand(props.sourceNode)}>Simple Expand</li>
-                <li onClick={() => props.onDatasetExpand(props.sourceNode)}>Expand by Dataset</li>
-                <li onClick={() => props.onReaderExpand(props.sourceNode)}>Expand by Readers</li>
-                <li>Expand by Library</li>
-                <li>Expand by Keywords</li>
+                <li onClick={() => props.onDatasetExpand(props.sourceNode)}>Expand Datasets</li>
+                <li onClick={() => props.onReaderExpand(props.sourceNode)}>Expand Readers</li>
+                <li onClick={() => props.onLibraryExpand(props.sourceNode)} >Expand Library</li>
+                <li onClick={() => props.onKeywordExpand(props.sourceNode)}>Expand Keywords</li>
             </ul>
         );
     }
@@ -68,7 +68,9 @@ const mapDispatchToProps = dispatch => {
         onCloseContextMenu: () => dispatch(actionCreators.closeContextMenu()),
         onDatasetExpand: (sourceNode) => dispatch(actionCreators.expandByDatasets(sourceNode)),
         onSimpleExpand: (sourceNode) => dispatch(actionCreators.simpleExpand(sourceNode)),
-        onReaderExpand: (sourceNode) => dispatch(actionCreators.expandByReaders(sourceNode))
+        onReaderExpand: (sourceNode) => dispatch(actionCreators.expandByReaders(sourceNode)),
+        onKeywordExpand: (sourceNode) => dispatch(actionCreators.expandByKeywords(sourceNode)),
+        onLibraryExpand: (sourceNode) => dispatch(actionCreators.expandByLibraries(sourceNode))
     }
 }
 

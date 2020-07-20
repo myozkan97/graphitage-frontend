@@ -53,7 +53,7 @@ const Graph = (props) => {
     const { elements } = props
     useEffect(() => {
         // TODO Discuss this line
-        Graph.cy.elements().remove(); //TODO: causes issues, why was this line added?
+        // Graph.cy.elements().remove(); //TODO: causes issues, why was this line added?
         
         Graph.cy.add(
             elements

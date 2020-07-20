@@ -29,6 +29,80 @@ export const allPapersElementCreator = (array) => {
     return elements;
 }
 
+
+export const librariesElementCreator = (array, sourceNode) => {
+    const elements = [];
+
+    array.forEach((obj) => {
+        elements.push({
+            data: {
+                type: "library",
+                id: obj.id,
+                label: obj.name,
+                link: obj.link
+            }
+        });
+
+        elements.push({
+            data: {
+                type: "edge",
+                source: sourceNode.data.id,
+                target: obj.id,
+                label: "uses"
+            }
+        })
+    });
+
+    elements.push({
+        data: {
+            type: "paper",
+            id: sourceNode.data.id,
+            label: sourceNode.data.label,
+            idType: sourceNode.data.idType
+        }
+    });
+
+    return elements;
+}
+
+
+
+
+export const keywordsElementCreator = (array, sourceNode) => {
+    const elements = [];
+
+    array.forEach((str) => {
+        elements.push({
+            data: {
+                type: "keyword",
+                id: "keyword:" + str,
+                label: str,
+            }
+        });
+
+        elements.push({
+            data: {
+                type: "edge",
+                source: sourceNode.data.id,
+                target: "keyword:" + str,
+                label: "has"
+            }
+        });
+    });
+
+    elements.push({
+        data: {
+            type: "paper",
+            id: sourceNode.data.id,
+            label: sourceNode.data.label,
+            idType: sourceNode.data.idType
+        }
+    });
+
+    return elements;
+}
+
+
 export const readersElementCreator = (array, sourceNode) => {
     const elements = [];
 
