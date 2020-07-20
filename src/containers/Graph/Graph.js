@@ -52,12 +52,17 @@ const Graph = (props) => {
 
     const { elements } = props
     useEffect(() => {
-        // TODO Discuss this line
-        Graph.cy.elements().remove(); //TODO: causes issues, why was this line added?
-        
+        // Graph.cy.elements().remove();
+        let newStyle = "";
+        elements.forEach(function(element) {
+            if(element.data.type === "paper"){
+                newStyle += 'node[id= "' + element.data.id + '"] { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
+            }
+        });
         Graph.cy.add(
             elements
         );
+        Graph.cy.style(newStyle);
         Graph.cy.elements().layout(layout).run();
     }, [elements]);
 
