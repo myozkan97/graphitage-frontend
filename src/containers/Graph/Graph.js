@@ -49,7 +49,12 @@ const Graph = (props) => {
         //     console.log('click');
         //     Graph.cy.add([{ data: { id: 'sdads', label: 'Node 5' }, position: { x: 400, y: 0 } }]);
         // });
+
+        Graph.cy.minZoom(0.1);
+        Graph.cy.maxZoom(3);
+        
     }, [onOpenContextMenu, detailsMenuHandler, onFetchDetails])
+
 
     const { elements } = props
     useEffect(() => {
