@@ -29,7 +29,7 @@ var optionsMenuStyles = {
       height: '100%'
     },
     bmMenu: {
-      background: '#373a47',
+      background: '#ebedf0',
       padding: '2.5em 1.5em 0',
       fontSize: '1.15em'
     },
@@ -51,7 +51,7 @@ var optionsMenuStyles = {
 
 const optionsMenu = (props) => (
     <Menu onClose={() => props.optionsClosed()} isOpen={props.options} styles={optionsMenuStyles} right>
-      <h3>Options</h3>
+      <h3 className="menuHeader">Options</h3>
   </Menu>
 );
 

@@ -67,7 +67,8 @@ const SearchForm = (props) => {
             urlToSend,
             "GET"
         ).then((result) => {
-            props.onAddElementsToGraph(result.data)
+            props.onClearGraph(true);
+            props.onAddElementsToGraph(result.data);
         })
     }
     // console.log(errors);
@@ -96,7 +97,7 @@ const SearchForm = (props) => {
     
     return (
         <Form style={{color: "#142850"}} onSubmit={handleSubmit(onSubmit)}>
-            <h3 >Search</h3>
+            <h3 className="menuHeader" >Search</h3>
             <Form.Group controlId="searchFormTitle">
                 {/* <Form.Label>Title</Form.Label> */}
                 <Form.Control type="text" placeholder="Title" name="Title" ref={register({ validate })} />
@@ -159,6 +160,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
         onAddElementsToGraph: (elements) => dispatch(actionCreators.addElements(elements))
     }
 }

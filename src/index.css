@@ -13,6 +13,11 @@ code {
 }
 
 
+.navbar, .menuHeader {
+  font-family: 'Montserrat', sans-serif;
+  color: #27496d;
+}
+
 
 html, body, #app, #root {
   height: 100%
