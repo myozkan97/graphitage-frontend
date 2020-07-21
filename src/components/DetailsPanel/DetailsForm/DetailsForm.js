@@ -103,7 +103,7 @@ const Details = (props) => {
                 {props.dtl.reader &&
                     <div className="reader">
                         <h3>Readers</h3>
-                        <ul>{props.dtl.reader.map((obj, index) => (<li key={"readers" + String(index)}>obj.readerName</li>))}</ul>
+                        <ul>{props.dtl.reader.map((obj, index) => (<li key={"readers" + String(index)}>{obj.readerName}</li>))}</ul>
                     </div>
                 }
             </div>
