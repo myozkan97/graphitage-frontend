@@ -14,6 +14,8 @@ const layout = {
     name: 'cose-bilkent',
     randomize: true,
     idealEdgeLength: 200,
+    tilingPaddingHorizontal: 110,
+    tilingPaddingVertical: 25,
 };
 
 Cytoscape.use(CoseBilkent);
