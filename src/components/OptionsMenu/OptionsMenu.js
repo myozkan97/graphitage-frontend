@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { slide as Menu } from 'react-burger-menu'
+import OptionsForm from './OptionsForm/OptionsForm'
 
 var optionsMenuStyles = {
     bmBurgerButton: {
@@ -52,6 +53,8 @@ var optionsMenuStyles = {
 const optionsMenu = (props) => (
     <Menu onClose={() => props.optionsClosed()} isOpen={props.options} styles={optionsMenuStyles} right>
       <h3 className="menuHeader">Options</h3>
+      <p style={{color:"black"}}>Add Nodes With JSON File</p>
+      <OptionsForm />
   </Menu>
 );
 
