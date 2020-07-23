@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from "react";
-=======
 import React, { useEffect, useState, useRef } from "react"
->>>>>>> 9e3ef16d5bea4c25422bfd980b0ceab62c5902d8
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
