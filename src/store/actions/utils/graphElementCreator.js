@@ -1,5 +1,3 @@
-//{ data: { source: 'one', target: 'two', label: 'Edge from Node1 to Node2' } },
-
 export const allPapersElementCreator = (array) => {
   const elements = [];
   array.forEach((obj) => {

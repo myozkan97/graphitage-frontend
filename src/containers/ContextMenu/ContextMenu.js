@@ -2,7 +2,25 @@ import React, { useEffect, useState, useCallback } from "react";
 import { connect } from 'react-redux';
 
 import * as actionCreators from '../../store/actions/index';
-import classes from './ContextMenu.module.css';
+
+const styles =  {
+   menu: {
+    backgroundColor: '#fff',
+    borderRadius: '2px',
+    paddingLeft: '0',
+    margin: '0',
+    position: 'absolute',
+    listStyle: 'none',
+    '& li': {
+        padding: '0.2em 1em',
+        color: '#000',
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: '#f2f2f2'
+          }
+      }
+  }
+}
 
 const ContextMenu = (props) => {
     const [xPos, setXPos] = useState("0px");
@@ -43,10 +61,10 @@ const ContextMenu = (props) => {
     
     if (menu && props.contextMenuIsOpen && props.sourceNode.data.type === 'paper') {
         return (
-            <ul className={classes.menu} style={{ top: yPos, left: xPos }}>
-                <li onClick={() => props.onSimpleExpand(props.sourceNode)}>Simple Expand</li>
-                <li onClick={() => props.onDatasetExpand(props.sourceNode)}>Expand Datasets</li>
+            <ul style={{top: yPos, left: xPos, ...styles.menu}} >
+                <li style={styles.li} onClick={() => props.onSimpleExpand(props.sourceNode)}>Simple Expand</li>
                 <li onClick={() => props.onReaderExpand(props.sourceNode)}>Expand Readers</li>
+                <li onClick={() => props.onDatasetExpand(props.sourceNode)}>Expand Datasets</li>
                 <li onClick={() => props.onLibraryExpand(props.sourceNode)} >Expand Library</li>
                 <li onClick={() => props.onKeywordExpand(props.sourceNode)}>Expand Keywords</li>
             </ul>
