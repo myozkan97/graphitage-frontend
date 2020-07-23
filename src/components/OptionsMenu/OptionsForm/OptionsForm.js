@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
@@ -17,6 +17,7 @@ const OptionsForm = (props) => {
         mode: "onChange"
       });
     const [isSuccess, setIsSuccess] = useState(false);
+    const form = useRef(null);
 
     const onSubmit = data => {
         console.log(data.jsonFile[0]);
@@ -57,11 +58,12 @@ const OptionsForm = (props) => {
 
     const onFileChange = data => {
         setIsSuccess(false);
+        form.current.dispatchEvent(new Event('submit', { cancelable: true }))
     }
 
     return (
 
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form ref={form} onSubmit={handleSubmit(onSubmit)}>
         
             <Form.Group controlId="optionsFormJSON">
                 {/* <Form.Label>Title</Form.Label> */}
@@ -69,9 +71,6 @@ const OptionsForm = (props) => {
             </Form.Group>
 
             <div>
-            <Button  variant="primary" type="submit" id="searchButton" name="Search" disabled="true" disabled={!formState.isValid}>
-                Add
-            </Button>
             {isSuccess &&
                 <h4 style={{color:"green"}}>Success!</h4>
             }</div>
