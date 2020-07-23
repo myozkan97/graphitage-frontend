@@ -1,88 +1,99 @@
-import React, { useState, useCallback } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useCallback } from "react";
+import { connect } from "react-redux";
 
-import SearchMenu from '../../components/Navigation/SearchMenu/SearchMenu';
-import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
-import DetailsPanel from '../../components/DetailsPanel/DetailsPanel';
+import SearchMenu from "../../components/Navigation/SearchMenu/SearchMenu";
+import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
+import DetailsPanel from "../../components/DetailsPanel/DetailsPanel";
+import OptionsMenu from "../../components/OptionsMenu/OptionsMenu";
 
+import * as actionTypes from "../../store/actions/actionTypes";
 
-import classes from './Layout.module.css'
-import OptionsMenu from '../../components/OptionsMenu/OptionsMenu';
-
-import * as actionTypes from '../../store/actions/actionTypes';
-
+const styles = {
+  content: { height: "calc(100% - 60px)" },
+};
 
 const Layout = (props) => {
-    const [searchMenu, setSearch] = useState(false);
-    const [optionsMenu, setOptions] = useState(false);
-    const [detailsMenu, setdetailsMenu] = useState(false);
-    const [nodeId, setNodeId] = useState('');
+  const [searchMenu, setSearch] = useState(false);
+  const [optionsMenu, setOptions] = useState(false);
+  const [detailsMenu, setdetailsMenu] = useState(false);
+  const [nodeId, setNodeId] = useState("");
 
-    const searchClosedHandler = useCallback(() => {
-        setSearch(false);
-    }, [])
+  const searchClosedHandler = useCallback(() => {
+    setSearch(false);
+  }, []);
 
+  const searchClickedHandler = useCallback(() => {
+    setSearch(true);
+    setOptions(false);
+    setdetailsMenu(false);
+  }, []);
 
+  const optionsClosedHandler = useCallback(() => {
+    setOptions(false);
+  }, []);
 
-    const searchClickedHandler = useCallback(() => {
-        setSearch(true);
-        setOptions(false);
-        setdetailsMenu(false);
-    }, []);
+  const optionsClickedHandler = useCallback(() => {
+    setOptions(true);
+    setSearch(false);
+    setdetailsMenu(false);
+  }, []);
 
-    const optionsClosedHandler = useCallback(() => {
-        setOptions(false);
-    }, []);
+  const { switchClearGraph } = props;
+  const clearGraph = useCallback(() => {
+    switchClearGraph(true);
+  }, [switchClearGraph]);
 
-    const optionsClickedHandler = useCallback(() => {
-        setOptions(true);
-        setSearch(false);
-        setdetailsMenu(false);
-    }, []);
+  const detailsPanelOpenedHandler = useCallback((id) => {
+    setdetailsMenu(true);
+    setOptions(false);
+    setSearch(false);
+    setNodeId(id);
+  }, []);
 
-    const { switchClearGraph } = props;
-    const clearGraph = useCallback(() => {
-        switchClearGraph(true);
-    }, [switchClearGraph]);
+  const detailsPanelClosedHandler = useCallback(() => {
+    setdetailsMenu(false);
+  }, []);
 
-    const detailsPanelOpenedHandler = useCallback((id) => {
-        setdetailsMenu(true);
-        setOptions(false);
-        setSearch(false);
-        setNodeId(id);
-    }, []);
+  return (
+    <React.Fragment>
+      <SearchMenu
+        search={searchMenu}
+        searchClosed={searchClosedHandler}
+      ></SearchMenu>
+      <OptionsMenu
+        options={optionsMenu}
+        optionsClosed={optionsClosedHandler}
+      ></OptionsMenu>
+      <DetailsPanel
+        detailsClosed={detailsPanelClosedHandler}
+        details={detailsMenu}
+        nodeId={nodeId}
+      />
+      <Toolbar
+        searchClick={searchClickedHandler}
+        optionsClick={optionsClickedHandler}
+        clearGraph={clearGraph}
+      ></Toolbar>
+      <main className={styles.content}>
+        {React.cloneElement(props.children, {
+          detailsMenuHandler: detailsPanelOpenedHandler,
+        })}
+      </main>
+    </React.Fragment>
+  );
+};
 
-    const detailsPanelClosedHandler = useCallback(() => {
-        setdetailsMenu(false);
-    }, []);
+const mapStateToProps = (state) => {
+  return {
+    clr: state.clearNodes,
+  };
+};
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    switchClearGraph: (isActive) =>
+      dispatch({ type: actionTypes.CLEAR_NODES, bool: isActive }),
+  };
+};
 
-
-
-    return (
-        <React.Fragment>
-            <SearchMenu search={searchMenu} searchClosed={searchClosedHandler}></SearchMenu>
-            <OptionsMenu options={optionsMenu} optionsClosed={optionsClosedHandler}></OptionsMenu>
-            <DetailsPanel detailsClosed={detailsPanelClosedHandler} details={detailsMenu} nodeId={nodeId} />
-            <Toolbar searchClick={searchClickedHandler} optionsClick={optionsClickedHandler} clearGraph={clearGraph}></Toolbar>
-            <main className={classes.Content}>
-                {React.cloneElement(props.children, { detailsMenuHandler: detailsPanelOpenedHandler })}
-            </main>
-        </React.Fragment>
-    );
-}
-
-
-const mapStateToProps = state => {
-    return {
-        clr: state.clearNodes
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        switchClearGraph: (isActive) => dispatch({ type: actionTypes.CLEAR_NODES, bool: isActive })
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Layout); 
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

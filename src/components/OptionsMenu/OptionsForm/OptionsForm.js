@@ -11,14 +11,14 @@ import httpReq from "../../../store/actions/utils/http";
 const baseUrl = "https://graphitage.herokuapp.com/api.graphitage.com/";
 
 const OptionsForm = (props) => {
-  const { register, handleSubmit, errors, watch, formState } = useForm({
+  // const { register, handleSubmit, errors, watch, formState }
+  const { register, handleSubmit } = useForm({
     mode: "onChange",
   });
   const [isSuccess, setIsSuccess] = useState(false);
   const form = useRef(null);
 
   const onSubmit = (data) => {
-    console.log(data.jsonFile[0]);
     const objectURL = URL.createObjectURL(data.jsonFile[0]);
 
     async function getData(url) {
@@ -28,7 +28,6 @@ const OptionsForm = (props) => {
 
     async function runConn() {
       const jsonData = await getData(objectURL);
-      console.log(jsonData);
 
       httpReq(baseUrl + "papers", "POST", JSON.stringify(jsonData))
         .then((result) => {
