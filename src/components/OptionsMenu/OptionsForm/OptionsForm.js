@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useState, useRef } from "react";
 
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { useForm } from "react-hook-form";
 
 import { connect } from "react-redux";
@@ -12,70 +11,60 @@ import httpReq from "../../../store/actions/utils/http";
 const baseUrl = "https://graphitage.herokuapp.com/api.graphitage.com/";
 
 const OptionsForm = (props) => {
-    const { register, handleSubmit, errors, watch, formState } = useForm({
-        mode: "onChange"
-      });
-    const [isSuccess, setIsSuccess] = useState(false);
-    const form = useRef(null);
+  const { register, handleSubmit, errors, watch, formState } = useForm({
+    mode: "onChange",
+  });
+  const [isSuccess, setIsSuccess] = useState(false);
+  const form = useRef(null);
 
-    const onSubmit = data => {
-        console.log(data.jsonFile[0]);
-        const objectURL = URL.createObjectURL(data.jsonFile[0]);
+  const onSubmit = (data) => {
+    console.log(data.jsonFile[0]);
+    const objectURL = URL.createObjectURL(data.jsonFile[0]);
 
-        // fetch(objectURL)
-        //     .then(resp => resp.json())
-        //     .then(console.log);
-
-
-
-        async function getData(url) {
-            const response = await fetch(url);
-            return response.json()
-        }
-        
-        async function runConn() {
-            const jsonData = await getData(objectURL);
-            console.log(jsonData)
-            
-            httpReq(
-                baseUrl + "papers",
-                "POST",
-                JSON.stringify(jsonData)
-            ).then((result) => {
-                setIsSuccess(true);
-                props.onClearGraph(true);
-                props.onSimpleExpand();
-            }).catch (error => {
-                setIsSuccess(false);
-            });
-        }
-
-        runConn();
-        
+    async function getData(url) {
+      const response = await fetch(url);
+      return response.json();
     }
 
+    async function runConn() {
+      const jsonData = await getData(objectURL);
+      console.log(jsonData);
 
-    const onFileChange = data => {
-        setIsSuccess(false);
-        form.current.dispatchEvent(new Event('submit', { cancelable: true }))
+      httpReq(baseUrl + "papers", "POST", JSON.stringify(jsonData))
+        .then((result) => {
+          setIsSuccess(true);
+          props.onClearGraph(true);
+          props.onSimpleExpand();
+        })
+        .catch((error) => {
+          setIsSuccess(false);
+        });
     }
 
-    return (
+    runConn();
+  };
 
-        <Form ref={form} onSubmit={handleSubmit(onSubmit)}>
-        
-            <Form.Group controlId="optionsFormJSON">
-                {/* <Form.Label>Title</Form.Label> */}
-                <Form.File id="jsonFile" placeholder="jsonFile" onChange={onFileChange} name="jsonFile" ref={register()} />
-            </Form.Group>
+  const onFileChange = (data) => {
+    setIsSuccess(false);
+    form.current.dispatchEvent(new Event("submit", { cancelable: true }));
+  };
 
-            <div>
-            {isSuccess &&
-                <h4 style={{color:"green"}}>Success!</h4>
-            }</div>
-        </Form>
-    )
-}
+  return (
+    <Form ref={form} onSubmit={handleSubmit(onSubmit)}>
+      <Form.Group controlId="optionsFormJSON">
+        <Form.File
+          id="jsonFile"
+          placeholder="jsonFile"
+          onChange={onFileChange}
+          name="jsonFile"
+          ref={register()}
+        />
+      </Form.Group>
+
+      <div>{isSuccess && <h4 style={{ color: "green" }}>Success!</h4>}</div>
+    </Form>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {};
