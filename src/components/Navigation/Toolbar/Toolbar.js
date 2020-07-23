@@ -3,7 +3,7 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
-import logo from "../../../logo_b2.png";
+import logo from "../../../logo.png";
 
 const styles = {
   links: {
