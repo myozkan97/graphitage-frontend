@@ -6,7 +6,7 @@ import CoseBilkent from "cytoscape-cose-bilkent";
 
 import * as actionCreators from "../../store/actions/index";
 
-import ContextMenu from "../../components/ContextMenu/ContextMenu";
+import ContextMenu from "../ContextMenu/ContextMenu";
 
 const layout = {
   name: "cose-bilkent",

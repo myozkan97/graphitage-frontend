@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 
 import { connect } from "react-redux";
 
-import * as actionCreators from "../../../../store/actions/index";
-import httpReq from "../../../../store/actions/utils/http";
+import * as actionCreators from "../../../store/actions/index";
+import httpReq from "../../../store/actions/utils/http";
 
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 

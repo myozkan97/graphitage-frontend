@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { connect } from "react-redux";
 
-import SearchMenu from "../../components/Navigation/SearchMenu/SearchMenu";
+import SearchMenu from "../../containers/SearchMenu/SearchMenu";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import DetailsPanel from "../../components/DetailsPanel/DetailsPanel";
-import OptionsMenu from "../../components/OptionsMenu/OptionsMenu";
+import OptionsMenu from "../../containers/OptionsMenu/OptionsMenu";
 
 import * as actionTypes from "../../store/actions/actionTypes";
 
