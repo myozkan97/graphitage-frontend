@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions/index";
 import httpReq from "../../../store/actions/utils/http";
 
-const baseUrl = "https://graphitage.herokuapp.com/api.graphitage.com/";
 
 const OptionsForm = (props) => {
   // const { register, handleSubmit, errors, watch, formState }
@@ -29,7 +28,7 @@ const OptionsForm = (props) => {
     async function runConn() {
       const jsonData = await getData(objectURL);
 
-      httpReq(baseUrl + "papers", "POST", JSON.stringify(jsonData))
+      httpReq("papers", "POST", JSON.stringify(jsonData))
         .then((result) => {
           setIsSuccess(true);
           props.onClearGraph(true);

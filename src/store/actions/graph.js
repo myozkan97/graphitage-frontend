@@ -9,8 +9,6 @@ import {
   datasetsElementCreator,
 } from "./utils/graphElementCreator";
 
-const baseUrl = "https://graphitage.herokuapp.com/api.graphitage.com/";
-
 export const clearNodes = (isActive) => {
   return {
     type: actionTypes.CLEAR_NODES,
@@ -36,7 +34,7 @@ const setError = (bool) => {
 export const simpleExpand = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode == null) {
-      httpReq(baseUrl + "papers", "GET").then((result) => {
+      httpReq("papers", "GET").then((result) => {
         if (result.error === true) {
           dispatch(setError(true));
         } else {
@@ -46,7 +44,7 @@ export const simpleExpand = (sourceNode) => {
       });
     } else {
       httpReq(
-        baseUrl + `papers/${sourceNode.data.id}/relatedWorks/`,
+        `papers/${sourceNode.data.id}/relatedWorks/`,
         "GET"
       ).then((result) => {
         if (result.error === true) {
@@ -72,7 +70,7 @@ export const addElements = (data) => {
 export const expandByLibraries = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(baseUrl + `papers/${sourceNode.data.id}/libraries/`, "GET").then(
+      httpReq(`papers/${sourceNode.data.id}/libraries/`, "GET").then(
         (result) => {
           if (result.error === true) {
             dispatch(setError(true));
@@ -92,7 +90,7 @@ export const expandByLibraries = (sourceNode) => {
 export const expandByKeywords = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(baseUrl + `papers/${sourceNode.data.id}/keywords/`, "GET").then(
+      httpReq(`papers/${sourceNode.data.id}/keywords/`, "GET").then(
         (result) => {
           if (result.error === true) {
             dispatch(setError(true));
@@ -112,7 +110,7 @@ export const expandByKeywords = (sourceNode) => {
 export const expandByReaders = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(baseUrl + `papers/${sourceNode.data.id}/readers/`, "GET").then(
+      httpReq(`papers/${sourceNode.data.id}/readers/`, "GET").then(
         (result) => {
           if (result.error === true) {
             dispatch(setError(true));
@@ -132,7 +130,7 @@ export const expandByReaders = (sourceNode) => {
 export const expandByDatasets = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(baseUrl + `papers/${sourceNode.data.id}/datasets/`, "GET").then(
+      httpReq(`papers/${sourceNode.data.id}/datasets/`, "GET").then(
         (result) => {
           if (result.error === true) {
             dispatch(setError(true));

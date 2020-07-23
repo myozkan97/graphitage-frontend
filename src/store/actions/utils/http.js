@@ -1,7 +1,8 @@
-const httpReq = async (url, method, body) => {
+import { url } from '../../../globalVars';
+
+const httpReq = async (path, method, body) => {
   try {
-    let response = await fetch(url, {
-      // mode: 'no-cors',
+    let response = await fetch(url + path, {
       method,
       body,
       headers: {

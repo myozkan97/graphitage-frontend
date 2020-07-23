@@ -11,14 +11,12 @@ import httpReq from "../../../../store/actions/utils/http";
 
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
-const baseUrl = "https://graphitage.herokuapp.com/api.graphitage.com/";
-
 const styles = {
-    searchBttn:  {
-        width: "50%",
-        float: "right",
-    }
-}
+  searchBttn: {
+    width: "50%",
+    float: "right",
+  },
+};
 
 const SearchForm = (props) => {
   // there's also a prob call error, we can use it to display form errors
@@ -31,8 +29,7 @@ const SearchForm = (props) => {
 
   // create request url and make the request
   const onSubmit = (data) => {
-    let urlToSend =
-      baseUrl + isOn ? "papers/searchWithAND?" : "papers/searchWithOR?";
+    let urlToSend = isOn ? "papers/searchWithAND?" : "papers/searchWithOR?";
     if (data.Dataset !== "") {
       urlToSend += "dataset=" + data.Dataset;
     }
