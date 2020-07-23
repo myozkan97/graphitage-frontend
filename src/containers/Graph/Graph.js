@@ -94,6 +94,7 @@ const Graph = (props) => {
 
     // apply cose-bilkent layout
     Graph.cy.elements().layout(layout).run();
+    console.log(elements)
   }, [elements]);
 
   if (props.clr) {

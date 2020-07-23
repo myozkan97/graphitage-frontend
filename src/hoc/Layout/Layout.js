@@ -74,7 +74,7 @@ const Layout = (props) => {
         optionsClick={optionsClickedHandler}
         clearGraph={clearGraph}
       ></Toolbar>
-      <main className={styles.content}>
+      <main style={styles.content}>
         {React.cloneElement(props.children, {
           detailsMenuHandler: detailsPanelOpenedHandler,
         })}
