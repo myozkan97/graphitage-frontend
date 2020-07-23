@@ -1,20 +1,19 @@
-import React, { useEffect, useRef } from 'react';
-import CytoscapeComponent from 'react-cytoscapejs';
-import { connect } from 'react-redux';
-import Cytoscape from 'cytoscape';
-import CoseBilkent from 'cytoscape-cose-bilkent';
+import React, { useEffect, useRef } from "react";
+import CytoscapeComponent from "react-cytoscapejs";
+import { connect } from "react-redux";
+import Cytoscape from "cytoscape";
+import CoseBilkent from "cytoscape-cose-bilkent";
 
+import * as actionCreators from "../../store/actions/index";
 
-import * as actionCreators from '../../store/actions/index';
-
-import ContextMenu from '../../components/ContextMenu/ContextMenu';
+import ContextMenu from "../../components/ContextMenu/ContextMenu";
 
 const layout = {
-    name: 'cose-bilkent',
-    randomize: true,
-    idealEdgeLength: 200,
-    tilingPaddingHorizontal: 110,
-    tilingPaddingVertical: 25,
+  name: "cose-bilkent",
+  randomize: true,
+  idealEdgeLength: 200,
+  tilingPaddingHorizontal: 110,
+  tilingPaddingVertical: 25,
 };
 
 Cytoscape.use(CoseBilkent);
