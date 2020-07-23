@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_ELEMENTS:
             return {
                 ...state,
-                elements: action.elements,
+                elements: [...action.elements],
                 error: false
             }
         case actionTypes.SET_ERROR:

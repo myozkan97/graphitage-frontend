@@ -23,18 +23,17 @@ Cytoscape.use(CoseBilkent);
 const Graph = (props) => {
     const outerRef = useRef(null);
 
+    // Start out with simple expand at the beginning
     const { onSimpleExpand } = props;
     useEffect(() => {
         onSimpleExpand();
     }, [onSimpleExpand]);
 
 
+    // Setting up event listeners
     const { onOpenContextMenu, detailsMenuHandler, onFetchDetails } = props;
     useEffect(() => {
         Graph.cy.on('click', 'node', (event) => {
-            // console.log(event.target._private.data);
-            // var j = Graph.cy.$('#' + event.target._private.data.id);
-            // Graph.cy.remove(j);
             if(event.target._private.data.type === "paper") {
                 detailsMenuHandler(event.target._private.data.id);
                 onFetchDetails(event.target._private.data.id);
@@ -45,13 +44,6 @@ const Graph = (props) => {
             onOpenContextMenu(event.target._private);
         });
 
-        // Add funcs like event listeners here! Example:
-        //
-        // document.body.addEventListener('click', function () {
-        //     console.log('click');
-        //     Graph.cy.add([{ data: { id: 'sdads', label: 'Node 5' }, position: { x: 400, y: 0 } }]);
-        // });
-
         Graph.cy.minZoom(0.1);
         Graph.cy.maxZoom(3);
         
@@ -60,34 +52,22 @@ const Graph = (props) => {
 
     const { elements } = props
     useEffect(() => {
-        // Graph.cy.elements().remove();
+        // applying node styles 
+        let nodeStyle = 'node { background-color: white ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50;  }';
         
-        // elements.forEach(function(element) {
-        //     if(element.data.type === "paper"){
-        //         console.log(element.data.id);
-        //         paperStyle += 'node[id= "' + element.data.id + '"] { background-color: red ; label: data(label); text-wrap: ellipsis; text-max-width: 150; height: 40; width: 40; }';
-        //     }
-        // });
-
-        // farkli turdeki nodelara farkli style uygulama
-        let paperStyle = 'node[type = "paper"] { background-color: white ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50; shape: circle; }';
-        paperStyle += 'node[type = "dataset"] { background-color: white ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50; shape: circle; }';
-        paperStyle += 'node[type = "reader"] { background-color: white ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50; shape: circle; }';
-        paperStyle += 'node[type = "library"] { background-color: white ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50; shape: circle; }';
-        paperStyle += 'node[type = "keyword"] { background-color: white ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50; shape: circle; }';
-           
+        // add elements to the graph
         Graph.cy.add(
             elements
         );
-        Graph.cy.style(paperStyle);
+
+        // apply node styles
+        Graph.cy.style(nodeStyle);
         
         Graph.cy.style()
         .selector('node[type = "paper"]') // paper
             .style({
             'background-image': 'https://image.flaticon.com/icons/png/512/806/806177.png',
             'background-fit': 'cover',
-            // 'background-fit': 'contain',
-            // 'background-opacity': 0.8
         })
         .selector('node[type = "dataset"]') // dataset
             .style({
@@ -110,9 +90,9 @@ const Graph = (props) => {
             'background-fit': 'contain'
         })
 
-        .update() // indicate the end of your new stylesheet so that it can be updated on elements
-        ;
-
+        .update(); // indicate the end of your new stylesheet so that it can be updated on elements
+        
+        // apply cose-bilkent layout
         Graph.cy.elements().layout(layout).run();
     }, [elements]);
 
@@ -129,7 +109,6 @@ const Graph = (props) => {
             <ContextMenu outerRef={outerRef}  />
         </div>
     );
-
 }
 
 

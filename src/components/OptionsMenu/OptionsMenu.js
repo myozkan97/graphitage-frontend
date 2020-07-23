@@ -52,6 +52,7 @@ var optionsMenuStyles = {
 
 const optionsMenu = (props) => (
     <Menu onClose={() => props.optionsClosed()} isOpen={props.options} styles={optionsMenuStyles} right>
+      <div></div> 
       <h3 className="menuHeader">Options</h3>
       <p style={{color:"black"}}>Add Nodes With JSON File</p>
       <OptionsForm />

@@ -42,13 +42,12 @@ const OptionsForm = (props) => {
                 "POST",
                 JSON.stringify(jsonData)
             ).then((result) => {
+                setIsSuccess(true);
                 props.onClearGraph(true);
-                props.onAddElementsToGraph(jsonData);
-            })
-            setIsSuccess(true);
-            props.onClearGraph(true);
-            // props.onAddElementsToGraph();
-            props.onSimpleExpand();
+                props.onSimpleExpand();
+            }).catch (error => {
+                setIsSuccess(false);
+            });
         }
 
         runConn();
@@ -87,7 +86,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
-        onAddElementsToGraph: (elements) => dispatch(actionCreators.addElements(elements)),
         onSimpleExpand: (sourceNode) => dispatch(actionCreators.simpleExpand(sourceNode))
     }
 }
