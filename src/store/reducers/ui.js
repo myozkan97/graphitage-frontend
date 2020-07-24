@@ -5,6 +5,10 @@ const initialState = {
     isOpen: false,
     sourceNode: {},
   },
+  errorModal: {
+    error: false,
+    errorMessage: ''
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +20,9 @@ const reducer = (state = initialState, action) => {
           isOpen: true,
           sourceNode: action.sourceNode,
         },
+        errorModal: {
+          ...state.errorModal
+        }
       };
     case actionTypes.CLOSE_CONTEXT_MENU:
       return {
@@ -24,7 +31,33 @@ const reducer = (state = initialState, action) => {
           isOpen: false,
           sourceNode: {},
         },
+        errorModal: {
+          ...state.errorModal
+        }
       };
+      case actionTypes.OPEN_ERROR_MODAL:
+        return {
+          ...state, 
+          contextMenu: {
+            isOpen: false,
+            sourceNode: {}
+          },
+          errorModal: {
+            error: true,
+            errorMessage: action.errorMessage
+          }
+        }
+        case actionTypes.CLOSE_ERROR_MODAL:
+        return {
+          ...state, 
+          contextMenu: {
+            ...state.contextMenu
+          },
+          errorModal: {
+            error: false,
+            errorMessage: ''
+          }
+        }
     default:
       return state;
   }

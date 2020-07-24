@@ -5,6 +5,7 @@ import SearchMenu from "../../containers/SearchMenu/SearchMenu";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import DetailsPanel from "../../components/DetailsPanel/DetailsPanel";
 import OptionsMenu from "../../containers/OptionsMenu/OptionsMenu";
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 
 import * as actionTypes from "../../store/actions/actionTypes";
 
@@ -79,6 +80,7 @@ const Layout = (props) => {
           detailsMenuHandler: detailsPanelOpenedHandler,
         })}
       </main>
+      <ErrorModal/>
     </React.Fragment>
   );
 };
@@ -86,6 +88,7 @@ const Layout = (props) => {
 const mapStateToProps = (state) => {
   return {
     clr: state.clearNodes,
+    showError: state.ui.errorModal.error
   };
 };
 

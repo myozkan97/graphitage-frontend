@@ -12,3 +12,16 @@ export const closeContextMenu = () => {
     type: actionTypes.CLOSE_CONTEXT_MENU,
   };
 };
+
+export const openErrorModal = (errorMessage) => {
+  return {
+    type: actionTypes.OPEN_ERROR_MODAL,
+    errorMessage
+  }
+}
+
+export const closeErrorModal = () => {
+  return {
+    type: actionTypes.OPEN_ERROR_MODAL
+  }
+}

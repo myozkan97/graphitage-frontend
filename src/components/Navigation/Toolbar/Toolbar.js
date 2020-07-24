@@ -12,7 +12,13 @@ const styles = {
   navbar: {
     height: "60px",
   },
-  img: { height: "42px", width: "56px" },
+  img: { 
+    height: "42px", 
+    width: "56px",
+    position: 'absolute',
+    transform: 'translate(-50%, 0)',
+    left: '50%'
+  },
 };
 
 const toolbar = (props) => (
