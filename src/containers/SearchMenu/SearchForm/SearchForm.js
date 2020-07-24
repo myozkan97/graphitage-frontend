@@ -49,9 +49,15 @@ const SearchForm = (props) => {
       urlToSend += "&title=" + data.Title;
     }
 
-    httpReq(urlToSend, "GET").then((result) => {
-      props.onClearGraph(true);
-      props.onAddElementsToGraph(result.data);
+    httpReq(urlToSend, "GET")
+    .then((result) => {
+      if(result.error){
+        props.onOpenErrorModal("error");
+      }
+      else{
+        props.onClearGraph(true);
+        props.onAddElementsToGraph(result.data);
+      }
     });
   };
 
@@ -173,8 +179,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
-    onAddElementsToGraph: (elements) =>
-      dispatch(actionCreators.addElements(elements)),
+    onAddElementsToGraph: (elements) => dispatch(actionCreators.addElements(elements)),
+    onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
   };
 };
 

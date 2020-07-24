@@ -22,6 +22,6 @@ export const openErrorModal = (errorMessage) => {
 
 export const closeErrorModal = () => {
   return {
-    type: actionTypes.OPEN_ERROR_MODAL
+    type: actionTypes.CLOSE_ERROR_MODAL
   }
 }

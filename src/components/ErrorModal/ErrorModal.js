@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from 'react-redux';
 
 import Modal from "react-bootstrap/Modal";
@@ -7,20 +7,24 @@ import Button from "react-bootstrap/Button";
 import * as actionCreators from '../../store/actions/index';
 
 function ErrorModal(props) {
+
   return (
-    <Modal.Dialog style={{position: 'absolute', left: '50%', top: '10%', transform: 'translate(-50%, 0)'}}>
+    <Modal 
+      show={true} 
+      onHide= {props.onCloseErrorModal}
+      animation={false}
+      style= {{position: 'absolute', left: '50%', top: '10%', transform: 'translate(-50%, 0)', zIndex:'9999'}}
+     >
       <Modal.Header closeButton>
-        <Modal.Title>Modal title</Modal.Title>
+        <Modal.Title>Something went wrong!</Modal.Title>
       </Modal.Header>
-
-      <Modal.Body>
-        <p>{props.message}</p>
-      </Modal.Body>
-
-      <Modal.Footer>
-        <Button variant="secondary">Close</Button>
+      <Modal.Body>Search Error!</Modal.Body>
+      <Modal.Footer className="d-flex justify-content-center">
+        <Button variant="secondary" onClick={props.onCloseErrorModal}>
+          Close
+        </Button>
       </Modal.Footer>
-    </Modal.Dialog>
+    </Modal>
   );
 }
 

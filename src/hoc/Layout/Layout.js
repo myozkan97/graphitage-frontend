@@ -80,7 +80,8 @@ const Layout = (props) => {
           detailsMenuHandler: detailsPanelOpenedHandler,
         })}
       </main>
-      <ErrorModal/>
+      { props.showError &&
+      <ErrorModal/>}
     </React.Fragment>
   );
 };
