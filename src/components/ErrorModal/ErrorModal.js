@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { connect } from 'react-redux';
 
 import Modal from "react-bootstrap/Modal";
@@ -18,7 +18,7 @@ function ErrorModal(props) {
       <Modal.Header closeButton>
         <Modal.Title>Something went wrong!</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Search Error!</Modal.Body>
+      <Modal.Body>{props.message}</Modal.Body>
       <Modal.Footer className="d-flex justify-content-center">
         <Button variant="secondary" onClick={props.onCloseErrorModal}>
           Close

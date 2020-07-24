@@ -9,7 +9,8 @@ const httpReq = async (path, method, body) => {
         "Content-Type": "application/json",
       },
     });
-
+    
+    
     let data = await response.json();
 
     if (data.status) throw Error();
@@ -17,6 +18,11 @@ const httpReq = async (path, method, body) => {
   } catch (error) {
     return { data: null, error: true };
   }
+  //   if (response.status !== 200) throw Error();
+  //   else return { data: response, error: false };
+  // } catch (error) {
+  //   return { data: null, error: true };
+  // }
 };
 
 export default httpReq;

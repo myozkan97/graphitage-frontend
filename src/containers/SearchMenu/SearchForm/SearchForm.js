@@ -52,7 +52,10 @@ const SearchForm = (props) => {
     httpReq(urlToSend, "GET")
     .then((result) => {
       if(result.error){
-        props.onOpenErrorModal("error");
+        props.onOpenErrorModal("Connection Error!");
+      }
+      else if (result.data.length === 0) {
+        props.onOpenErrorModal("No Nodes Found!");
       }
       else{
         props.onClearGraph(true);
@@ -147,7 +150,7 @@ const SearchForm = (props) => {
             onstyle="primary"
             offlabel="OR"
             offstyle="info"
-            style={styles.searchBttn}
+            style={styles.searchBttn} // TODO: won't work
             onChange={(checked) => {
               if (checked) {
                 setIsOn(true);

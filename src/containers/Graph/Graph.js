@@ -22,10 +22,18 @@ const Graph = (props) => {
     const outerRef = useRef(null);
 
     // Start out with simple expand at the beginning
-    const { onSimpleExpand } = props;
+    const { onSimpleExpand} = props;
     useEffect(() => {
         onSimpleExpand();
     }, [onSimpleExpand]);
+
+    // Checks connection, if not connected -> gives error
+    const { onOpenErrorModal, error } = props;
+    useEffect(() => {
+        if(error){
+            onOpenErrorModal("Connection Error!");
+        }
+    }, [ error, onOpenErrorModal]);
 
 
     // Setting up event listeners
@@ -113,7 +121,8 @@ const Graph = (props) => {
 const mapStateToProps = state => {
     return {
         clr: state.graph.clearNodes,
-        elements: state.graph.elements
+        elements: state.graph.elements,
+        error: state.graph.error,
     }
 }
 
@@ -125,6 +134,7 @@ const mapDispatchToProps = dispatch => {
         onCloseContextMenu: () => dispatch(actionCreators.closeContextMenu()),
         onSimpleExpand: (sourceNode) => dispatch(actionCreators.simpleExpand(sourceNode)),
         onAddElements: (data) => dispatch(actionCreators.addElements(data)),
+        onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
     }
 }
 

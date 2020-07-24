@@ -15,10 +15,13 @@ const OptionsForm = (props) => {
     mode: "onChange",
   });
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isCorrectFileType, setIsCorrectFileType] = useState(true);
   const form = useRef(null);
 
   const onSubmit = (data) => {
     const objectURL = URL.createObjectURL(data.jsonFile[0]);
+    let fullName = data.jsonFile[0].name;
+    let fileExtension = fullName.slice((fullName.lastIndexOf('.') + 1));
 
     async function getData(url) {
       const response = await fetch(url);
@@ -26,6 +29,7 @@ const OptionsForm = (props) => {
     }
 
     async function runConn() {
+      console.log("loading start");
       const jsonData = await getData(objectURL);
 
       httpReq("papers", "POST", JSON.stringify(jsonData))
@@ -33,17 +37,29 @@ const OptionsForm = (props) => {
           setIsSuccess(true);
           props.onClearGraph(true);
           props.onSimpleExpand();
+          
+          console.log("loading finish"); //TODO: create loading screen
+          console.log(result);
         })
         .catch((error) => {
           setIsSuccess(false);
+          console.log(error);
+
+          console.log("loading finish"); //TODO:
         });
     }
 
-    runConn();
+    if(fileExtension.toLowerCase() === "json"){
+      runConn();
+    }else{ //file type not supported
+      // props.onOpenErrorModal("File Type Is Not Supported. Please Choose a \"JSON\" File.");
+      setIsCorrectFileType(false);
+    }
   };
 
   const onFileChange = (data) => {
     setIsSuccess(false);
+    setIsCorrectFileType(true);
     form.current.dispatchEvent(new Event("submit", { cancelable: true }));
   };
 
@@ -56,10 +72,12 @@ const OptionsForm = (props) => {
           onChange={onFileChange}
           name="jsonFile"
           ref={register()}
+          accept="application/JSON"
         />
       </Form.Group>
 
       <div>{isSuccess && <h4 style={{ color: "green" }}>Success!</h4>}</div>
+      <div>{!isCorrectFileType && <h4 style={{ color: "red", fontSize:"1rem" }}>File type is not supported. Please choose a "JSON" file.</h4>}</div>
     </Form>
   );
 };
@@ -73,6 +91,7 @@ const mapDispatchToProps = (dispatch) => {
     onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
     onSimpleExpand: (sourceNode) =>
       dispatch(actionCreators.simpleExpand(sourceNode)),
+    onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
   };
 };
 
