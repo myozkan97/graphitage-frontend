@@ -17,5 +17,7 @@ export {
     openContextMenu,
     closeContextMenu,
     openErrorModal,
-    closeErrorModal
+    closeErrorModal,
+    openLoadingScreen,
+    closeLoadingScreen
 } from './ui';

@@ -30,6 +30,8 @@ const OptionsForm = (props) => {
 
     async function runConn() {
       console.log("loading start");
+      props.onOpenLoadingScreen();
+
       const jsonData = await getData(objectURL);
 
       httpReq("papers", "POST", JSON.stringify(jsonData))
@@ -38,14 +40,14 @@ const OptionsForm = (props) => {
           props.onClearGraph(true);
           props.onSimpleExpand();
           
-          console.log("loading finish"); //TODO: create loading screen
-          console.log(result);
+          console.log("loading finish");
+          props.onCloseLoadingScreen();
         })
         .catch((error) => {
           setIsSuccess(false);
-          console.log(error);
 
-          console.log("loading finish"); //TODO:
+          console.log("loading finish");
+          props.onCloseLoadingScreen();
         });
     }
 
@@ -92,6 +94,8 @@ const mapDispatchToProps = (dispatch) => {
     onSimpleExpand: (sourceNode) =>
       dispatch(actionCreators.simpleExpand(sourceNode)),
     onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
+    onOpenLoadingScreen: () => dispatch(actionCreators.openLoadingScreen()),
+    onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
   };
 };
 

@@ -25,3 +25,15 @@ export const closeErrorModal = () => {
     type: actionTypes.CLOSE_ERROR_MODAL
   }
 }
+
+export const openLoadingScreen = (errorMessage) => {
+  return {
+    type: actionTypes.OPEN_LOADING_SCREEN
+  }
+}
+
+export const closeLoadingScreen = () => {
+  return {
+    type: actionTypes.CLOSE_LOADING_SCREEN
+  }
+}

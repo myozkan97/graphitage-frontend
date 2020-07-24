@@ -6,6 +6,7 @@ import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import DetailsPanel from "../../components/DetailsPanel/DetailsPanel";
 import OptionsMenu from "../../containers/OptionsMenu/OptionsMenu";
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 
 import * as actionTypes from "../../store/actions/actionTypes";
 
@@ -82,6 +83,8 @@ const Layout = (props) => {
       </main>
       { props.showError &&
       <ErrorModal/>}
+      { props.loading &&
+      <LoadingScreen/>}
     </React.Fragment>
   );
 };
@@ -89,7 +92,8 @@ const Layout = (props) => {
 const mapStateToProps = (state) => {
   return {
     clr: state.clearNodes,
-    showError: state.ui.errorModal.error
+    showError: state.ui.errorModal.error,
+    loading: state.ui.loadingScreen.loading
   };
 };
 

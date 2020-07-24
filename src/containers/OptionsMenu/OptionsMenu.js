@@ -28,6 +28,7 @@ var optionsMenuStyles = {
   bmMenuWrap: {
     position: "fixed",
     height: "100%",
+    zIndex: "1000"
   },
   bmMenu: {
     background: "#ebedf0",

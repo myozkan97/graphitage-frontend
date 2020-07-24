@@ -8,6 +8,9 @@ const initialState = {
   errorModal: {
     error: false,
     errorMessage: ''
+  },
+  loadingScreen: {
+    loading: false,
   }
 };
 
@@ -35,6 +38,7 @@ const reducer = (state = initialState, action) => {
           ...state.errorModal
         }
       };
+
       case actionTypes.OPEN_ERROR_MODAL:
         return {
           ...state, 
@@ -56,6 +60,33 @@ const reducer = (state = initialState, action) => {
           errorModal: {
             error: false,
             errorMessage: ''
+          }
+        }
+
+        case actionTypes.OPEN_LOADING_SCREEN:
+        return {
+          ...state, 
+          contextMenu: {
+            ...state.contextMenu
+          },
+          errorModal: {
+            ...state.errorModal
+          },
+          loadingScreen: {
+            loading: true
+          }
+        }
+        case actionTypes.CLOSE_LOADING_SCREEN:
+        return {
+          ...state, 
+          contextMenu: {
+            ...state.contextMenu
+          },
+          errorModal: {
+            ...state.errorModal
+          },
+          loadingScreen: {
+            loading: false
           }
         }
     default:
