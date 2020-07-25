@@ -43,7 +43,7 @@ const Graph = (props) => {
         Graph.cy.remove(j);
     }, [toHideNodeId]);
 
-
+    
 
     // Setting up event listeners
     const { onOpenContextMenu, detailsMenuHandler, onFetchDetails } = props;
@@ -61,6 +61,13 @@ const Graph = (props) => {
 
         Graph.cy.minZoom(0.1);
         Graph.cy.maxZoom(3);
+
+        document.body.addEventListener("keydown", event => {
+            if (event.isComposing || event.keyCode === 46) {
+                Graph.cy.remove((Graph.cy.$(':selected')));
+            }
+        });
+
         
     }, [onOpenContextMenu, detailsMenuHandler, onFetchDetails])
 
@@ -68,8 +75,36 @@ const Graph = (props) => {
     const { elements } = props
     useEffect(() => {
         // applying node styles 
-        let nodeStyle = 'node { background-color: white ; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50;  }';
-        
+        // let nodeStyle = 'node { background-color: white ; border-color: blue ; border-width: 0; label: data(label); text-wrap: ellipsis; text-max-width: 140; height: 50; width: 50;  }';
+         
+        let nodeStyle = [{
+            selector: 'node',
+            css: {
+                'background-color': 'white',
+                'border-color': 'blue',
+                "border-width": "0",
+                "label": "data(label)",
+                "text-wrap": "ellipsis",
+                "text-max-width": "140",
+                "height": "50",
+                "width": "50"
+            }
+          },
+          {
+            selector: 'node:selected',
+            css: {
+                'background-color': 'white',
+                'border-color': 'blue',
+                "border-width": "2",
+                "label": "data(label)",
+                "text-wrap": "ellipsis",
+                "text-max-width": "140",
+                "height": "50",
+                "width": "50"
+            }
+          }
+        ];
+
         // add elements to the graph
         Graph.cy.add(
             elements
