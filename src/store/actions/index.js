@@ -1,5 +1,6 @@
 export {
-    fetchDetails
+    fetchDetails,
+    clearDetails
 } from './details';
 
 export {
@@ -9,7 +10,8 @@ export {
     expandByDatasets,
     expandByReaders,
     expandByKeywords,
-    expandByLibraries
+    expandByLibraries,
+    setToHideNodeId
 } from './graph';
 
 

@@ -146,3 +146,11 @@ export const expandByDatasets = (sourceNode) => {
     }
   };
 };
+
+
+export const setToHideNodeId = (id) => {
+  return {
+    type: actionTypes.SET_TO_HIDE_NODE,
+    id
+  }
+}

@@ -15,3 +15,10 @@ export const fetchDetails = (id = 0) => {
     });
   };
 };
+
+export const clearDetails = () => {
+  return {
+    type: actionTypes.CLEAR_DETAILS,
+    details: "",
+  };
+};

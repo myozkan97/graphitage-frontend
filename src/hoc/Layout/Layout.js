@@ -10,6 +10,8 @@ import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 
 import * as actionTypes from "../../store/actions/actionTypes";
 
+import * as actionCreators from "../../store/actions/index";
+
 const styles = {
   content: { height: "calc(100% - 60px)" },
 };
@@ -54,6 +56,7 @@ const Layout = (props) => {
 
   const detailsPanelClosedHandler = useCallback(() => {
     setdetailsMenu(false);
+    // props.onClearDetails();
   }, []);
 
   return (
@@ -93,7 +96,8 @@ const mapStateToProps = (state) => {
   return {
     clr: state.clearNodes,
     showError: state.ui.errorModal.error,
-    loading: state.ui.loadingScreen.loading
+    loading: state.ui.loadingScreen.loading,
+    toHideNodeId: state.graph.toHideNodeId,
   };
 };
 
@@ -101,6 +105,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     switchClearGraph: (isActive) =>
       dispatch({ type: actionTypes.CLEAR_NODES, bool: isActive }),
+    onSetToHideNodeId: (id) => dispatch(actionCreators.setToHideNodeId(id)),
+    onClearDetails: () => dispatch(actionCreators.clearDetails()),
   };
 };
 

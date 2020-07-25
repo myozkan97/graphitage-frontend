@@ -36,6 +36,15 @@ const Graph = (props) => {
     }, [ error, onOpenErrorModal]);
 
 
+    // Hide Node From Details Menu
+    const { toHideNodeId } = props;
+    useEffect(() => {
+        var j = Graph.cy.$("node[id='" + toHideNodeId + "']")
+        Graph.cy.remove(j);
+    }, [toHideNodeId]);
+
+
+
     // Setting up event listeners
     const { onOpenContextMenu, detailsMenuHandler, onFetchDetails } = props;
     useEffect(() => {
@@ -123,6 +132,7 @@ const mapStateToProps = state => {
         clr: state.graph.clearNodes,
         elements: state.graph.elements,
         error: state.graph.error,
+        toHideNodeId: state.graph.toHideNodeId,
     }
 }
 
@@ -135,6 +145,9 @@ const mapDispatchToProps = dispatch => {
         onSimpleExpand: (sourceNode) => dispatch(actionCreators.simpleExpand(sourceNode)),
         onAddElements: (data) => dispatch(actionCreators.addElements(data)),
         onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
+        onOpenLoadingScreen: () => dispatch(actionCreators.openLoadingScreen()),
+        onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
+        onSetToHideNodeId: (id) => dispatch(actionCreators.setToHideNodeId(id)),
     }
 }
 

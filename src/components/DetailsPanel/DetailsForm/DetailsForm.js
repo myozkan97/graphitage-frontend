@@ -1,6 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+
+import * as actionCreators from "../../../store/actions/index";
+
 const stringFromArray = (array, sep = ", ") => {
   return array.reduce((acc, cur, index) => {
     return acc + cur + sep;
@@ -24,6 +31,11 @@ const pFromArray = (array, key, htmlEl = "p") => {
 };
 
 const Details = (props) => {
+
+  const handleHideButton = () => {
+    props.onSetToHideNodeId(props.nodeId);
+  }
+
   return (
     <div style={{ color: "#142850" }} className="Details">
       <h2>{props.dtl.title}</h2>
@@ -115,6 +127,18 @@ const Details = (props) => {
             </ul>
           </div>
         )}
+
+        {/* hide node button */}
+        <br/>
+        <Container>
+          <Row>
+            <Col><Button onClick={handleHideButton} variant="warning" size="lg-2" block>Hide Node</Button></Col>
+            <Col xs={1}></Col>
+            <Col><Button variant="danger" size="lg-2" block>Delete Node</Button></Col>
+          </Row>
+        </Container>
+        <br/>
+        
       </div>
     </div>
   );
@@ -127,7 +151,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    onSetToHideNodeId: (id) => dispatch(actionCreators.setToHideNodeId(id)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);

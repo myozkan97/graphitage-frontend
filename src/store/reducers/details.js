@@ -7,7 +7,11 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FETCH_DETAILS:
       return {
         ...action.details,
-      };
+    };
+    case actionTypes.CLEAR_DETAILS:
+      return {
+        ...action.details,
+    };
     default:
       return state;
   }
