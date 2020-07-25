@@ -8,6 +8,8 @@ import Row from 'react-bootstrap/Row'
 
 import * as actionCreators from "../../../store/actions/index";
 
+import httpReq from "../../../store/actions/utils/http";
+
 const stringFromArray = (array, sep = ", ") => {
   return array.reduce((acc, cur, index) => {
     return acc + cur + sep;
@@ -35,6 +37,22 @@ const Details = (props) => {
   const handleHideButton = () => {
     props.onSetToHideNodeId(props.nodeId);
   }
+
+  const handleDeleteButton = () => {
+    props.onOpenLoadingScreen();
+    httpReq("papers/" + props.nodeId, "DELETE")
+      .then((result) => {
+        console.log("deleted node:" + props.nodeId);
+        props.onClearGraph(true);
+        props.onSimpleExpand();
+        props.onCloseLoadingScreen();
+      })
+      .catch((error) => {
+        props.onCloseLoadingScreen();
+        props.onOpenErrorModal("Could not delete node!");
+      });
+  }
+  
 
   return (
     <div style={{ color: "#142850" }} className="Details">
@@ -134,7 +152,7 @@ const Details = (props) => {
           <Row>
             <Col><Button onClick={handleHideButton} variant="warning" size="lg-2" block>Hide Node</Button></Col>
             <Col xs={1}></Col>
-            <Col><Button variant="danger" size="lg-2" block>Delete Node</Button></Col>
+            <Col><Button onClick={handleDeleteButton} variant="danger" size="lg-2" block>Delete Node</Button></Col>
           </Row>
         </Container>
         <br/>
@@ -153,6 +171,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSetToHideNodeId: (id) => dispatch(actionCreators.setToHideNodeId(id)),
+    onOpenLoadingScreen: () => dispatch(actionCreators.openLoadingScreen()),
+    onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
+    onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
+    onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
+    onSimpleExpand: (sourceNode) =>
+      dispatch(actionCreators.simpleExpand(sourceNode)),
   };
 };
 

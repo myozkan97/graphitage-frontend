@@ -28,8 +28,8 @@ var searchMenuStyles = {
     bmMenuWrap: {
         position: 'fixed',
         height: '100%',
-        width: '50%'
-
+        width: '50%',
+        zIndex: "1000"
     },
     bmMenu: {
         background: '#ebedf0',
