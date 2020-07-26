@@ -39,6 +39,16 @@ const reducer = (state = initialState, action) => {
         error: false,
         toHideNodeId: action.id,
       };
+
+      case actionTypes.UNEXPAND_NODE:
+      return {
+        ...state,
+        elements: [],
+        error: false,
+        toHideNodeId: action.id,
+        unExpand: action.unExpand,
+      };
+
     default:
       return state;
   }
