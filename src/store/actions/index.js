@@ -11,7 +11,10 @@ export {
     expandByReaders,
     expandByKeywords,
     expandByLibraries,
-    setToHideNodeId
+    setToHideNodeId,
+    expandReaderByPapers,
+    expandLibraryByPapers,
+    expandDatasetByPapers
 } from './graph';
 
 

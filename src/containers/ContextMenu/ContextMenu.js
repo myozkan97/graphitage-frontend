@@ -52,6 +52,24 @@ const ContextMenu = (props) => {
                 <li onClick={() => props.onKeywordExpand(props.sourceNode)}>Expand Keywords</li>
             </ul>
         );
+    }else if (menu && props.contextMenuIsOpen && props.sourceNode.data.type === 'reader') {
+        return (
+            <ul className={classes.menu} style={{ top: yPos, left: xPos }}>
+                <li onClick={() => props.onSimpleExpandReader(props.sourceNode)}>Simple Expand</li>
+            </ul>
+        );
+    }else if (menu && props.contextMenuIsOpen && props.sourceNode.data.type === 'library') {
+        return (
+            <ul className={classes.menu} style={{ top: yPos, left: xPos }}>
+                <li onClick={() => props.onSimpleExpandLibrary(props.sourceNode)}>Simple Expand</li>
+            </ul>
+        );
+    }else if (menu && props.contextMenuIsOpen && props.sourceNode.data.type === 'dataset') {
+        return (
+            <ul className={classes.menu} style={{ top: yPos, left: xPos }}>
+                <li onClick={() => props.onSimpleExpandDataset(props.sourceNode)}>Simple Expand</li>
+            </ul>
+        );
     }
     return <></>;
 };
@@ -71,7 +89,10 @@ const mapDispatchToProps = dispatch => {
         onSimpleExpand: (sourceNode) => dispatch(actionCreators.simpleExpand(sourceNode)),
         onReaderExpand: (sourceNode) => dispatch(actionCreators.expandByReaders(sourceNode)),
         onKeywordExpand: (sourceNode) => dispatch(actionCreators.expandByKeywords(sourceNode)),
-        onLibraryExpand: (sourceNode) => dispatch(actionCreators.expandByLibraries(sourceNode))
+        onLibraryExpand: (sourceNode) => dispatch(actionCreators.expandByLibraries(sourceNode)),
+        onSimpleExpandReader: (sourceNode) => dispatch(actionCreators.expandReaderByPapers(sourceNode)),
+        onSimpleExpandLibrary: (sourceNode) => dispatch(actionCreators.expandLibraryByPapers(sourceNode)),
+        onSimpleExpandDataset: (sourceNode) => dispatch(actionCreators.expandDatasetByPapers(sourceNode)),
     }
 }
 

@@ -154,3 +154,65 @@ export const setToHideNodeId = (id) => {
     id
   }
 }
+
+
+
+export const expandReaderByPapers = (sourceNode) => {
+  return (dispatch, getState) => {
+    if (sourceNode != null) {
+      httpReq(`readers/{readerId}/papers?readerId=${sourceNode.data.id}`, "GET").then(
+        (result) => {
+          if (result.error === true) {
+            dispatch(setError(true));
+          } else {
+            const graphElements = simpleExpandElements(
+              result.data,
+              sourceNode
+            );
+            dispatch(setElements(graphElements));
+          }
+        }
+      );
+    }
+  };
+};
+
+export const expandLibraryByPapers = (sourceNode) => {
+  return (dispatch, getState) => {
+    if (sourceNode != null) {
+      httpReq(`libraries/{libraryId}/papers?libraryId=${sourceNode.data.id}`, "GET").then(
+        (result) => {
+          if (result.error === true) {
+            dispatch(setError(true));
+          } else {
+            const graphElements = simpleExpandElements(
+              result.data,
+              sourceNode
+            );
+            dispatch(setElements(graphElements));
+          }
+        }
+      );
+    }
+  };
+};
+
+export const expandDatasetByPapers = (sourceNode) => {
+  return (dispatch, getState) => {
+    if (sourceNode != null) {
+      httpReq(`datasets/{datasetId}/papers?datasetId=${sourceNode.data.id}`, "GET").then(
+        (result) => {
+          if (result.error === true) {
+            dispatch(setError(true));
+          } else {
+            const graphElements = simpleExpandElements(
+              result.data,
+              sourceNode
+            );
+            dispatch(setElements(graphElements));
+          }
+        }
+      );
+    }
+  };
+};
