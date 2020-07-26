@@ -2,6 +2,13 @@ import React from "react";
 
 import { slide as Menu } from "react-burger-menu";
 import OptionsForm from "./OptionsForm/OptionsForm";
+import OptionsManualForm from "./OptionsForm/OptionsManualForm";
+
+import Card from "react-bootstrap/Card";
+import Accordion from "react-bootstrap/Accordion";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSortDown } from '@fortawesome/free-solid-svg-icons'
 
 var optionsMenuStyles = {
   bmBurgerButton: {
@@ -28,7 +35,8 @@ var optionsMenuStyles = {
   bmMenuWrap: {
     position: "fixed",
     height: "100%",
-    zIndex: "1000"
+    zIndex: "1000",
+    width: "40%"
   },
   bmMenu: {
     background: "#ebedf0",
@@ -57,10 +65,39 @@ const optionsMenu = (props) => (
     styles={optionsMenuStyles}
     right
   >
-    <div></div>
     <h3 className="menuHeader">Options</h3>
-    <p style={{ color: "black" }}>Add Nodes With JSON File</p>
-    <OptionsForm />
+    <br/><br/>
+    <Card className="text-center">
+      <Card.Header style={{ color: "black" }}>Add Nodes</Card.Header>
+      <Card.Body>
+        <Card.Title style={{ color: "black" }}>With JSON File</Card.Title>
+        <Card.Text >
+          Add a node to the database by selecting a JSON file from local files.
+        </Card.Text>
+        <div id="jaskdjkdas" style={{ transform: "translate(-50%, 0)", left: "50%", width:'60%', position: "relative"}}>
+          <OptionsForm />
+        </div>
+        <hr/>
+        <Card.Title style={{ color: "black" }}>Manually</Card.Title>
+        <Card.Text >
+          Add a node to the database by entering necessary values by hand.
+        </Card.Text>
+        <Accordion defaultActiveKey="0">
+          <Card>
+            <Accordion.Toggle as={Card.Header} eventKey="1" style={{ cursor: "pointer" }}>
+              <FontAwesomeIcon icon={faSortDown} />
+            </Accordion.Toggle>
+            <Accordion.Collapse eventKey="1">
+              <Card.Body>
+                  <OptionsManualForm />
+                </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+    </Card.Body>
+</Card>
+
+      
   </Menu>
 );
 
