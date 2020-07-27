@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useForm } from "react-hook-form";
-
 import { connect } from "react-redux";
 
 import * as actionCreators from "../../../store/actions/index";
 import httpReq from "../../../store/actions/utils/http";
+
+import TagBox from '../../../components/TagBox/TagBox';
 
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
@@ -171,6 +172,7 @@ const SearchForm = (props) => {
       >
         Search
       </Button>
+            <TagBox></TagBox>
     </Form>
   );
 };
