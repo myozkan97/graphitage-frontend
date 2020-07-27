@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -26,27 +26,28 @@ const SearchForm = (props) => {
   });
 
   const [datasets, setDatasets] = useState([]);
+  const [libraries, setLibraries] = useState([]);
 
   const onDatasetChange = useCallback((datasetArray) => {
     setDatasets(datasetArray);
+  }, []);
+
+  const onLibraryChange = useCallback((libraryArray) => {
+    setLibraries(libraryArray);
   }, []);
 
   // is "and" search toggled (otherwise its an "or" search)
   const [isOn, setIsOn] = useState(false);
 
   // create request url and make the request
-  const onSubmit = (data) => {
+  const {onClearGraph, onOpenErrorModal, onAddElementsToGraph} = props;
+  const onSubmit = useCallback((data) => {
     let urlToSend = isOn ? "papers/searchWithAND?" : "papers/searchWithOR?";
-    if (true) {
-      urlToSend += datasets.map(str => `dataset=${str}`).join('&');
-      // urlToSend = urlToSend.substring(0, urlToSend.length - 1);
-    }
+    urlToSend += datasets.map((str) => `dataset=${str}`).join("&");
     if (data.Keywords !== "") {
       urlToSend += "&keyword=" + data.Keywords;
     }
-    if (data.LibraryName !== "") {
-      urlToSend += "&library=" + data.LibraryName;
-    }
+    urlToSend += libraries.map((str) => `&library=${str}`).join("");
     if (data.PublishDate !== "") {
       urlToSend += "&publishData=" + data.PublishDate;
     }
@@ -57,35 +58,48 @@ const SearchForm = (props) => {
       urlToSend += "&title=" + data.Title;
     }
 
-    console.log(urlToSend)
+    console.log(urlToSend);
 
     httpReq(urlToSend, "GET").then((result) => {
       if (result.error) {
-        props.onOpenErrorModal("Connection Error!");
+        onOpenErrorModal("Connection Error!");
       } else if (result.data.length === 0) {
-        props.onOpenErrorModal("No Nodes Found!");
+        onOpenErrorModal("No Nodes Found!");
       } else {
-        props.onClearGraph(true);
-        props.onAddElementsToGraph(result.data);
+        onClearGraph(true);
+        onAddElementsToGraph(result.data);
       }
     });
-  };
+  }, [datasets, isOn, libraries, onOpenErrorModal, onClearGraph, onAddElementsToGraph]);
 
-  const validate = () => {
+  
+  const validate = useEffect(() => {
     const test1 = watch("Title");
     const test2 = watch("PublishDate");
     const test3 = watch("Readers");
     const test4 = watch("Keywords");
-    const test5 = watch("LibraryName");
-    const test6 = watch("Dataset");
 
     let button = document.getElementById("searchButton");
-    if (test1 || test2 || test3 || test4 || test5 || test6) {
+    if (test1 || test2 || test3 || test4 || datasets.length > 0 || libraries.length > 0) {
+      console.log(datasets.length)
       button.disabled = false;
     } else {
       button.disabled = true;
     }
-  };
+  }, [libraries, datasets, watch]);
+
+  const getTags = useCallback((url, tagName) => {
+    httpReq(url, "GET").then((result) => {
+      if (result.error) {
+        onOpenErrorModal("Couldn't retrieve the tags.");
+      } else {
+          const tags = result.data.map(obj => obj[tagName])
+          console.log(tags)
+          return tags;
+          
+      }
+    });
+  }, [onOpenErrorModal])
 
   return (
     <Form style={{ color: "#142850" }} onSubmit={handleSubmit(onSubmit)}>
@@ -138,6 +152,7 @@ const SearchForm = (props) => {
           name="LibraryName"
           ref={register({ validate })}
         />
+        <TagBox tags={getTags('datasets', 'datasetName')} onChange={onLibraryChange} />
       </Form.Group>
 
       <Form.Group controlId="searchFormDataset">

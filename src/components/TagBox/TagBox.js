@@ -24,6 +24,7 @@ const TagBox = (props) => {
     );
   }, [selected, onChange]);
 
+  
   const tags = List(
     props.tags.map((t) => ({
       label: t,
