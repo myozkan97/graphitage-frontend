@@ -28,6 +28,9 @@ const SearchForm = (props) => {
   const [datasets, setDatasets] = useState([]);
   const [libraries, setLibraries] = useState([]);
 
+  const [datasetSuggestions, setDatasetSuggestions] = useState([]);
+  const [librarySuggestions, setLibrarySuggestions] = useState([]);
+
   const onDatasetChange = useCallback((datasetArray) => {
     setDatasets(datasetArray);
   }, []);
@@ -40,39 +43,48 @@ const SearchForm = (props) => {
   const [isOn, setIsOn] = useState(false);
 
   // create request url and make the request
-  const {onClearGraph, onOpenErrorModal, onAddElementsToGraph} = props;
-  const onSubmit = useCallback((data) => {
-    let urlToSend = isOn ? "papers/searchWithAND?" : "papers/searchWithOR?";
-    urlToSend += datasets.map((str) => `dataset=${str}`).join("&");
-    if (data.Keywords !== "") {
-      urlToSend += "&keyword=" + data.Keywords;
-    }
-    urlToSend += libraries.map((str) => `&library=${str}`).join("");
-    if (data.PublishDate !== "") {
-      urlToSend += "&publishData=" + data.PublishDate;
-    }
-    if (data.Readers !== "") {
-      urlToSend += "&readerName=" + data.Readers;
-    }
-    if (data.Title !== "") {
-      urlToSend += "&title=" + data.Title;
-    }
-
-    console.log(urlToSend);
-
-    httpReq(urlToSend, "GET").then((result) => {
-      if (result.error) {
-        onOpenErrorModal("Connection Error!");
-      } else if (result.data.length === 0) {
-        onOpenErrorModal("No Nodes Found!");
-      } else {
-        onClearGraph(true);
-        onAddElementsToGraph(result.data);
+  const { onClearGraph, onOpenErrorModal, onAddElementsToGraph } = props;
+  const onSubmit = useCallback(
+    (data) => {
+      let urlToSend = isOn ? "papers/searchWithAND?" : "papers/searchWithOR?";
+      urlToSend += datasets.map((str) => `dataset=${str}`).join("&");
+      if (data.Keywords !== "") {
+        urlToSend += "&keyword=" + data.Keywords;
       }
-    });
-  }, [datasets, isOn, libraries, onOpenErrorModal, onClearGraph, onAddElementsToGraph]);
+      urlToSend += libraries.map((str) => `&library=${str}`).join("");
+      if (data.PublishDate !== "") {
+        urlToSend += "&publishData=" + data.PublishDate;
+      }
+      if (data.Readers !== "") {
+        urlToSend += "&readerName=" + data.Readers;
+      }
+      if (data.Title !== "") {
+        urlToSend += "&title=" + data.Title;
+      }
 
-  
+      console.log(urlToSend);
+
+      httpReq(urlToSend, "GET").then((result) => {
+        if (result.error) {
+          onOpenErrorModal("Connection Error!");
+        } else if (result.data.length === 0) {
+          onOpenErrorModal("No Nodes Found!");
+        } else {
+          onClearGraph(true);
+          onAddElementsToGraph(result.data);
+        }
+      });
+    },
+    [
+      datasets,
+      isOn,
+      libraries,
+      onOpenErrorModal,
+      onClearGraph,
+      onAddElementsToGraph,
+    ]
+  );
+
   const validate = useEffect(() => {
     const test1 = watch("Title");
     const test2 = watch("PublishDate");
@@ -80,26 +92,41 @@ const SearchForm = (props) => {
     const test4 = watch("Keywords");
 
     let button = document.getElementById("searchButton");
-    if (test1 || test2 || test3 || test4 || datasets.length > 0 || libraries.length > 0) {
-      console.log(datasets.length)
+    if (
+      test1 ||
+      test2 ||
+      test3 ||
+      test4 ||
+      datasets.length > 0 ||
+      libraries.length > 0
+    ) {
+      console.log(datasets.length);
       button.disabled = false;
     } else {
       button.disabled = true;
     }
   }, [libraries, datasets, watch]);
 
-  const getTags = useCallback((url, tagName) => {
-    httpReq(url, "GET").then((result) => {
-      if (result.error) {
-        onOpenErrorModal("Couldn't retrieve the tags.");
-      } else {
-          const tags = result.data.map(obj => obj[tagName])
-          console.log(tags)
-          return tags;
-          
-      }
-    });
-  }, [onOpenErrorModal])
+  const getTags = useCallback(
+    (url, tagName) => {
+      httpReq(url, "GET").then((result) => {
+        if (result.error) {
+          onOpenErrorModal("Couldn't retrieve the tags.");
+        } else {
+          const tags = result.data.map((obj) => obj[tagName]);
+          console.log(tags);
+          if (tagName === "datasetName") setDatasetSuggestions(tags);
+          else if (tagName === "name") setLibrarySuggestions(tags);
+        }
+      });
+    },
+    [onOpenErrorModal]
+  );
+
+  useEffect(() => {
+    getTags("datasets", "datasetName");
+    getTags("libraries", "name");
+  }, [getTags]);
 
   return (
     <Form style={{ color: "#142850" }} onSubmit={handleSubmit(onSubmit)}>
@@ -146,23 +173,11 @@ const SearchForm = (props) => {
       </Form.Group>
 
       <Form.Group controlId="searchFormLibraryName">
-        <Form.Control
-          type="text"
-          placeholder="Library Name"
-          name="LibraryName"
-          ref={register({ validate })}
-        />
-        <TagBox tags={getTags('datasets', 'datasetName')} onChange={onLibraryChange} />
+        <TagBox tags={librarySuggestions} onChange={onLibraryChange} />
       </Form.Group>
 
       <Form.Group controlId="searchFormDataset">
-        <Form.Control
-          type="text"
-          placeholder="Dataset"
-          name="Dataset"
-          ref={register({ validate })}
-        />
-        <TagBox tags={["tag1", "tag2"]} onChange={onDatasetChange} />
+        <TagBox tags={datasetSuggestions} onChange={onDatasetChange} />
       </Form.Group>
 
       <Form.Group controlId="searchFormSwitch">

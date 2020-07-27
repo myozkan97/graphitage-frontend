@@ -6,7 +6,7 @@ import "./styles.scss";
 const fetch = (input, tags) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(tags.filter((t) => t.label.includes(input)).toJS());
+      resolve(tags.filter((t) => t.label !== undefined && t.label.includes(input)).toJS());
     }, 1500);
   });
 };
