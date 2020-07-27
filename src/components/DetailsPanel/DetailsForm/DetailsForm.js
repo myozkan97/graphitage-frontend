@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 import * as actionCreators from "../../../store/actions/index";
 
@@ -33,10 +33,9 @@ const pFromArray = (array, key, htmlEl = "p") => {
 };
 
 const Details = (props) => {
-
   const handleHideButton = () => {
     props.onSetToHideNodeId(props.nodeId);
-  }
+  };
 
   const handleDeleteButton = () => {
     props.onOpenLoadingScreen();
@@ -51,22 +50,40 @@ const Details = (props) => {
         props.onCloseLoadingScreen();
         props.onOpenErrorModal("Could not delete node!");
       });
-  }
-  
+  };
 
   return (
     <div style={{ color: "#142850" }} className="Details">
       <h2>{props.dtl.title}</h2>
+      {props.dtl.year && (
+        <div className="year">
+          <h4>Year: {props.dtl.year}</h4>
+        </div>
+      )}
+      <p>ID: {props.dtl.paperId}/{props.dtl.paperIdType}</p>
       <div className="body">
+      {props.dtl.keywords && (
+          <div className="keywords">
+            <h3>Keywords</h3>
+            <p>{stringFromArray(props.dtl.keywords, ", ")}</p>
+          </div>
+        )}
         {props.dtl.abstractOfPaper && (
           <div className="abstract">
             <h3>Abstract</h3>
             <p>{props.dtl.abstractOfPaper}</p>
           </div>
         )}
-        {props.dtl.year && (
-          <div className="year">
-            <p>Year: {props.dtl.year}</p>
+        {props.dtl.targets && (
+          <div className="targets">
+            <h3>Targets</h3>
+            <p>{stringFromArray(props.dtl.targets, ", ")}</p>
+          </div>
+        )}
+        {props.dtl.problems && (
+          <div className="problems">
+            <h3>Problems</h3>
+            <p>{stringFromArray(props.dtl.problems, ", ")}</p>
           </div>
         )}
         {props.dtl.applicationDomains && (
@@ -99,6 +116,18 @@ const Details = (props) => {
             {pFromArray(props.dtl.pros, "pros", "list")}
           </div>
         )}
+        {props.dtl.cons && (
+          <div className="cons">
+            <h3>Cons</h3>
+            {pFromArray(props.dtl.pros, "cons", "list")}
+          </div>
+        )}
+        {props.dtl.futureWorks && (
+          <div className="futureWorks">
+            <h3>Future Works</h3>
+            {pFromArray(props.dtl.futureWorks, "futureWorks", "p")}
+          </div>
+        )}
         {props.dtl.notes && (
           <div className="notes">
             <h3>Notes</h3>
@@ -113,14 +142,30 @@ const Details = (props) => {
             </p>
           </div>
         )}
+        {props.dtl.evaluations && (
+          <div className="evaluations">
+            <h3>Evaluations</h3>
+            <p>{stringFromArray(props.dtl.evaluations, ", ")}</p>
+          </div>
+        )}
         {props.dtl.libraries && (
           <div className="libraries">
             <h3>Libraries</h3>
             <ul>
               {props.dtl.libraries.map((obj, index) => (
                 <li key={"libs" + String(index)}>
-                  <a href={obj.link}>{obj.name}</a>
+                  <a href={obj.link}>{obj.name || obj.link}</a>
                 </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {props.dtl.datasets && (
+          <div className="datasets">
+            <h3>Datasets</h3>
+            <ul>
+              {props.dtl.datasets.map((obj, index) => (
+                <li key={"dataset" + String(index)}>{obj.dataset.datasetName}</li>
               ))}
             </ul>
           </div>
@@ -130,7 +175,7 @@ const Details = (props) => {
             <h3>Related Works</h3>
             <ul>
               {props.dtl.relatedWorks.map((obj, index) => (
-                <li key={"relatedW" + String(index)}>{obj.title}</li>
+                <li key={"relatedW" + String(index)}>{obj.title} ({obj.paperId}/{obj.paperIdType})</li>
               ))}
             </ul>
           </div>
@@ -147,16 +192,33 @@ const Details = (props) => {
         )}
 
         {/* hide node button */}
-        <br/>
+        <br />
         <Container>
           <Row>
-            <Col><Button onClick={handleHideButton} variant="warning" size="lg-2" block>Hide Node</Button></Col>
+            <Col>
+              <Button
+                onClick={handleHideButton}
+                variant="warning"
+                size="lg-2"
+                block
+              >
+                Hide Node
+              </Button>
+            </Col>
             <Col xs={1}></Col>
-            <Col><Button onClick={handleDeleteButton} variant="danger" size="lg-2" block>Delete Node</Button></Col>
+            <Col>
+              <Button
+                onClick={handleDeleteButton}
+                variant="danger"
+                size="lg-2"
+                block
+              >
+                Delete Node
+              </Button>
+            </Col>
           </Row>
         </Container>
-        <br/>
-        
+        <br />
       </div>
     </div>
   );
@@ -173,7 +235,8 @@ const mapDispatchToProps = (dispatch) => {
     onSetToHideNodeId: (id) => dispatch(actionCreators.setToHideNodeId(id)),
     onOpenLoadingScreen: () => dispatch(actionCreators.openLoadingScreen()),
     onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
-    onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
+    onOpenErrorModal: (errorMessage) =>
+      dispatch(actionCreators.openErrorModal(errorMessage)),
     onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
     onSimpleExpand: (sourceNode) =>
       dispatch(actionCreators.simpleExpand(sourceNode)),
