@@ -173,11 +173,11 @@ const SearchForm = (props) => {
       </Form.Group>
 
       <Form.Group controlId="searchFormLibraryName">
-        <TagBox tags={librarySuggestions} onChange={onLibraryChange} />
+        <TagBox tags={librarySuggestions} onChange={onLibraryChange} placeholder="Libraries" />
       </Form.Group>
 
       <Form.Group controlId="searchFormDataset">
-        <TagBox tags={datasetSuggestions} onChange={onDatasetChange} />
+        <TagBox tags={datasetSuggestions} onChange={onDatasetChange} placeholder="Datasets" />
       </Form.Group>
 
       <Form.Group controlId="searchFormSwitch">

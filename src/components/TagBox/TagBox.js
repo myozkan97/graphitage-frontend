@@ -49,9 +49,11 @@ const TagBox = (props) => {
     setSelected(selected.filter((t) => t.value !== tag.value));
   };
 
-  const placeholder = selected.isEmpty()
-    ? ""
-    : "Use the backspace key to delete the last tag";
+  // const placeholder = selected.isEmpty()
+  //   ? props.placeholder
+  //   : "Use the backspace key to delete the last tag";
+
+  const placeholder = props.placeholder;
 
   return (
     <TagBoxAsync
