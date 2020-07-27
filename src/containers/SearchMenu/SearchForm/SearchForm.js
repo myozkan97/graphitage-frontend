@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions/index";
 import httpReq from "../../../store/actions/utils/http";
 
-import TagBox from '../../../components/TagBox/TagBox';
+import TagBox from "../../../components/TagBox/TagBox";
 
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
@@ -25,14 +25,21 @@ const SearchForm = (props) => {
     mode: "onChange",
   });
 
+  const [datasets, setDatasets] = useState([]);
+
+  const onDatasetChange = useCallback((datasetArray) => {
+    setDatasets(datasetArray);
+  }, []);
+
   // is "and" search toggled (otherwise its an "or" search)
   const [isOn, setIsOn] = useState(false);
 
   // create request url and make the request
   const onSubmit = (data) => {
     let urlToSend = isOn ? "papers/searchWithAND?" : "papers/searchWithOR?";
-    if (data.Dataset !== "") {
-      urlToSend += "dataset=" + data.Dataset;
+    if (true) {
+      urlToSend += datasets.map(str => `dataset=${str}`).join('&');
+      // urlToSend = urlToSend.substring(0, urlToSend.length - 1);
     }
     if (data.Keywords !== "") {
       urlToSend += "&keyword=" + data.Keywords;
@@ -50,15 +57,14 @@ const SearchForm = (props) => {
       urlToSend += "&title=" + data.Title;
     }
 
-    httpReq(urlToSend, "GET")
-    .then((result) => {
-      if(result.error){
+    console.log(urlToSend)
+
+    httpReq(urlToSend, "GET").then((result) => {
+      if (result.error) {
         props.onOpenErrorModal("Connection Error!");
-      }
-      else if (result.data.length === 0) {
+      } else if (result.data.length === 0) {
         props.onOpenErrorModal("No Nodes Found!");
-      }
-      else{
+      } else {
         props.onClearGraph(true);
         props.onAddElementsToGraph(result.data);
       }
@@ -141,7 +147,7 @@ const SearchForm = (props) => {
           name="Dataset"
           ref={register({ validate })}
         />
-        <TagBox tags={["tag1", "tag2"]}/>
+        <TagBox tags={["tag1", "tag2"]} onChange={onDatasetChange} />
       </Form.Group>
 
       <Form.Group controlId="searchFormSwitch">
@@ -173,7 +179,6 @@ const SearchForm = (props) => {
       >
         Search
       </Button>
-            
     </Form>
   );
 };
@@ -185,8 +190,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
-    onAddElementsToGraph: (elements) => dispatch(actionCreators.addElements(elements)),
-    onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
+    onAddElementsToGraph: (elements) =>
+      dispatch(actionCreators.addElements(elements)),
+    onOpenErrorModal: (errorMessage) =>
+      dispatch(actionCreators.openErrorModal(errorMessage)),
   };
 };
 
