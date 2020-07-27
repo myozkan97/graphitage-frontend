@@ -141,6 +141,7 @@ const SearchForm = (props) => {
           name="Dataset"
           ref={register({ validate })}
         />
+        <TagBox tags={["tag1", "tag2"]}/>
       </Form.Group>
 
       <Form.Group controlId="searchFormSwitch">
@@ -172,7 +173,7 @@ const SearchForm = (props) => {
       >
         Search
       </Button>
-            <TagBox></TagBox>
+            
     </Form>
   );
 };

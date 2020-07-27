@@ -3,23 +3,22 @@ import React, { useState } from 'react';
 import { TagBoxAsync } from 'react-tag-box';
 import './styles.scss'
 
-const sampleTags = List(
-  ['foo', 'bar', 'baz', 'blitz', 'quux', 'barf', 'balderdash'].map(t => ({
-    label: t,
-    value: t
-  }))
-);
 
-const fetch = input => {
+const fetch = (input, tags) => {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(sampleTags.filter(t => t.label.includes(input)).toJS())
+      resolve(tags.filter(t => t.label.includes(input)).toJS())
     }, 1500)
   })
 }
 
-const TagBox =  () => {
+const TagBox = (props) => {
   const [selected, setSelected] = useState(List());
+
+  const tags = List(props.tags.map(t => ({
+    label: t,
+    value: t
+  })));
 
   const onSelect = tag => {
     const newTag = {
@@ -43,7 +42,7 @@ const TagBox =  () => {
 
     return (
       <TagBoxAsync
-        fetch={fetch}
+        fetch={(input) => fetch(input, tags)}
         selected={selected.toJS()}
         onSelect={onSelect}
         removeTag={remove}
