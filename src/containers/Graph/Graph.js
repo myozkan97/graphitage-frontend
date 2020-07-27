@@ -43,7 +43,19 @@ const Graph = (props) => {
         Graph.cy.remove(j);
     }, [toHideNodeId]);
 
+
     
+    const { unExpand, relatedNode, onSetUnExpand } = props;
+    useEffect(() => {
+        if(Object.keys(relatedNode).length !== 0 || relatedNode.constructor !== Object){
+            onSetUnExpand(false);
+            var edgesFromJerry = Graph.cy.elements('edge[source="' + relatedNode.data.id +'"]');
+            var jerryChildren = edgesFromJerry.targets();
+            Graph.cy.remove(jerryChildren);
+        }
+    }, [unExpand, onSetUnExpand]);
+
+
 
     // Setting up event listeners
     const { onOpenContextMenu, detailsMenuHandler, onFetchDetails } = props;
@@ -67,6 +79,7 @@ const Graph = (props) => {
                 Graph.cy.remove((Graph.cy.$(':selected')));
             }
         });
+        
 
         
     }, [onOpenContextMenu, detailsMenuHandler, onFetchDetails])
@@ -168,6 +181,8 @@ const mapStateToProps = state => {
         elements: state.graph.elements,
         error: state.graph.error,
         toHideNodeId: state.graph.toHideNodeId,
+        unExpand: state.graph.unExpand,
+        relatedNode: state.ui.contextMenu.sourceNode
     }
 }
 
@@ -183,6 +198,7 @@ const mapDispatchToProps = dispatch => {
         onOpenLoadingScreen: () => dispatch(actionCreators.openLoadingScreen()),
         onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
         onSetToHideNodeId: (id) => dispatch(actionCreators.setToHideNodeId(id)),
+        onSetUnExpand: (bool) => dispatch(actionCreators.setUnExpand(bool)),
     }
 }
 

@@ -6,6 +6,7 @@ export {
 export {
     clearNodes,
     simpleExpand,
+    setUnExpand,
     addElements,
     expandByDatasets,
     expandByReaders,

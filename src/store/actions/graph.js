@@ -30,6 +30,13 @@ const setError = (bool) => {
   };
 };
 
+export const setUnExpand = (bool) => {
+  return {
+    type: actionTypes.UNEXPAND_NODE,
+    unExpand: bool,
+  };
+};
+
 // if nodeId is null, then get all the nodes from the server
 export const simpleExpand = (sourceNode) => {
   return (dispatch, getState) => {

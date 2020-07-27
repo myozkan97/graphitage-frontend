@@ -1,6 +1,7 @@
 export const CLEAR_NODES = "CLEAR_NODES";
 export const SET_ELEMENTS = "SET_ELEMENTS";
 export const SET_ERROR = "SET_ERROR";
+export const UNEXPAND_NODE = "UNEXPAND_NODE";
 
 export const FETCH_DETAILS = "FETCH_DETAILS";
 export const CLEAR_DETAILS = "CLEAR_DETAILS";
