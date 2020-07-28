@@ -144,7 +144,7 @@ export const datasetsElementCreator = (array, sourceNode) => {
 
     elements.push({
       data: {
-        type: "edge",
+        type: "datasetEdge",
         source: sourceNode.data.id,
         target: obj.datasetId,
         label: "uses",
@@ -164,7 +164,7 @@ export const datasetsElementCreator = (array, sourceNode) => {
   return elements;
 };
 
-export const simpleExpandElements = (array, sourceNode) => {
+export const simpleExpandElements = (array, sourceNode, edgeType = "edge") => {
   const elements = [];
 
   array.forEach((obj) => {
@@ -179,9 +179,9 @@ export const simpleExpandElements = (array, sourceNode) => {
 
     elements.push({
       data: {
-        type: "edge",
-        source: sourceNode.data.id,
-        target: obj.paperId,
+        type: edgeType,
+        target: sourceNode.data.id,
+        source: obj.paperId,
         label: "related with",
       },
     });

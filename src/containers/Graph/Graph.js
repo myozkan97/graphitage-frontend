@@ -67,6 +67,14 @@ const Graph = (props) => {
             }
         });
 
+        Graph.cy.on('click', 'edge', (event) => {
+            if(event.target._private.data.type === "datasetEdge") {
+                console.log(event.target._private);
+                detailsMenuHandler(event.target._private.data.id);
+                props.onFetchPreprocessing(event.target._private.data.source, event.target._private.data.target);
+            }
+        });
+
         Graph.cy.on('cxttapend', 'node', (event) => {
             onOpenContextMenu(event.target._private);
         });
@@ -199,6 +207,7 @@ const mapDispatchToProps = dispatch => {
         onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
         onSetToHideNodeId: (id) => dispatch(actionCreators.setToHideNodeId(id)),
         onSetUnExpand: (bool) => dispatch(actionCreators.setUnExpand(bool)),
+        onFetchPreprocessing: (sourceNodeId, datasetId) => dispatch(actionCreators.fetchPreprocessing(sourceNodeId, datasetId))
     }
 }
 

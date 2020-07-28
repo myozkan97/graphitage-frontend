@@ -52,177 +52,201 @@ const Details = (props) => {
       });
   };
 
-  return (
-    <div style={{ color: "#142850" }} className="Details">
-      <h2>{props.dtl.title}</h2>
-      {props.dtl.year && (
-        <div className="year">
-          <h4>Year: {props.dtl.year}</h4>
-        </div>
-      )}
-      <p>ID: {props.dtl.paperId}/{props.dtl.paperIdType}</p>
-      <div className="body">
-      {props.dtl.keywords && (
-          <div className="keywords">
-            <h3>Keywords</h3>
-            <p>{stringFromArray(props.dtl.keywords, ", ")}</p>
-          </div>
-        )}
-        {props.dtl.abstractOfPaper && (
-          <div className="abstract">
-            <h3>Abstract</h3>
-            <p>{props.dtl.abstractOfPaper}</p>
-          </div>
-        )}
-        {props.dtl.targets && (
-          <div className="targets">
-            <h3>Targets</h3>
-            <p>{stringFromArray(props.dtl.targets, ", ")}</p>
-          </div>
-        )}
-        {props.dtl.problems && (
-          <div className="problems">
-            <h3>Problems</h3>
-            <p>{stringFromArray(props.dtl.problems, ", ")}</p>
-          </div>
-        )}
-        {props.dtl.applicationDomains && (
-          <div className="applicationDomains">
-            <h3>Application Domains</h3>
-            <p>{stringFromArray(props.dtl.applicationDomains, ", ")}</p>
-          </div>
-        )}
-        {props.dtl.components && (
-          <div className="components">
-            <h3>Components</h3>
-            <p>{stringFromArray(props.dtl.components, ", ")}</p>
-          </div>
-        )}
-        {props.dtl.highlights && (
-          <div className="highlights">
-            <h3>Highlights</h3>
-            {pFromArray(props.dtl.highlights)}
-          </div>
-        )}
-        {props.dtl.contributions && (
-          <div className="contributions">
-            <h3>Contributions</h3>
-            {pFromArray(props.dtl.contributions, "cont")}
-          </div>
-        )}
-        {props.dtl.pros && (
-          <div className="pros">
-            <h3>Pros</h3>
-            {pFromArray(props.dtl.pros, "pros", "list")}
-          </div>
-        )}
-        {props.dtl.cons && (
-          <div className="cons">
-            <h3>Cons</h3>
-            {pFromArray(props.dtl.pros, "cons", "list")}
-          </div>
-        )}
-        {props.dtl.futureWorks && (
-          <div className="futureWorks">
-            <h3>Future Works</h3>
-            {pFromArray(props.dtl.futureWorks, "futureWorks", "p")}
-          </div>
-        )}
-        {props.dtl.notes && (
-          <div className="notes">
-            <h3>Notes</h3>
-            {pFromArray(props.dtl.notes, "notes")}
-          </div>
-        )}
-        {props.dtl.data && (
-          <div className="data">
-            <h3>Datasets</h3>
-            <p>
-              {stringFromArray(props.dtl.data.map((obj) => obj.datasetName))}
-            </p>
-          </div>
-        )}
-        {props.dtl.evaluations && (
-          <div className="evaluations">
-            <h3>Evaluations</h3>
-            <p>{stringFromArray(props.dtl.evaluations, ", ")}</p>
-          </div>
-        )}
-        {props.dtl.libraries && (
-          <div className="libraries">
-            <h3>Libraries</h3>
-            <ul>
-              {props.dtl.libraries.map((obj, index) => (
-                <li key={"libs" + String(index)}>
-                  <a href={obj.link}>{obj.name || obj.link}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {props.dtl.datasets && (
-          <div className="datasets">
-            <h3>Datasets</h3>
-            <ul>
-              {props.dtl.datasets.map((obj, index) => (
-                <li key={"dataset" + String(index)}>{obj.dataset.datasetName}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {props.dtl.relatedWorks && (
-          <div className="relatedWorks">
-            <h3>Related Works</h3>
-            <ul>
-              {props.dtl.relatedWorks.map((obj, index) => (
-                <li key={"relatedW" + String(index)}>{obj.title} ({obj.paperId}/{obj.paperIdType})</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {props.dtl.reader && (
-          <div className="reader">
-            <h3>Readers</h3>
-            <ul>
-              {props.dtl.reader.map((obj, index) => (
-                <li key={"readers" + String(index)}>{obj.readerName}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+  console.log(props.dtl)
 
-        {/* hide node button */}
-        <br />
-        <Container>
-          <Row>
-            <Col>
-              <Button
-                onClick={handleHideButton}
-                variant="warning"
-                size="lg-2"
-                block
-              >
-                Hide Node
-              </Button>
-            </Col>
-            <Col xs={1}></Col>
-            <Col>
-              <Button
-                onClick={handleDeleteButton}
-                variant="danger"
-                size="lg-2"
-                block
-              >
-                Delete Node
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-        <br />
+  if (props.dtl.prepDetails) {
+    return (
+      <div style={{ color: "#142850" }} className="Details">
+        <h2>Dataset Name: {props.dtl.datasetName}</h2>
+        <h3>Dataset ID: {props.dtl.datasetId}</h3>
+        <h4>Preprocessing ID: {props.dtl.prepId}</h4>
+        <h3>Steps:</h3>
+        {pFromArray(props.dtl.prepSteps)}
       </div>
-    </div>
-  );
-};
+    );
+  } else if (props.dtl.paperDetails) {
+    return (
+      <div style={{ color: "#142850" }} className="Details">
+        <h2>{props.dtl.title}</h2>
+        {props.dtl.year && (
+          <div className="year">
+            <h4>Year: {props.dtl.year}</h4>
+          </div>
+        )}
+        <p>
+          ID: {props.dtl.paperId}/{props.dtl.paperIdType}
+        </p>
+        <div className="body">
+          {props.dtl.keywords && (
+            <div className="keywords">
+              <h3>Keywords</h3>
+              <p>{stringFromArray(props.dtl.keywords, ", ")}</p>
+            </div>
+          )}
+          {props.dtl.abstractOfPaper && (
+            <div className="abstract">
+              <h3>Abstract</h3>
+              <p>{props.dtl.abstractOfPaper}</p>
+            </div>
+          )}
+          {props.dtl.targets && (
+            <div className="targets">
+              <h3>Targets</h3>
+              <p>{stringFromArray(props.dtl.targets, ", ")}</p>
+            </div>
+          )}
+          {props.dtl.problems && (
+            <div className="problems">
+              <h3>Problems</h3>
+              <p>{stringFromArray(props.dtl.problems, ", ")}</p>
+            </div>
+          )}
+          {props.dtl.applicationDomains && (
+            <div className="applicationDomains">
+              <h3>Application Domains</h3>
+              <p>{stringFromArray(props.dtl.applicationDomains, ", ")}</p>
+            </div>
+          )}
+          {props.dtl.components && (
+            <div className="components">
+              <h3>Components</h3>
+              <p>{stringFromArray(props.dtl.components, ", ")}</p>
+            </div>
+          )}
+          {props.dtl.highlights && (
+            <div className="highlights">
+              <h3>Highlights</h3>
+              {pFromArray(props.dtl.highlights)}
+            </div>
+          )}
+          {props.dtl.contributions && (
+            <div className="contributions">
+              <h3>Contributions</h3>
+              {pFromArray(props.dtl.contributions, "cont")}
+            </div>
+          )}
+          {props.dtl.pros && (
+            <div className="pros">
+              <h3>Pros</h3>
+              {pFromArray(props.dtl.pros, "pros", "list")}
+            </div>
+          )}
+          {props.dtl.cons && (
+            <div className="cons">
+              <h3>Cons</h3>
+              {pFromArray(props.dtl.pros, "cons", "list")}
+            </div>
+          )}
+          {props.dtl.futureWorks && (
+            <div className="futureWorks">
+              <h3>Future Works</h3>
+              {pFromArray(props.dtl.futureWorks, "futureWorks", "p")}
+            </div>
+          )}
+          {props.dtl.notes && (
+            <div className="notes">
+              <h3>Notes</h3>
+              {pFromArray(props.dtl.notes, "notes")}
+            </div>
+          )}
+          {props.dtl.data && (
+            <div className="data">
+              <h3>Datasets</h3>
+              <p>
+                {stringFromArray(props.dtl.data.map((obj) => obj.datasetName))}
+              </p>
+            </div>
+          )}
+          {props.dtl.evaluations && (
+            <div className="evaluations">
+              <h3>Evaluations</h3>
+              <p>{stringFromArray(props.dtl.evaluations, ", ")}</p>
+            </div>
+          )}
+          {props.dtl.libraries && (
+            <div className="libraries">
+              <h3>Libraries</h3>
+              <ul>
+                {props.dtl.libraries.map((obj, index) => (
+                  <li key={"libs" + String(index)}>
+                    <a href={obj.link}>{obj.name || obj.link}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {props.dtl.datasets && (
+            <div className="datasets">
+              <h3>Datasets</h3>
+              <ul>
+                {props.dtl.datasets.map((obj, index) => (
+                  <li key={"dataset" + String(index)}>
+                    {obj.dataset.datasetName}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {props.dtl.relatedWorks && (
+            <div className="relatedWorks">
+              <h3>Related Works</h3>
+              <ul>
+                {props.dtl.relatedWorks.map((obj, index) => (
+                  <li key={"relatedW" + String(index)}>
+                    {obj.title} ({obj.paperId}/{obj.paperIdType})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {props.dtl.reader && (
+            <div className="reader">
+              <h3>Readers</h3>
+              <ul>
+                {props.dtl.reader.map((obj, index) => (
+                  <li key={"readers" + String(index)}>{obj.readerName}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* hide node button */}
+          <br />
+          <Container>
+            <Row>
+              <Col>
+                <Button
+                  onClick={handleHideButton}
+                  variant="warning"
+                  size="lg-2"
+                  block
+                >
+                  Hide Node
+                </Button>
+              </Col>
+              <Col xs={1}></Col>
+              <Col>
+                <Button
+                  onClick={handleDeleteButton}
+                  variant="danger"
+                  size="lg-2"
+                  block
+                >
+                  Delete Node
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+          <br />
+        </div>
+      </div>
+    );
+  }
+
+  return (<div></div>)
+} 
+
+
 
 const mapStateToProps = (state) => {
   return {

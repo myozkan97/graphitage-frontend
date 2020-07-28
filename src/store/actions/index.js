@@ -1,6 +1,7 @@
 export {
     fetchDetails,
-    clearDetails
+    clearDetails,
+    fetchPreprocessing
 } from './details';
 
 export {

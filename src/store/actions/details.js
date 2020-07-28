@@ -11,7 +11,27 @@ const saveDetails = (res) => {
 export const fetchDetails = (id = 0) => {
   return (dispatch, getState) => {
     httpReq("papers/" + id, "GET").then((result) => {
-      dispatch(saveDetails(result.data));
+      dispatch(saveDetails({...result.data, prepDetails: false, paperDetails: true}));
+    });
+  };
+};
+
+export const fetchPreprocessing = (sourceNodeId, datasetId) => {
+  return (dispatch, getState) => {
+    httpReq("papers/" + sourceNodeId, "GET").then((result) => {
+      let preps = {};
+      console.log(result.data);
+      result.data.datasets.forEach((obj) => {
+        console.log(obj.dataset.datasetId, datasetId);
+        if (String(obj.dataset.datasetId) === datasetId)
+          preps = {
+            datasetName: obj.dataset.datasetName,
+            datasetId: obj.dataset.datasetId,
+            prepId: obj.preprocessingId,
+            prepSteps: [...obj.preprocessingSteps],
+          };
+      });
+      dispatch(saveDetails({...preps, prepDetails: true, paperDetails: false}));
     });
   };
 };

@@ -214,7 +214,8 @@ export const expandDatasetByPapers = (sourceNode) => {
           } else {
             const graphElements = simpleExpandElements(
               result.data,
-              sourceNode
+              sourceNode,
+              "datasetEdge"
             );
             dispatch(setElements(graphElements));
           }
