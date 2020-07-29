@@ -10,6 +10,10 @@ import * as actionCreators from "../../../store/actions/index";
 
 import httpReq from "../../../store/actions/utils/http";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+
+
 const stringFromArray = (array, sep = ", ") => {
   return array.reduce((acc, cur, index) => {
     return acc + cur + sep;
@@ -32,9 +36,10 @@ const pFromArray = (array, key, htmlEl = "p") => {
   }
 };
 
-const detailsForm = (props) => {
+const Details = (props) => {
   const handleHideButton = () => {
     props.onSetToHideNodeId(props.nodeId);
+    props.detailsClosed();
   };
 
   const handleDeleteButton = () => {
@@ -54,9 +59,9 @@ const detailsForm = (props) => {
 
   console.log(props.dtl)
 
-  if (props.dtl.prepdetailsForm) {
+  if (props.dtl.prepDetails) {
     return (
-      <div style={{ color: "#142850" }} className="detailsForm">
+      <div style={{ color: "#142850" }} className="Details">
         <h2>Dataset Name: {props.dtl.datasetName}</h2>
         <h3>Dataset ID: {props.dtl.datasetId}</h3>
         <h4>Preprocessing ID: {props.dtl.prepId}</h4>
@@ -64,10 +69,14 @@ const detailsForm = (props) => {
         {pFromArray(props.dtl.prepSteps)}
       </div>
     );
-  } else if (props.dtl.paperdetailsForm) {
+  } else if (props.dtl.paperDetails) {
     return (
-      <div style={{ color: "#142850" }} className="detailsForm">
-        <h2>{props.dtl.title}</h2>
+      <div style={{ color: "#142850" }} className="Details">
+        <h2>{props.dtl.title}{' '}
+        <Button variant="info" onClick={() => props.setEditing(true)}><FontAwesomeIcon icon={faEdit}/></Button>
+        {/* <button><FontAwesomeIcon icon={faEdit} /></button> */}
+        </h2>
+        
         {props.dtl.year && (
           <div className="year">
             <h4>Year: {props.dtl.year}</h4>
@@ -250,7 +259,7 @@ const detailsForm = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    dtl: state.detailsFormdetailsForm,
+    dtl: state.details,
   };
 };
 
@@ -267,4 +276,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(detailsForm);
+export default connect(mapStateToProps, mapDispatchToProps)(Details);

@@ -77,6 +77,10 @@ ul.autocomplete {
   }
 }
 
+div.noAutocomplete ul.autocomplete {
+  display: none;
+}
+
 .tag-box {
   // border-top: 1px solid #7e69c6;
   // border-left: 1px solid #7e69c6;

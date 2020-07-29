@@ -106,8 +106,8 @@ const Details = (props) => {
 
       <Form style={{ color: "#142850" }} onSubmit={handleSubmit()}>
         <h3 className="menuHeader">Keywords</h3>
-        {props.dtl.keywords && (
-          <Form.Group controlId="keywords">
+        
+          <Form.Group controlId="keywords" className="noAutocomplete">
             {console.log(props.dtl.keywords)}
             <TagBox
               load={props.dtl.keywords}
@@ -115,7 +115,6 @@ const Details = (props) => {
               onChange={handleKeywordsChange}
             />
           </Form.Group>
-        )}
 
         <h3 className="menuHeader">Abstract</h3>
         <Form.Group controlId="abstract">
@@ -131,171 +130,141 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        {props.dtl.targets && (
-          <>
-            <h3 className="menuHeader">Targets</h3>
-            <Form.Group controlId="targets">
-              <TagBox
-                load={props.dtl.targets}
-                tags={props.dtl.targets}
-                onChange={handleTargetsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.problems && (
-          <>
-            <h3 className="menuHeader">Problems</h3>
-            <Form.Group controlId="problems">
-              <TagBox
-                load={props.dtl.problems}
-                tags={props.dtl.problems}
-                onChange={handleProblemsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.applicationDomains && (
-          <>
-            <h3 className="menuHeader">Application Domains</h3>
-            <Form.Group controlId="applicationDomains">
-              <TagBox
-                load={props.dtl.applicationDomains}
-                tags={props.dtl.applicationDomains}
-                onChange={handleApplicationDomainsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.components && (
-          <>
-            <h3 className="menuHeader">Components</h3>
-            <Form.Group controlId="components">
-              <TagBox
-                load={props.dtl.components}
-                tags={props.dtl.components}
-                onChange={handleComponentsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.highlights && (
-          <>
-            <h3 className="menuHeader">Highlights</h3>
-            <Form.Group controlId="highlights">
-              <TagBox
-                load={props.dtl.highlights}
-                tags={props.dtl.highlights}
-                onChange={handleHighlightsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.contributions && (
-          <>
-            <h3 className="menuHeader">Contributions</h3>
-            <Form.Group controlId="contributions">
-              <TagBox
-                load={props.dtl.contributions}
-                tags={props.dtl.contributions}
-                onChange={handleContributionsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.pros && (
-          <>
-            <h3 className="menuHeader">Pros</h3>
-            <Form.Group controlId="pros">
-              <TagBox
-                load={props.dtl.pros}
-                tags={props.dtl.pros}
-                onChange={handleProsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.cons && (
-          <>
-            <h3 className="menuHeader">Cons</h3>
-            <Form.Group controlId="cons">
-              <TagBox
-                load={props.dtl.cons}
-                tags={props.dtl.cons}
-                onChange={handleConsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.futureWorks && (
-          <>
-            <h3 className="menuHeader">Future Works</h3>
-            <Form.Group controlId="futureWorks">
-              <TagBox
-                load={props.dtl.futureWorks}
-                tags={props.dtl.futureWorks}
-                onChange={handleFutureWorksChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.notes && (
-          <>
-            <h3 className="menuHeader">Notes</h3>
-            <Form.Group controlId="notes">
-              <TagBox
-                load={props.dtl.notes}
-                tags={props.dtl.notes}
-                onChange={handleNotesChange}
-              />
-            </Form.Group>
-          </>
-        )}
-
-        {props.dtl.datasets && (
-          <>
-            <h3 className="menuHeader">Datasets</h3>
-            {/* <Form.Group controlId="data">
+        <h3 className="menuHeader">Targets</h3>
+        <Form.Group controlId="targets">
           <TagBox
-            load={[1,2,3,4]}
-            tags={[1,2,3,4]}
-            // tags={props.dtl.data.map((obj) => obj.datasetName)}
+            load={props.dtl.targets}
+            tags={props.dtl.targets}
+            onChange={handleTargetsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Problems</h3>
+        <Form.Group controlId="problems" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.problems}
+            tags={props.dtl.problems}
+            onChange={handleProblemsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Application Domains</h3>
+        <Form.Group controlId="applicationDomains" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.applicationDomains}
+            tags={props.dtl.applicationDomains}
+            onChange={handleApplicationDomainsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Components</h3>
+        <Form.Group controlId="components" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.components}
+            tags={props.dtl.components}
+            onChange={handleComponentsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Highlights</h3>
+        <Form.Group controlId="highlights" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.highlights}
+            tags={props.dtl.highlights}
+            onChange={handleHighlightsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Contributions</h3>
+        <Form.Group controlId="contributions" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.contributions}
+            tags={props.dtl.contributions}
+            onChange={handleContributionsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Pros</h3>
+        <Form.Group controlId="pros" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.pros}
+            tags={props.dtl.pros}
+            onChange={handleProsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Cons</h3>
+        <Form.Group controlId="cons" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.cons}
+            tags={props.dtl.cons}
+            onChange={handleConsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Future Works</h3>
+        <Form.Group controlId="futureWorks" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.futureWorks}
+            tags={props.dtl.futureWorks}
+            onChange={handleFutureWorksChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Notes</h3>
+        <Form.Group controlId="notes" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.notes}
+            tags={props.dtl.notes}
+            onChange={handleNotesChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Datasets</h3>
+        {/* <Form.Group controlId="datasets">
+          <TagBox
+            load={props.dtl.datasets && props.dtl.datasets.map((dataset) => dataset.dataset.datasetName)}
+            tags={props.dtl.datasets && props.dtl.datasets.map((dataset) => dataset.dataset.datasetName)}
             onChange={handleDatasetsChange}
           />
         </Form.Group> */}
-          </>
-        )}
 
-        {props.dtl.evaluations && (
-          <>
-            <h3 className="menuHeader">Evaluations</h3>
-            <Form.Group controlId="evaluations">
-              <TagBox
-                load={props.dtl.evaluations}
-                tags={props.dtl.evaluations}
-                onChange={handleEvaluationsChange}
-              />
-            </Form.Group>
-          </>
-        )}
-        <Button
-          variant="primary"
-          type="submit"
-          id="searchButton"
-          name="Search"
-          disabled={!formState.isValid}
-        >
-          Search
-        </Button>
+        <h3 className="menuHeader">Evaluations</h3>
+        <Form.Group controlId="evaluations" className="noAutocomplete">
+          <TagBox
+            load={props.dtl.evaluations}
+            tags={props.dtl.evaluations}
+            onChange={handleEvaluationsChange}
+          />
+        </Form.Group>
+
+
+        <br />
+          <Container>
+            <Row>
+              <Col>
+                <Button
+                  variant="success"
+                  size="lg-2"
+                  block
+                >
+                  Save Changes
+                </Button>
+              </Col>
+              <Col xs={1}></Col>
+              <Col>
+                <Button
+                  onClick={() => props.setEditing(false)}
+                  variant="danger"
+                  size="lg-2"
+                  block
+                >
+                  Cancel
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+          <br />
       </Form>
     </div>
   );

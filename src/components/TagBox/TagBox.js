@@ -34,12 +34,14 @@ const TagBox = (props) => {
       }))))
   }, [load])
   
-  const tags = List(
+  let tags = List();
+  if(props.tags){
+    tags = List()
     props.tags.map((t) => ({
       label: t,
       value: t,
     }))
-  );
+  }
 
   const onSelect = (tag) => {
     const newTag = {

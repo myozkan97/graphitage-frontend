@@ -21,6 +21,7 @@ const Layout = (props) => {
   const [optionsMenu, setOptions] = useState(false);
   const [detailsMenu, setdetailsMenu] = useState(false);
   const [nodeId, setNodeId] = useState("");
+  const [detailOnEdit, setDetailOnEdit] = useState(false);
 
   const searchClosedHandler = useCallback(() => {
     setSearch(false);
@@ -52,10 +53,12 @@ const Layout = (props) => {
     setOptions(false);
     setSearch(false);
     setNodeId(id);
+    setDetailOnEdit(false);
   }, []);
 
   const detailsPanelClosedHandler = useCallback(() => {
     setdetailsMenu(false);
+    setDetailOnEdit(false);
     // props.onClearDetails();
   }, []);
 
@@ -73,6 +76,8 @@ const Layout = (props) => {
         detailsClosed={detailsPanelClosedHandler}
         details={detailsMenu}
         nodeId={nodeId}
+        isEditing={detailOnEdit}
+        setEditing={setDetailOnEdit}
       />
       <Toolbar
         searchClick={searchClickedHandler}

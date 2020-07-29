@@ -55,10 +55,12 @@ var searchMenuStyles = {
 
 const detailsPanel = (props) => (
     <Menu right onClose={() => props.detailsClosed()} isOpen={props.details} styles={searchMenuStyles}>
-        {/* <DetailsForm nodeId={props.nodeId} /> */}
-{props.details &&  <DetailsEditForm /> }
+    {props.isEditing
+    ?   <DetailsEditForm setEditing={props.setEditing} />
+    :   <DetailsForm nodeId={props.nodeId} setEditing={props.setEditing} detailsClosed={props.detailsClosed} />
+    }
     </Menu>
 );
 
 
-export default React.memo(detailsPanel);
+export default detailsPanel;
