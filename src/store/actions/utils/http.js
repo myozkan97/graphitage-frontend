@@ -1,4 +1,4 @@
-import { url } from '../../../globalVars';
+import { url } from "../../../globalVars";
 
 const httpReq = async (path, method, body) => {
   try {
@@ -9,13 +9,19 @@ const httpReq = async (path, method, body) => {
         "Content-Type": "application/json",
       },
     });
-    
-    
-    let data = await response.json();
 
-    if (data.status) throw Error();
-    else return { data: data, error: false };
+    console.log(response)
+    if (response.status !== 200) {
+      throw Error();
+    } else {
+      let data = [];
+      if (method !== "POST")
+        data = await response.json();
+        
+      return { data: data, error: false };
+    }
   } catch (error) {
+    console.log(error)
     return { data: null, error: true };
   }
   //   if (response.status !== 200) throw Error();

@@ -32,7 +32,7 @@ const pFromArray = (array, key, htmlEl = "p") => {
   }
 };
 
-const Details = (props) => {
+const detailsForm = (props) => {
   const handleHideButton = () => {
     props.onSetToHideNodeId(props.nodeId);
   };
@@ -54,9 +54,9 @@ const Details = (props) => {
 
   console.log(props.dtl)
 
-  if (props.dtl.prepDetails) {
+  if (props.dtl.prepdetailsForm) {
     return (
-      <div style={{ color: "#142850" }} className="Details">
+      <div style={{ color: "#142850" }} className="detailsForm">
         <h2>Dataset Name: {props.dtl.datasetName}</h2>
         <h3>Dataset ID: {props.dtl.datasetId}</h3>
         <h4>Preprocessing ID: {props.dtl.prepId}</h4>
@@ -64,9 +64,9 @@ const Details = (props) => {
         {pFromArray(props.dtl.prepSteps)}
       </div>
     );
-  } else if (props.dtl.paperDetails) {
+  } else if (props.dtl.paperdetailsForm) {
     return (
-      <div style={{ color: "#142850" }} className="Details">
+      <div style={{ color: "#142850" }} className="detailsForm">
         <h2>{props.dtl.title}</h2>
         {props.dtl.year && (
           <div className="year">
@@ -250,7 +250,7 @@ const Details = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    dtl: state.details,
+    dtl: state.detailsFormdetailsForm,
   };
 };
 
@@ -267,4 +267,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Details);
+export default connect(mapStateToProps, mapDispatchToProps)(detailsForm);

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { slide as Menu } from 'react-burger-menu';
 import DetailsForm from './DetailsForm/DetailsForm';
+import DetailsEditForm from './DetailsEditForm/DetailsEditForm';
 
 var searchMenuStyles = {
     bmBurgerButton: {
@@ -54,7 +55,8 @@ var searchMenuStyles = {
 
 const detailsPanel = (props) => (
     <Menu right onClose={() => props.detailsClosed()} isOpen={props.details} styles={searchMenuStyles}>
-        <DetailsForm nodeId={props.nodeId} />
+        {/* <DetailsForm nodeId={props.nodeId} /> */}
+{props.details &&  <DetailsEditForm /> }
     </Menu>
 );
 

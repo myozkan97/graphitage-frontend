@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions/index";
 import httpReq from "../../../store/actions/utils/http";
 
-
 const OptionsForm = (props) => {
   // const { register, handleSubmit, errors, watch, formState }
   const { register, handleSubmit } = useForm({
@@ -21,7 +20,7 @@ const OptionsForm = (props) => {
   const onSubmit = (data) => {
     const objectURL = URL.createObjectURL(data.jsonFile[0]);
     let fullName = data.jsonFile[0].name;
-    let fileExtension = fullName.slice((fullName.lastIndexOf('.') + 1));
+    let fileExtension = fullName.slice(fullName.lastIndexOf(".") + 1);
 
     async function getData(url) {
       const response = await fetch(url);
@@ -34,26 +33,25 @@ const OptionsForm = (props) => {
 
       const jsonData = await getData(objectURL);
 
-      httpReq("papers", "POST", JSON.stringify(jsonData))
-        .then((result) => {
+      httpReq("papers", "POST", JSON.stringify(jsonData)).then((result) => {
+        if (!result.error) {
           setIsSuccess(true);
           props.onClearGraph(true);
           props.onSimpleExpand();
-          
-          console.log("loading finish");
-          props.onCloseLoadingScreen();
-        })
-        .catch((error) => {
-          setIsSuccess(false);
 
-          console.log("loading finish");
           props.onCloseLoadingScreen();
-        });
+        } else {
+          setIsSuccess(false);
+          props.onCloseLoadingScreen();
+          props.onOpenErrorModal("Either wrong JSON format or server is not responding!");
+        }
+      });
     }
 
-    if(fileExtension.toLowerCase() === "json"){
+    if (fileExtension.toLowerCase() === "json") {
       runConn();
-    }else{ //file type not supported
+    } else {
+      //file type not supported
       // props.onOpenErrorModal("File Type Is Not Supported. Please Choose a \"JSON\" File.");
       setIsCorrectFileType(false);
     }
@@ -79,7 +77,13 @@ const OptionsForm = (props) => {
       </Form.Group>
 
       <div>{isSuccess && <h4 style={{ color: "green" }}>Success!</h4>}</div>
-      <div>{!isCorrectFileType && <h4 style={{ color: "red", fontSize:"1rem" }}>File type is not supported. Please choose a "JSON" file.</h4>}</div>
+      <div>
+        {!isCorrectFileType && (
+          <h4 style={{ color: "red", fontSize: "1rem" }}>
+            File type is not supported. Please choose a "JSON" file.
+          </h4>
+        )}
+      </div>
     </Form>
   );
 };
@@ -93,7 +97,8 @@ const mapDispatchToProps = (dispatch) => {
     onClearGraph: (bool) => dispatch(actionCreators.clearNodes(bool)),
     onSimpleExpand: (sourceNode) =>
       dispatch(actionCreators.simpleExpand(sourceNode)),
-    onOpenErrorModal: (errorMessage) => dispatch(actionCreators.openErrorModal(errorMessage)),
+    onOpenErrorModal: (errorMessage) =>
+      dispatch(actionCreators.openErrorModal(errorMessage)),
     onOpenLoadingScreen: () => dispatch(actionCreators.openLoadingScreen()),
     onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
   };
