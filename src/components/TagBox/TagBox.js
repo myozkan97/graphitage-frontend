@@ -25,13 +25,14 @@ const TagBox = (props) => {
   }, [selected, onChange]);
 
 
+  const { load } = props
   useEffect(() => {
-    if(Array.isArray(props.load) && props.load.length > 0)
-      props.load.map((t) => ({
+    if(Array.isArray(load) && load.length > 0)
+      setSelected(List(load.map((t) => ({
         label: t,
         value: t,
-      })).forEach(tag => setSelected(selected.push(tag)))
-  }, [])
+      }))))
+  }, [load])
   
   const tags = List(
     props.tags.map((t) => ({
