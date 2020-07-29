@@ -59,4 +59,4 @@ const searchMenu = (props) => (
   </Menu>
 );
 
-export default searchMenu;
+export default React.memo(searchMenu);

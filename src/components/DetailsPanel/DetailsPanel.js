@@ -61,4 +61,4 @@ const detailsPanel = (props) => (
 );
 
 
-export default detailsPanel;
+export default React.memo(detailsPanel);

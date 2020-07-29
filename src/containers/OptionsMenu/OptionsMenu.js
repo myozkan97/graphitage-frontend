@@ -101,4 +101,4 @@ const optionsMenu = (props) => (
   </Menu>
 );
 
-export default optionsMenu;
+export default React.memo(optionsMenu);

@@ -60,14 +60,14 @@ const Graph = (props) => {
     // Setting up event listeners
     const { onOpenContextMenu, detailsMenuHandler, onFetchDetails } = props;
     useEffect(() => {
-        Graph.cy.on('click', 'node', (event) => {
+        Graph.cy.on('tap', 'node', (event) => {
             if(event.target._private.data.type === "paper") {
                 detailsMenuHandler(event.target._private.data.id);
                 onFetchDetails(event.target._private.data.id);
             }
         });
 
-        Graph.cy.on('click', 'edge', (event) => {
+        Graph.cy.on('tap', 'edge', (event) => {
             if(event.target._private.data.type === "datasetEdge") {
                 console.log(event.target._private);
                 detailsMenuHandler(event.target._private.data.id);
