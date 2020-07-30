@@ -116,7 +116,6 @@ const SearchForm = (props) => {
           onOpenErrorModal("Couldn't retrieve the tags.");
         } else {
           const tags = result.data.map((obj) => obj[tagName]);
-          console.log(tags);
           if (tagName === "datasetName") setDatasetSuggestions(tags);
           else if (tagName === "name") setLibrarySuggestions(tags);
         }

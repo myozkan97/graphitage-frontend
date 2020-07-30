@@ -10,18 +10,15 @@ const httpReq = async (path, method, body) => {
       },
     });
 
-    console.log(response)
     if (response.status !== 200) {
       throw Error();
     } else {
       let data = [];
-      if (method !== "POST")
-        data = await response.json();
-        
+      if (method !== "POST") data = await response.json();
+
       return { data: data, error: false };
     }
   } catch (error) {
-    console.log(error)
     return { data: null, error: true };
   }
   //   if (response.status !== 200) throw Error();

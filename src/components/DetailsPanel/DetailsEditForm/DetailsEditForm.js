@@ -1,108 +1,84 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useReducer } from "react";
 import { connect } from "react-redux";
 
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-
 import Form from "react-bootstrap/Form";
 import TagBox from "../../TagBox/TagBox";
-import MultipleFieldTagBox from "./MultipleFieldTagBox/MultipleFieldTagBox";
+
+import LibraryTagBox from "./LibraryTagBox/LibraryTagBox";
 
 import { useForm } from "react-hook-form";
 
 import * as actionCreators from "../../../store/actions/index";
 
-import httpReq from "../../../store/actions/utils/http";
+
+const initialState = {};
+
+function reducer(state, action) {
+  const stateClone = JSON.parse(JSON.stringify(state));
+  const payloadClone = JSON.parse(JSON.stringify(action.payload));
+  stateClone[action.type] = payloadClone;
+  return stateClone;
+}
+
 
 const Details = (props) => {
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit } = useForm({
     mode: "onChange",
   });
 
-  const [keywords, setKeywords] = useState([]);
-  const [targets, setTargets] = useState([]);
-  const [problems, setProblems] = useState([]);
-  const [applicationDomains, setApplicationDomains] = useState([]);
-  const [components, setComponents] = useState([]);
-  const [highlights, setHighlights] = useState([]);
-  const [contributions, setContributions] = useState([]);
-  const [pros, setPros] = useState([]);
-  const [cons, setCons] = useState([]);
-  const [futureWorks, setFutureWorks] = useState([]);
-  const [notes, setNotes] = useState([]);
-  const [datasets, setDatasets] = useState([]);
-  const [evaluations, setEvaluations] = useState([]);
-  const [readers, setReaders] = useState([]);
-  const [summaries, setSummaries] = useState([]);
-  const [libraries, setLibraries] = useState([]);
-  const [relatedWorks, setRelatedWorks] = useState([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
 
   useEffect(() => {
-    console.log("keywords", keywords);
-    console.log("targets", targets);
-    console.log("problems", problems);
-    console.log("applicationDomains", applicationDomains);
-    console.log("components", components);
-    console.log("highlights", highlights);
-    console.log("contributions", contributions);
-    console.log("pros", pros);
-    console.log("cons", cons);
-    console.log("futureWorks", futureWorks);
-    console.log("notes", notes);
-    console.log("datasets", datasets);
-    console.log("evaluations", evaluations);
-    console.log("readers", readers);
-    console.log("summaries", summaries);
-    console.log("libraries", libraries);
-    console.log("relatedWorks", relatedWorks);
+    console.log(state)
   });
 
-  useEffect(() => {
-    if (props.dtl.keywords) setKeywords([...props.dtl.keywords]);
-  }, [props.dtl.keywords]);
 
   const handleKeywordsChange = useCallback((array) => {
-    setKeywords(array);
+    dispatch({type: "keywords", payload: array})
   }, []);
   const handleTargetsChange = useCallback((array) => {
-    setTargets(array);
+    dispatch({type: "targets", payload: array})
   }, []);
   const handleProblemsChange = useCallback((array) => {
-    setProblems(array);
+    dispatch({type: "problems", payload: array})
   }, []);
   const handleApplicationDomainsChange = useCallback((array) => {
-    setApplicationDomains(array);
+    dispatch({type: "applicationDomains", payload: array})
   }, []);
   const handleComponentsChange = useCallback((array) => {
-    setComponents(array);
+    dispatch({type: "components", payload: array})
   }, []);
   const handleHighlightsChange = useCallback((array) => {
-    setHighlights(array);
+    dispatch({type: "highlights", payload: array})
   }, []);
   const handleContributionsChange = useCallback((array) => {
-    setContributions(array);
+    dispatch({type: "contributions", payload: array})
   }, []);
   const handleProsChange = useCallback((array) => {
-    setPros(array);
+    dispatch({type: "pros", payload: array})
   }, []);
   const handleConsChange = useCallback((array) => {
-    setCons(array);
+    dispatch({type: "cons", payload: array})
   }, []);
   const handleFutureWorksChange = useCallback((array) => {
-    setFutureWorks(array);
+    dispatch({type: "futureWorks", payload: array})
   }, []);
   const handleNotesChange = useCallback((array) => {
-    setNotes(array);
+    dispatch({type: "notes", payload: array})
   }, []);
-  const handleDatasetsChange = useCallback((array) => {
-    setDatasets(array);
-  }, []);
+  // const handleDatasetsChange = useCallback((array) => {
+  //   dispatch({type: "dataset", payload: array})
+  // }, []);
   const handleEvaluationsChange = useCallback((array) => {
-    setEvaluations(array);
+    dispatch({type: "evaluations", payload: array})
+  }, []);
+  const handleLibrariesChange = useCallback((array) => {
+    dispatch({type: "libraries", payload: array})
   }, []);
 
   return (
@@ -122,7 +98,6 @@ const Details = (props) => {
         <h3 className="menuHeader">Keywords</h3>
 
         <Form.Group controlId="keywords" className="noAutocomplete">
-          {console.log(props.dtl.keywords)}
           <TagBox
             load={props.dtl.keywords}
             tags={props.dtl.keywords}
@@ -132,7 +107,6 @@ const Details = (props) => {
 
         <h3 className="menuHeader">Abstract</h3>
         <Form.Group controlId="abstract">
-          {console.log(props.dtl)}
           <Form.Control
             readOnly={false}
             value={props.dtl.abstractOfPaper}
@@ -244,9 +218,9 @@ const Details = (props) => {
         </Form.Group> */}
 
         <h3 className="menuHeader">Libraries</h3>
-        <MultipleFieldTagBox
+        <LibraryTagBox
           load={props.dtl.libraries}
-          setOuterState={setLibraries}
+          onChange={handleLibrariesChange}
         />
 
         <h3 className="menuHeader">Evaluations</h3>

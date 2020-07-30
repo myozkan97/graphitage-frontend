@@ -57,8 +57,6 @@ const Details = (props) => {
       });
   };
 
-  console.log(props.dtl)
-
   if (props.dtl.prepDetails) {
     return (
       <div style={{ color: "#142850" }} className="Details">

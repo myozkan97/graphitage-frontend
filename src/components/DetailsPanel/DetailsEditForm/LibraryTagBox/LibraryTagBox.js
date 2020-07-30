@@ -4,7 +4,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 
-const MultipleFieldTagBox = (props) => {
+const LibraryTagBox = (props) => {
   const [elements, setElements] = useState([]);
   const [legal, setLegal] = useState(false); // state to activate/deactivate submit button 
 
@@ -22,7 +22,6 @@ const MultipleFieldTagBox = (props) => {
       name = nameRef.current.value,
       link = linkRef.current.value
     ) => {
-        console.log(name.length, name)
       setElements((prevState) => [
         ...prevState,
         {
@@ -42,16 +41,15 @@ const MultipleFieldTagBox = (props) => {
   }, []);
 
   // Set state of the parent form 
-  const { setOuterState } = props;
+  const {  onChange } = props;
   useEffect(() => {
-    setOuterState([...elements]);
-  }, [elements, setOuterState]);
+    onChange(elements);
+  }, [elements, onChange]);
 
 
   // Register pre-loaded props
   const { load } = props;
   useEffect(() => {
-      console.log(load)
     if (Array.isArray(load)) load.forEach((obj) => handleAdd(obj.name, obj.link));
   }, [load, handleAdd]);
 
@@ -95,4 +93,4 @@ const MultipleFieldTagBox = (props) => {
   );
 };
 
-export default React.memo(MultipleFieldTagBox);
+export default React.memo(LibraryTagBox);
