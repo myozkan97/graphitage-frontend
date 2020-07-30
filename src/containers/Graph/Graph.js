@@ -55,7 +55,7 @@ const Graph = (props) => {
       var jerryChildren = edgesFromJerry.targets();
       Graph.cy.remove(jerryChildren);
     }
-  }, [unExpand, onSetUnExpand, relatedNode]);
+  }, [unExpand, onSetUnExpand]);
 
   // Setting up event listeners
   const {
@@ -65,14 +65,14 @@ const Graph = (props) => {
     onFetchDetails,
   } = props;
   useEffect(() => {
-    Graph.cy.on("tap", "node", (event) => {
+    Graph.cy.on("click", "node", (event) => {
       if (event.target._private.data.type === "paper") {
         detailsMenuHandler(event.target._private.data.id);
         onFetchDetails(event.target._private.data.id);
       }
     });
 
-    Graph.cy.on("tap", "edge", (event) => {
+    Graph.cy.on("click", "edge", (event) => {
       if (event.target._private.data.type === "datasetEdge") {
         console.log(event.target._private);
         detailsMenuHandler(event.target._private.data.id);
