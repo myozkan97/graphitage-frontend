@@ -3,11 +3,14 @@ import { connect } from "react-redux";
 
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
 import Form from "react-bootstrap/Form";
 import TagBox from "../../TagBox/TagBox";
+import MultipleFieldTagBox from "./MultipleFieldTagBox/MultipleFieldTagBox";
 
 import { useForm } from "react-hook-form";
 
@@ -33,6 +36,30 @@ const Details = (props) => {
   const [notes, setNotes] = useState([]);
   const [datasets, setDatasets] = useState([]);
   const [evaluations, setEvaluations] = useState([]);
+  const [readers, setReaders] = useState([]);
+  const [summaries, setSummaries] = useState([]);
+  const [libraries, setLibraries] = useState([]);
+  const [relatedWorks, setRelatedWorks] = useState([]);
+
+  useEffect(() => {
+    console.log("keywords", keywords);
+    console.log("targets", targets);
+    console.log("problems", problems);
+    console.log("applicationDomains", applicationDomains);
+    console.log("components", components);
+    console.log("highlights", highlights);
+    console.log("contributions", contributions);
+    console.log("pros", pros);
+    console.log("cons", cons);
+    console.log("futureWorks", futureWorks);
+    console.log("notes", notes);
+    console.log("datasets", datasets);
+    console.log("evaluations", evaluations);
+    console.log("readers", readers);
+    console.log("summaries", summaries);
+    console.log("libraries", libraries);
+    console.log("relatedWorks", relatedWorks);
+  });
 
   useEffect(() => {
     if (props.dtl.keywords) setKeywords([...props.dtl.keywords]);
@@ -40,55 +67,42 @@ const Details = (props) => {
 
   const handleKeywordsChange = useCallback((array) => {
     setKeywords(array);
-    console.log("setting keywords");
   }, []);
   const handleTargetsChange = useCallback((array) => {
     setTargets(array);
-    console.log("setting targets");
   }, []);
   const handleProblemsChange = useCallback((array) => {
     setProblems(array);
-    console.log("setting problems");
   }, []);
   const handleApplicationDomainsChange = useCallback((array) => {
     setApplicationDomains(array);
-    console.log("setting app dom");
   }, []);
   const handleComponentsChange = useCallback((array) => {
     setComponents(array);
-    console.log("setting components");
   }, []);
   const handleHighlightsChange = useCallback((array) => {
     setHighlights(array);
-    console.log("setting highlights");
   }, []);
   const handleContributionsChange = useCallback((array) => {
     setContributions(array);
-    console.log("setting cont");
   }, []);
   const handleProsChange = useCallback((array) => {
     setPros(array);
-    console.log("setting pros");
   }, []);
   const handleConsChange = useCallback((array) => {
     setCons(array);
-    console.log("setting cons");
   }, []);
   const handleFutureWorksChange = useCallback((array) => {
     setFutureWorks(array);
-    console.log("setting future");
   }, []);
   const handleNotesChange = useCallback((array) => {
     setNotes(array);
-    console.log("setting notes");
   }, []);
   const handleDatasetsChange = useCallback((array) => {
     setDatasets(array);
-    console.log("setting datasets");
   }, []);
   const handleEvaluationsChange = useCallback((array) => {
     setEvaluations(array);
-    console.log("setting eval");
   }, []);
 
   return (
@@ -106,15 +120,15 @@ const Details = (props) => {
 
       <Form style={{ color: "#142850" }} onSubmit={handleSubmit()}>
         <h3 className="menuHeader">Keywords</h3>
-        
-          <Form.Group controlId="keywords" className="noAutocomplete">
-            {console.log(props.dtl.keywords)}
-            <TagBox
-              load={props.dtl.keywords}
-              tags={props.dtl.keywords}
-              onChange={handleKeywordsChange}
-            />
-          </Form.Group>
+
+        <Form.Group controlId="keywords" className="noAutocomplete">
+          {console.log(props.dtl.keywords)}
+          <TagBox
+            load={props.dtl.keywords}
+            tags={props.dtl.keywords}
+            onChange={handleKeywordsChange}
+          />
+        </Form.Group>
 
         <h3 className="menuHeader">Abstract</h3>
         <Form.Group controlId="abstract">
@@ -229,6 +243,12 @@ const Details = (props) => {
           />
         </Form.Group> */}
 
+        <h3 className="menuHeader">Libraries</h3>
+        <MultipleFieldTagBox
+          load={props.dtl.libraries}
+          setOuterState={setLibraries}
+        />
+
         <h3 className="menuHeader">Evaluations</h3>
         <Form.Group controlId="evaluations" className="noAutocomplete">
           <TagBox
@@ -238,33 +258,28 @@ const Details = (props) => {
           />
         </Form.Group>
 
-
         <br />
-          <Container>
-            <Row>
-              <Col>
-                <Button
-                  variant="success"
-                  size="lg-2"
-                  block
-                >
-                  Save Changes
-                </Button>
-              </Col>
-              <Col xs={1}></Col>
-              <Col>
-                <Button
-                  onClick={() => props.setEditing(false)}
-                  variant="danger"
-                  size="lg-2"
-                  block
-                >
-                  Cancel
-                </Button>
-              </Col>
-            </Row>
-          </Container>
-          <br />
+        <Container>
+          <Row>
+            <Col>
+              <Button variant="success" size="lg-2" block>
+                Save Changes
+              </Button>
+            </Col>
+            <Col xs={1}></Col>
+            <Col>
+              <Button
+                onClick={() => props.setEditing(false)}
+                variant="danger"
+                size="lg-2"
+                block
+              >
+                Cancel
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+        <br />
       </Form>
     </div>
   );
