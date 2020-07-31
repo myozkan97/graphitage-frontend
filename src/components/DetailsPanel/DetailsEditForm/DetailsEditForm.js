@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 
 import * as actionCreators from "../../../store/actions/index";
 
+import httpReq from "../../../store/actions/utils/http";
+
 
 const initialState = {};
 
@@ -33,9 +35,9 @@ const Details = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
 
-  useEffect(() => {
-    console.log(state)
-  });
+  // useEffect(() => {
+  //   console.log(state)
+  // });
 
 
   const handleKeywordsChange = useCallback((array) => {
@@ -81,6 +83,42 @@ const Details = (props) => {
     dispatch({type: "libraries", payload: array})
   }, []);
 
+
+
+  const onSubmit = useCallback(
+    (data) => {
+
+      console.log(data);
+      console.log(state);
+
+      let jsonToSend = {...state};
+      jsonToSend["abstractOfPaper"] = data.abstract;
+      jsonToSend["authors"] = "";
+      jsonToSend["comments"] = [];
+      jsonToSend["constraints"] = [];
+      jsonToSend["linkOfPaper"] = "";
+      jsonToSend["paperId"] = props.dtl.paperId;
+      jsonToSend["paperIdType"] = props.dtl.paperIdType;
+      jsonToSend["reader"] = props.dtl.reader ? props.dtl.reader : [];
+      jsonToSend["relatedWorks"] = props.dtl.relatedWorks ? props.dtl.relatedWorks : [];
+      jsonToSend["summaries"] = [];
+      jsonToSend["title"] = props.dtl.title;
+      jsonToSend["year"] = props.dtl.year ? props.dtl.year : "";
+      jsonToSend["datasets"] = props.dtl.datasets ? props.dtl.datasets : [];
+      console.log(jsonToSend);
+      
+      httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
+        console.log(result);
+        if (result.error) {
+          props.onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
+        } else {
+          
+        }
+      });
+    }
+  );
+
+
   return (
     <div style={{ color: "#142850" }} className="DetailsEditForm">
       <h2>{props.dtl.title}</h2>
@@ -94,7 +132,7 @@ const Details = (props) => {
         ID: {props.dtl.paperId}/{props.dtl.paperIdType}
       </p>
 
-      <Form style={{ color: "#142850" }} onSubmit={handleSubmit()}>
+      <Form style={{ color: "#142850" }}  onSubmit={handleSubmit(onSubmit)}>
         <h3 className="menuHeader">Keywords</h3>
 
         <Form.Group controlId="keywords" className="noAutocomplete">
@@ -218,10 +256,12 @@ const Details = (props) => {
         </Form.Group> */}
 
         <h3 className="menuHeader">Libraries</h3>
-        <LibraryTagBox
-          load={props.dtl.libraries}
-          onChange={handleLibrariesChange}
-        />
+        <Form.Group controlId="libraries">
+          <LibraryTagBox
+            load={props.dtl.libraries}
+            onChange={handleLibrariesChange}
+          />
+        </Form.Group>
 
         <h3 className="menuHeader">Evaluations</h3>
         <Form.Group controlId="evaluations" className="noAutocomplete">
@@ -236,7 +276,7 @@ const Details = (props) => {
         <Container>
           <Row>
             <Col>
-              <Button variant="success" size="lg-2" block>
+              <Button type="submit" variant="success" size="lg-2" block>
                 Save Changes
               </Button>
             </Col>
