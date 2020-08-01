@@ -7,8 +7,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import TagBox from "../../TagBox/TagBox";
-
 import LibraryTagBox from "./LibraryTagBox/LibraryTagBox";
+import DatasetTagBox from './DatasetTagBox/DatasetTagBox';
 
 import { useForm } from "react-hook-form";
 
@@ -41,46 +41,49 @@ const Details = (props) => {
 
 
   const handleKeywordsChange = useCallback((array) => {
-    dispatch({type: "keywords", payload: array})
+    dispatch({type: "keywords", payload: array});
   }, []);
   const handleTargetsChange = useCallback((array) => {
-    dispatch({type: "targets", payload: array})
+    dispatch({type: "targets", payload: array});
   }, []);
   const handleProblemsChange = useCallback((array) => {
-    dispatch({type: "problems", payload: array})
+    dispatch({type: "problems", payload: array});
   }, []);
   const handleApplicationDomainsChange = useCallback((array) => {
-    dispatch({type: "applicationDomains", payload: array})
+    dispatch({type: "applicationDomains", payload: array});
   }, []);
   const handleComponentsChange = useCallback((array) => {
-    dispatch({type: "components", payload: array})
+    dispatch({type: "components", payload: array});
   }, []);
   const handleHighlightsChange = useCallback((array) => {
-    dispatch({type: "highlights", payload: array})
+    dispatch({type: "highlights", payload: array});
   }, []);
   const handleContributionsChange = useCallback((array) => {
-    dispatch({type: "contributions", payload: array})
+    dispatch({type: "contributions", payload: array});
   }, []);
   const handleProsChange = useCallback((array) => {
-    dispatch({type: "pros", payload: array})
+    dispatch({type: "pros", payload: array});
   }, []);
   const handleConsChange = useCallback((array) => {
-    dispatch({type: "cons", payload: array})
+    dispatch({type: "cons", payload: array});
   }, []);
   const handleFutureWorksChange = useCallback((array) => {
-    dispatch({type: "futureWorks", payload: array})
+    dispatch({type: "futureWorks", payload: array});
   }, []);
   const handleNotesChange = useCallback((array) => {
-    dispatch({type: "notes", payload: array})
+    dispatch({type: "notes", payload: array});
   }, []);
-  // const handleDatasetsChange = useCallback((array) => {
-  //   dispatch({type: "dataset", payload: array})
-  // }, []);
+  const handleDatasetsChange = useCallback((array) => {
+    dispatch({type: "dataset", payload: array})
+  }, []);
   const handleEvaluationsChange = useCallback((array) => {
-    dispatch({type: "evaluations", payload: array})
+    dispatch({type: "evaluations", payload: array});
   }, []);
   const handleLibrariesChange = useCallback((array) => {
-    dispatch({type: "libraries", payload: array})
+    dispatch({type: "libraries", payload: array});
+  }, []);
+  const handleAbstractChange = useCallback((event) => {
+    dispatch({type: "abstractOfPaper", payload: event.target.value});
   }, []);
 
 
@@ -146,8 +149,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Abstract</h3>
         <Form.Group controlId="abstract">
           <Form.Control
-            readOnly={false}
-            value={props.dtl.abstractOfPaper}
+            defaultValue={props.dtl.abstractOfPaper}
+            onChange={handleAbstractChange}
             as="textarea"
             rows="8"
             type="text"
@@ -254,6 +257,7 @@ const Details = (props) => {
             onChange={handleDatasetsChange}
           />
         </Form.Group> */}
+        <DatasetTagBox onChange={handleDatasetsChange} load={props.dtl.datasets}/>
 
         <h3 className="menuHeader">Libraries</h3>
         <Form.Group controlId="libraries">
