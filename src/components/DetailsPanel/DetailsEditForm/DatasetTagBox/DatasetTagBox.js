@@ -3,12 +3,18 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
+import ListGroupItem from "react-bootstrap/ListGroupItem";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 const boxStyle = {
-  width: "100&",
-  border: "1px solid #4fb9c9",
-  padding: "50px",
-  margin: "5px",
+  // width: "100&",
+  // border: "1px solid #4fb9c9",
+  // padding: "50px",
+  // margin: "5px",
 };
 
 const DatasetTagBox = (props) => {
@@ -108,54 +114,74 @@ const DatasetTagBox = (props) => {
   return (
     <div>
       {datasets.map((obj) => (
+
         <div style={boxStyle} key={obj.dataset.datasetName}>
-          <h4>{obj.dataset.datasetName}</h4>
-          <div>
+          <Card>
+            <Card.Header as="h5">{obj.dataset.datasetName}</Card.Header>
+            <Card.Body>
             {obj.preprocessingSteps && (
               <div>
-                <h5>Preprocessing Steps</h5>
-                {obj.preprocessingSteps.map((str, index) => (
-                  <div key={obj.dataset.datasetName + String(index)}>
-                    <p>{str}</p>
-                    <Button
-                      onClick={() =>
-                        handleRemoveProprocessingStep(
-                          obj.dataset.datasetName,
-                          str
-                        )
-                      }
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
+                <Card.Title>Preprocessing Steps</Card.Title>
+                <Card.Text>
+                  <ListGroup className="list-group-flush">
+                    {obj.preprocessingSteps.map((str, index) => (
+                      <ListGroupItem>
+                        <div key={obj.dataset.datasetName + String(index)}>
+                          <p>
+                            {str}{' '}
+                            <Button variant={"danger"} style={{padding: "0.15rem 0.3rem"}}
+                              onClick={() =>
+                                handleRemoveProprocessingStep(
+                                  obj.dataset.datasetName,
+                                  str
+                                )
+                              }
+                            >
+                            {/* <FontAwesomeIcon icon={faTrash}/> */}
+                            <FontAwesomeIcon icon={faTimes}/>
+                            </Button>
+                          </p>
+                        </div>
+                      </ListGroupItem>
+                    ))}
+                  </ListGroup>
+                </Card.Text>
               </div>
             )}
-          </div>
 
-          <InputGroup>
-            <FormControl
-              placeholder="Preprocessing Step"
-              aria-label="Preprocessing Step"
-              aria-describedby="basic-addon2"
-              ref={(e) => handleAddRef(e, obj.dataset.datasetName)}
-            />
-            <InputGroup.Append>
-              <Button
-                onClick={(e) =>
-                  handleAddPreprocessingStep(obj.dataset.datasetName, e)
-                }
-                variant="outline-secondary"
-              >
-                Add Dataset
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
-          <Button onClick={() => handleRemove(obj.dataset.datasetName)}>
-            Remove Dataset
-          </Button>
+            <InputGroup>
+              <FormControl
+                placeholder="Preprocessing Step"
+                aria-label="Preprocessing Step"
+                aria-describedby="basic-addon2"
+                ref={(e) => handleAddRef(e, obj.dataset.datasetName)}
+              />
+              <InputGroup.Append>
+                <Button
+                  onClick={(e) =>
+                    handleAddPreprocessingStep(obj.dataset.datasetName, e)
+                  }
+                  variant="outline-secondary"
+                >
+                  Add Step
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
+
+            <br></br>
+
+            <Button variant="danger" onClick={() => handleRemove(obj.dataset.datasetName)}>
+              Remove Dataset
+            </Button>
+              
+            </Card.Body>
+          </Card> 
+
+          
         </div>
       ))}
+
+      <br></br>
 
       <InputGroup>
         <FormControl
@@ -175,6 +201,7 @@ const DatasetTagBox = (props) => {
           </Button>
         </InputGroup.Append>
       </InputGroup>
+      <br></br>
     </div>
   );
 };

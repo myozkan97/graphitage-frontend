@@ -107,7 +107,7 @@ const Details = (props) => {
       jsonToSend["summaries"] = [];
       jsonToSend["title"] = props.dtl.title;
       jsonToSend["year"] = props.dtl.year ? props.dtl.year : "";
-      jsonToSend["datasets"] = props.dtl.datasets ? props.dtl.datasets : [];
+      // jsonToSend["datasets"] = props.dtl.datasets ? props.dtl.datasets : [];
       console.log(jsonToSend);
       
       httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
