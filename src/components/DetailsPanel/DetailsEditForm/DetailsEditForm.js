@@ -6,16 +6,19 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 import TagBox from "../../TagBox/TagBox";
 import LibraryTagBox from "./LibraryTagBox/LibraryTagBox";
-import DatasetTagBox from './DatasetTagBox/DatasetTagBox';
+import DatasetTagBox from "./DatasetTagBox/DatasetTagBox";
 
 import { useForm } from "react-hook-form";
 
 import * as actionCreators from "../../../store/actions/index";
 
 import httpReq from "../../../store/actions/utils/http";
-
 
 const initialState = {};
 
@@ -26,7 +29,6 @@ function reducer(state, action) {
   return stateClone;
 }
 
-
 const Details = (props) => {
   const { register, handleSubmit } = useForm({
     mode: "onChange",
@@ -34,110 +36,147 @@ const Details = (props) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-
-  // useEffect(() => {
-  //   console.log(state)
-  // });
-
-
   const handleKeywordsChange = useCallback((array) => {
-    dispatch({type: "keywords", payload: array});
+    dispatch({ type: "keywords", payload: array });
   }, []);
   const handleTargetsChange = useCallback((array) => {
-    dispatch({type: "targets", payload: array});
+    dispatch({ type: "targets", payload: array });
   }, []);
   const handleProblemsChange = useCallback((array) => {
-    dispatch({type: "problems", payload: array});
+    dispatch({ type: "problems", payload: array });
   }, []);
   const handleApplicationDomainsChange = useCallback((array) => {
-    dispatch({type: "applicationDomains", payload: array});
+    dispatch({ type: "applicationDomains", payload: array });
   }, []);
   const handleComponentsChange = useCallback((array) => {
-    dispatch({type: "components", payload: array});
+    dispatch({ type: "components", payload: array });
   }, []);
   const handleHighlightsChange = useCallback((array) => {
-    dispatch({type: "highlights", payload: array});
+    dispatch({ type: "highlights", payload: array });
   }, []);
   const handleContributionsChange = useCallback((array) => {
-    dispatch({type: "contributions", payload: array});
+    dispatch({ type: "contributions", payload: array });
   }, []);
   const handleProsChange = useCallback((array) => {
-    dispatch({type: "pros", payload: array});
+    dispatch({ type: "pros", payload: array });
   }, []);
   const handleConsChange = useCallback((array) => {
-    dispatch({type: "cons", payload: array});
+    dispatch({ type: "cons", payload: array });
   }, []);
   const handleFutureWorksChange = useCallback((array) => {
-    dispatch({type: "futureWorks", payload: array});
+    dispatch({ type: "futureWorks", payload: array });
   }, []);
   const handleNotesChange = useCallback((array) => {
-    dispatch({type: "notes", payload: array});
+    dispatch({ type: "notes", payload: array });
   }, []);
   const handleDatasetsChange = useCallback((array) => {
-    dispatch({type: "dataset", payload: array})
+    dispatch({ type: "dataset", payload: array });
   }, []);
   const handleEvaluationsChange = useCallback((array) => {
-    dispatch({type: "evaluations", payload: array});
+    dispatch({ type: "evaluations", payload: array });
   }, []);
   const handleLibrariesChange = useCallback((array) => {
-    dispatch({type: "libraries", payload: array});
+    dispatch({ type: "libraries", payload: array });
   }, []);
   const handleAbstractChange = useCallback((event) => {
-    dispatch({type: "abstractOfPaper", payload: event.target.value});
+    dispatch({ type: "abstractOfPaper", payload: event.target.value });
+  }, []);
+  const handleYearChange = useCallback((event) => {
+    dispatch({ type: "year", payload: event.target.value });
   }, []);
 
+  const onUpdateSubmit = useCallback((data) => {
+    console.log(data);
+    console.log(state);
 
+    let jsonToSend = { ...state };
+    jsonToSend["abstractOfPaper"] = data.abstract;
+    jsonToSend["authors"] = "";
+    jsonToSend["comments"] = [];
+    jsonToSend["constraints"] = [];
+    jsonToSend["linkOfPaper"] = "";
+    jsonToSend["paperId"] = props.dtl.paperId;
+    jsonToSend["paperIdType"] = props.dtl.paperIdType;
+    jsonToSend["reader"] = props.dtl.reader ? props.dtl.reader : [];
+    jsonToSend["relatedWorks"] = props.dtl.relatedWorks
+      ? props.dtl.relatedWorks
+      : [];
+    jsonToSend["summaries"] = [];
+    jsonToSend["title"] = props.dtl.title;
+    jsonToSend["year"] = data.year;
+    // jsonToSend["datasets"] = props.dtl.datasets ? props.dtl.datasets : [];
+    console.log(jsonToSend);
 
-  const onSubmit = useCallback(
-    (data) => {
-
-      console.log(data);
-      console.log(state);
-
-      let jsonToSend = {...state};
-      jsonToSend["abstractOfPaper"] = data.abstract;
-      jsonToSend["authors"] = "";
-      jsonToSend["comments"] = [];
-      jsonToSend["constraints"] = [];
-      jsonToSend["linkOfPaper"] = "";
-      jsonToSend["paperId"] = props.dtl.paperId;
-      jsonToSend["paperIdType"] = props.dtl.paperIdType;
-      jsonToSend["reader"] = props.dtl.reader ? props.dtl.reader : [];
-      jsonToSend["relatedWorks"] = props.dtl.relatedWorks ? props.dtl.relatedWorks : [];
-      jsonToSend["summaries"] = [];
-      jsonToSend["title"] = props.dtl.title;
-      jsonToSend["year"] = props.dtl.year ? props.dtl.year : "";
-      // jsonToSend["datasets"] = props.dtl.datasets ? props.dtl.datasets : [];
-      console.log(jsonToSend);
-      
-      httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
-        console.log(result);
-        if (result.error) {
-          props.onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
-        } else {
-          
-        }
-      });
-    }
-  );
-
+    httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
+      console.log(result);
+      if (result.error) {
+        props.onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
+      } else {
+      }
+    });
+  });
 
   return (
     <div style={{ color: "#142850" }} className="DetailsEditForm">
       <h2>{props.dtl.title}</h2>
-      {props.dtl.year && (
-        <div className="year">
-          <h4>Year: {props.dtl.year}</h4>
-        </div>
+
+      {props.edit && (
+        <p>
+          ID: {props.dtl.paperId}/{props.dtl.paperIdType}
+        </p>
       )}
 
-      <p>
-        ID: {props.dtl.paperId}/{props.dtl.paperIdType}
-      </p>
+      <Form
+        style={{ color: "#142850" }}
+        onSubmit={handleSubmit(onUpdateSubmit)}
+      >
+        {props.add && (
+          <InputGroup>
+            <FormControl
+              placeholder="Paper ID"
+              aria-label="Paper ID"
+              aria-describedby="basic-addon2"
+              name="paperId"
+              ref={register()}
+            />
+            <Form.Control
+              name="paperIdType"
+              ref={register()}
+              as="select"
+              custom
+            >
+              <option>ARXIV</option>
+              <option>DOI</option>
+              <option>SEMANTIC</option>
+            </Form.Control>
+            <InputGroup.Append>
+              <Button variant="outline-secondary">Get Details</Button>
+            </InputGroup.Append>
+          </InputGroup>
+        )}
 
-      <Form style={{ color: "#142850" }}  onSubmit={handleSubmit(onSubmit)}>
+        <h3 className="menuHeader">Year</h3>
+        <Form.Group controlId="year">
+          <Form.Control
+            defaultValue={props.dtl.year}
+            as="input"
+            type="text"
+            name="year"
+            ref={register()}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Authors</h3>
+        {props.add ? (
+            <Form.Group controlId="authors" className="noAutocomplete">
+              <TagBox
+                load={props.dtl.authors}
+                tags={props.dtl.authors}
+                onChange={handleAuthorsChange}
+              />
+            </Form.Group>
+        ) : ()}
         <h3 className="menuHeader">Keywords</h3>
-
         <Form.Group controlId="keywords" className="noAutocomplete">
           <TagBox
             load={props.dtl.keywords}
@@ -150,7 +189,6 @@ const Details = (props) => {
         <Form.Group controlId="abstract">
           <Form.Control
             defaultValue={props.dtl.abstractOfPaper}
-            onChange={handleAbstractChange}
             as="textarea"
             rows="8"
             type="text"
@@ -250,14 +288,10 @@ const Details = (props) => {
         </Form.Group>
 
         <h3 className="menuHeader">Datasets</h3>
-        {/* <Form.Group controlId="datasets">
-          <TagBox
-            load={props.dtl.datasets && props.dtl.datasets.map((dataset) => dataset.dataset.datasetName)}
-            tags={props.dtl.datasets && props.dtl.datasets.map((dataset) => dataset.dataset.datasetName)}
-            onChange={handleDatasetsChange}
-          />
-        </Form.Group> */}
-        <DatasetTagBox onChange={handleDatasetsChange} load={props.dtl.datasets}/>
+        <DatasetTagBox
+          onChange={handleDatasetsChange}
+          load={props.dtl.datasets}
+        />
 
         <h3 className="menuHeader">Libraries</h3>
         <Form.Group controlId="libraries">
