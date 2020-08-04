@@ -35,7 +35,7 @@ const TagBox = (props) => {
   }, [load])
   
   let tags = List();
-  if(props.tags){
+  if(Array.isArray(props.tags)){
     tags = List()
     props.tags.map((t) => ({
       label: t,

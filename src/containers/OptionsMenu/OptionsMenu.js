@@ -3,6 +3,7 @@ import React from "react";
 import { slide as Menu } from "react-burger-menu";
 import OptionsForm from "./OptionsForm/OptionsForm";
 import OptionsManualForm from "./OptionsForm/OptionsManualForm";
+import DetailsEditForm from "../../components/DetailsPanel/DetailsEditForm/DetailsEditForm";
 
 import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
@@ -36,7 +37,7 @@ var optionsMenuStyles = {
     position: "fixed",
     height: "100%",
     zIndex: "1000",
-    width: "40%"
+    width: "50%"
   },
   bmMenu: {
     background: "#ebedf0",
@@ -65,9 +66,9 @@ const optionsMenu = (props) => (
     styles={optionsMenuStyles}
     right
   >
-    <h3 className="menuHeader">Options</h3>
+    <h3 className="menuHeader" style={{width: "100%"}}>Options</h3>
     <br/><br/>
-    <Card className="text-center">
+    <Card className="text-center" style={{width: "100%"}}>
       <Card.Header style={{ color: "black" }}>Add Nodes</Card.Header>
       <Card.Body>
         <Card.Title style={{ color: "black" }}>With JSON File</Card.Title>
@@ -89,7 +90,9 @@ const optionsMenu = (props) => (
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="1">
               <Card.Body>
-                  <OptionsManualForm />
+                  {/* <OptionsManualForm /> */}
+
+                  <DetailsEditForm add collapsed={props.collapsedDetails} setCollapsed={props.setCollapsedDetails} />
                 </Card.Body>
             </Accordion.Collapse>
           </Card>

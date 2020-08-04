@@ -10,6 +10,7 @@ const httpReq = async (path, method, body) => {
       },
     });
 
+    console.log(body)
     if (response.status !== 200) {
       throw Error();
     } else {

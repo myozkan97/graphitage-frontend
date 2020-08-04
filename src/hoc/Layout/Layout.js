@@ -22,6 +22,8 @@ const Layout = (props) => {
   const [detailsMenu, setdetailsMenu] = useState(false);
   const [nodeId, setNodeId] = useState("");
   const [detailOnEdit, setDetailOnEdit] = useState(false);
+  const [collapsedDetails, setCollapsedDetails] = useState(true);
+
 
   const searchClosedHandler = useCallback(() => {
     setSearch(false);
@@ -71,6 +73,8 @@ const Layout = (props) => {
       <OptionsMenu
         options={optionsMenu}
         optionsClosed={optionsClosedHandler}
+        collapsedDetails={collapsedDetails}
+        setCollapsedDetails={setCollapsedDetails}
       ></OptionsMenu>
       <DetailsPanel
         detailsClosed={detailsPanelClosedHandler}

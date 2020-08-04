@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer } from "react";
+import React, { useCallback, useReducer, useState } from "react";
 import { connect } from "react-redux";
 
 import Button from "react-bootstrap/Button";
@@ -8,11 +8,10 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
 import TagBox from "../../TagBox/TagBox";
 import LibraryTagBox from "./LibraryTagBox/LibraryTagBox";
 import DatasetTagBox from "./DatasetTagBox/DatasetTagBox";
+import RelatedWorksTagBox from "./RelatedWorksTagBox/RelatedWorksTagBox";
 
 import { useForm } from "react-hook-form";
 
@@ -25,14 +24,21 @@ const initialState = {};
 function reducer(state, action) {
   const stateClone = JSON.parse(JSON.stringify(state));
   const payloadClone = JSON.parse(JSON.stringify(action.payload));
-  stateClone[action.type] = payloadClone;
-  return stateClone;
+  let result;
+  if (action.type === "clone") {
+    result = payloadClone;
+  } else {
+    stateClone[action.type] = payloadClone;
+    result = stateClone;
+  }
+  return result;
 }
 
 const Details = (props) => {
   const { register, handleSubmit } = useForm({
     mode: "onChange",
   });
+  const [semanticState, setSemanticState] = useState({});
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -70,7 +76,7 @@ const Details = (props) => {
     dispatch({ type: "notes", payload: array });
   }, []);
   const handleDatasetsChange = useCallback((array) => {
-    dispatch({ type: "dataset", payload: array });
+    dispatch({ type: "datasets", payload: array });
   }, []);
   const handleEvaluationsChange = useCallback((array) => {
     dispatch({ type: "evaluations", payload: array });
@@ -78,87 +84,185 @@ const Details = (props) => {
   const handleLibrariesChange = useCallback((array) => {
     dispatch({ type: "libraries", payload: array });
   }, []);
-  const handleAbstractChange = useCallback((event) => {
-    dispatch({ type: "abstractOfPaper", payload: event.target.value });
+  const handleAuthorsChange = useCallback((array) => {
+    dispatch({ type: "authors", payload: array });
   }, []);
-  const handleYearChange = useCallback((event) => {
-    dispatch({ type: "year", payload: event.target.value });
+  const handleCommentsChange = useCallback((array) => {
+    dispatch({ type: "comments", payload: array });
+  }, []);
+  const handleConstraintsChange = useCallback((array) => {
+    dispatch({ type: "constraints", payload: array });
+  }, []);
+  const handleRelatedWorksChange = useCallback((array) => {
+    dispatch({ type: "relatedWorks", payload: array });
   }, []);
 
-  const onUpdateSubmit = useCallback((data) => {
-    console.log(data);
-    console.log(state);
+  const { onOpenErrorModal } = props;
+  const onAddSubmit = useCallback(
+    (data, event) => {
+      event.preventDefault();
 
-    let jsonToSend = { ...state };
-    jsonToSend["abstractOfPaper"] = data.abstract;
-    jsonToSend["authors"] = "";
-    jsonToSend["comments"] = [];
-    jsonToSend["constraints"] = [];
-    jsonToSend["linkOfPaper"] = "";
-    jsonToSend["paperId"] = props.dtl.paperId;
-    jsonToSend["paperIdType"] = props.dtl.paperIdType;
-    jsonToSend["reader"] = props.dtl.reader ? props.dtl.reader : [];
-    jsonToSend["relatedWorks"] = props.dtl.relatedWorks
-      ? props.dtl.relatedWorks
-      : [];
-    jsonToSend["summaries"] = [];
-    jsonToSend["title"] = props.dtl.title;
-    jsonToSend["year"] = data.year;
-    // jsonToSend["datasets"] = props.dtl.datasets ? props.dtl.datasets : [];
-    console.log(jsonToSend);
+      let jsonToSend = { ...state };
+      jsonToSend["abstractOfPaper"] = data.abstract;
+      jsonToSend["year"] = data.year;
+      jsonToSend["linkOfPaper"] = data.linkOfPaper;
+      jsonToSend["paperId"] = data.paperId;
+      jsonToSend["paperIdType"] = data.paperIdType;
+      jsonToSend["reader"] = [];
+      jsonToSend["summaries"] = [];
+      jsonToSend["title"] = data.paperTitle;
+      console.log(jsonToSend);
 
-    httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
-      console.log(result);
+      httpReq("papers", "POST", JSON.stringify(jsonToSend)).then((result) => {
+        console.log(result);
+        if (result.error) {
+          onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
+        } else {
+        }
+      });
+    },
+    [state, onOpenErrorModal]
+  );
+
+  const { dtl } = props;
+  const onUpdateSubmit = useCallback(
+    (data, event) => {
+      event.preventDefault();
+
+      let jsonToSend = { ...state };
+      jsonToSend["abstractOfPaper"] = data.abstract;
+      jsonToSend["year"] = data.year;
+      jsonToSend["linkOfPaper"] = data.linkOfPaper;
+      jsonToSend["paperId"] = dtl.paperId;
+      jsonToSend["paperIdType"] = dtl.paperIdType;
+      jsonToSend["reader"] = dtl.reader ? dtl.reader : [];
+      jsonToSend["summaries"] = [];
+      jsonToSend["title"] = dtl.title;
+
+      httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
+        console.log(result);
+        if (result.error) {
+          onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
+        } else {
+        }
+      });
+    },
+    [state, onOpenErrorModal, dtl]
+  );
+
+  const handleGetDetailsButton = useCallback(() => {
+    props.onOpenLoadingScreen();
+    const paperId = document.getElementById("paperId").value;
+    const paperIdType = document.getElementById("paperIdType").value;
+
+    httpReq(
+      "papers/semantic_api/{paperIdType}:{paperId}?paperId=" +
+        paperId +
+        "&paperIdType=" +
+        paperIdType,
+      "GET"
+    ).then((result) => {
+      props.onCloseLoadingScreen();
       if (result.error) {
-        props.onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
+        props.onOpenErrorModal("Connection Error!");
+        props.setCollapsed(true);
       } else {
+        if (
+          Object.keys(result.data).length === 0 &&
+          result.data.constructor === Object
+        ) {
+          props.onOpenErrorModal("No such paper found!");
+          props.setCollapsed(true);
+        } else {
+          props.setCollapsed(false);
+          setSemanticState(result.data);
+          console.log(result.data);
+        }
       }
     });
-  });
+  }, []);
+
+  let submitFuc;
+  let source;
+  if (!props.setEditing) {
+    submitFuc = onAddSubmit;
+    source = semanticState;
+  } else {
+    submitFuc = onUpdateSubmit;
+    source = props.dtl;
+  }
 
   return (
     <div style={{ color: "#142850" }} className="DetailsEditForm">
-      <h2>{props.dtl.title}</h2>
+      {props.setEditing && <h2>{source.title}</h2>}
 
-      {props.edit && (
+      {props.setEditing && (
         <p>
-          ID: {props.dtl.paperId}/{props.dtl.paperIdType}
+          ID: {source.paperId}/{source.paperIdType}
         </p>
       )}
 
-      <Form
-        style={{ color: "#142850" }}
-        onSubmit={handleSubmit(onUpdateSubmit)}
-      >
-        {props.add && (
-          <InputGroup>
-            <FormControl
-              placeholder="Paper ID"
-              aria-label="Paper ID"
-              aria-describedby="basic-addon2"
-              name="paperId"
-              ref={register()}
-            />
-            <Form.Control
-              name="paperIdType"
-              ref={register()}
-              as="select"
-              custom
+      {!props.setEditing && (
+        <>
+        <h3 className="menuHeader">Use Scholar API</h3>
+        <InputGroup>
+          <FormControl
+            placeholder="Paper ID"
+            aria-label="Paper ID"
+            aria-describedby="basic-addon2"
+            name="paperId"
+            id="paperId"
+          />
+          <Form.Control name="paperIdType" as="select" custom id="paperIdType">
+            <option>ARXIV</option>
+            <option>DOI</option>
+            <option>SEMANTIC</option>
+          </Form.Control>
+          <InputGroup.Append>
+            <Button
+              onClick={handleGetDetailsButton}
+              variant="outline-secondary"
             >
-              <option>ARXIV</option>
-              <option>DOI</option>
-              <option>SEMANTIC</option>
-            </Form.Control>
-            <InputGroup.Append>
-              <Button variant="outline-secondary">Get Details</Button>
-            </InputGroup.Append>
-          </InputGroup>
+              Get Details
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+
+        <br></br>
+        </>
+      )}
+
+      <Form style={{ color: "#142850" }} onSubmit={handleSubmit(submitFuc)}>
+        {!props.setEditing && (
+          <>
+            <h3 className="menuHeader">Paper Title</h3>
+            <FormControl
+              placeholder="Paper Title"
+              aria-label="Paper Title"
+              aria-describedby="basic-addon2"
+              name="paperTitle"
+              ref={register()}
+              defaultValue={source.title}
+            />
+          </>
         )}
+
+        <h3 className="menuHeader">Paper Link</h3>
+        <FormControl
+          placeholder="Paper Link"
+          aria-label="Paper Link"
+          aria-describedby="basic-addon2"
+          name="paperLink"
+          ref={register()}
+          defaultValue={source.linkOfPaper}
+        />
+
+        <br></br>
 
         <h3 className="menuHeader">Year</h3>
         <Form.Group controlId="year">
           <Form.Control
-            defaultValue={props.dtl.year}
+            defaultValue={source.year}
             as="input"
             type="text"
             name="year"
@@ -166,29 +270,10 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Authors</h3>
-        {props.add ? (
-            <Form.Group controlId="authors" className="noAutocomplete">
-              <TagBox
-                load={props.dtl.authors}
-                tags={props.dtl.authors}
-                onChange={handleAuthorsChange}
-              />
-            </Form.Group>
-        ) : ()}
-        <h3 className="menuHeader">Keywords</h3>
-        <Form.Group controlId="keywords" className="noAutocomplete">
-          <TagBox
-            load={props.dtl.keywords}
-            tags={props.dtl.keywords}
-            onChange={handleKeywordsChange}
-          />
-        </Form.Group>
-
         <h3 className="menuHeader">Abstract</h3>
         <Form.Group controlId="abstract">
           <Form.Control
-            defaultValue={props.dtl.abstractOfPaper}
+            defaultValue={source.abstractOfPaper}
             as="textarea"
             rows="8"
             type="text"
@@ -197,11 +282,29 @@ const Details = (props) => {
           />
         </Form.Group>
 
+        <h3 className="menuHeader">Authors</h3>
+        <Form.Group controlId="authors" className="noAutocomplete">
+          <TagBox
+            load={source.authors}
+            tags={source.authors}
+            onChange={handleAuthorsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Keywords</h3>
+        <Form.Group controlId="keywords" className="noAutocomplete">
+          <TagBox
+            load={source.keywords}
+            tags={source.keywords}
+            onChange={handleKeywordsChange}
+          />
+        </Form.Group>
+
         <h3 className="menuHeader">Targets</h3>
         <Form.Group controlId="targets">
           <TagBox
-            load={props.dtl.targets}
-            tags={props.dtl.targets}
+            load={source.targets}
+            tags={source.targets}
             onChange={handleTargetsChange}
           />
         </Form.Group>
@@ -209,8 +312,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Problems</h3>
         <Form.Group controlId="problems" className="noAutocomplete">
           <TagBox
-            load={props.dtl.problems}
-            tags={props.dtl.problems}
+            load={source.problems}
+            tags={source.problems}
             onChange={handleProblemsChange}
           />
         </Form.Group>
@@ -218,8 +321,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Application Domains</h3>
         <Form.Group controlId="applicationDomains" className="noAutocomplete">
           <TagBox
-            load={props.dtl.applicationDomains}
-            tags={props.dtl.applicationDomains}
+            load={source.applicationDomains}
+            tags={source.applicationDomains}
             onChange={handleApplicationDomainsChange}
           />
         </Form.Group>
@@ -227,8 +330,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Components</h3>
         <Form.Group controlId="components" className="noAutocomplete">
           <TagBox
-            load={props.dtl.components}
-            tags={props.dtl.components}
+            load={source.components}
+            tags={source.components}
             onChange={handleComponentsChange}
           />
         </Form.Group>
@@ -236,8 +339,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Highlights</h3>
         <Form.Group controlId="highlights" className="noAutocomplete">
           <TagBox
-            load={props.dtl.highlights}
-            tags={props.dtl.highlights}
+            load={source.highlights}
+            tags={source.highlights}
             onChange={handleHighlightsChange}
           />
         </Form.Group>
@@ -245,8 +348,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Contributions</h3>
         <Form.Group controlId="contributions" className="noAutocomplete">
           <TagBox
-            load={props.dtl.contributions}
-            tags={props.dtl.contributions}
+            load={source.contributions}
+            tags={source.contributions}
             onChange={handleContributionsChange}
           />
         </Form.Group>
@@ -254,8 +357,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Pros</h3>
         <Form.Group controlId="pros" className="noAutocomplete">
           <TagBox
-            load={props.dtl.pros}
-            tags={props.dtl.pros}
+            load={source.pros}
+            tags={source.pros}
             onChange={handleProsChange}
           />
         </Form.Group>
@@ -263,8 +366,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Cons</h3>
         <Form.Group controlId="cons" className="noAutocomplete">
           <TagBox
-            load={props.dtl.cons}
-            tags={props.dtl.cons}
+            load={source.cons}
+            tags={source.cons}
             onChange={handleConsChange}
           />
         </Form.Group>
@@ -272,8 +375,8 @@ const Details = (props) => {
         <h3 className="menuHeader">Future Works</h3>
         <Form.Group controlId="futureWorks" className="noAutocomplete">
           <TagBox
-            load={props.dtl.futureWorks}
-            tags={props.dtl.futureWorks}
+            load={source.futureWorks}
+            tags={source.futureWorks}
             onChange={handleFutureWorksChange}
           />
         </Form.Group>
@@ -281,22 +384,19 @@ const Details = (props) => {
         <h3 className="menuHeader">Notes</h3>
         <Form.Group controlId="notes" className="noAutocomplete">
           <TagBox
-            load={props.dtl.notes}
-            tags={props.dtl.notes}
+            load={source.notes}
+            tags={source.notes}
             onChange={handleNotesChange}
           />
         </Form.Group>
 
         <h3 className="menuHeader">Datasets</h3>
-        <DatasetTagBox
-          onChange={handleDatasetsChange}
-          load={props.dtl.datasets}
-        />
+        <DatasetTagBox onChange={handleDatasetsChange} load={source.datasets} />
 
         <h3 className="menuHeader">Libraries</h3>
         <Form.Group controlId="libraries">
           <LibraryTagBox
-            load={props.dtl.libraries}
+            load={source.libraries}
             onChange={handleLibrariesChange}
           />
         </Form.Group>
@@ -304,11 +404,40 @@ const Details = (props) => {
         <h3 className="menuHeader">Evaluations</h3>
         <Form.Group controlId="evaluations" className="noAutocomplete">
           <TagBox
-            load={props.dtl.evaluations}
-            tags={props.dtl.evaluations}
+            load={source.evaluations}
+            tags={source.evaluations}
             onChange={handleEvaluationsChange}
           />
         </Form.Group>
+
+        <h3 className="menuHeader">Constraints</h3>
+        <Form.Group controlId="constraints" className="noAutocomplete">
+          <TagBox
+            load={source.constraints}
+            tags={source.constraints}
+            onChange={handleConstraintsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Comments</h3>
+        <Form.Group controlId="comments" className="noAutocomplete">
+          <TagBox
+            load={source.comments}
+            tags={source.comments}
+            onChange={handleCommentsChange}
+          />
+        </Form.Group>
+
+        <h3 className="menuHeader">Related Works</h3>
+        <Form.Group controlId="comments" className="noAutocomplete">
+          <RelatedWorksTagBox
+            onChange={handleRelatedWorksChange}
+            load={source.relatedWorks}
+          ></RelatedWorksTagBox>
+        </Form.Group>
+
+        <br></br>
+        <br></br>
 
         <br />
         <Container>
