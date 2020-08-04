@@ -102,13 +102,15 @@ const Details = (props) => {
   const onAddSubmit = useCallback(
     (data, event) => {
       event.preventDefault();
+      props.onOpenLoadingScreen();
+      console.log(data);
 
       let jsonToSend = { ...state };
       jsonToSend["abstractOfPaper"] = data.abstract;
       jsonToSend["year"] = data.year;
       jsonToSend["linkOfPaper"] = data.linkOfPaper;
-      jsonToSend["paperId"] = data.paperId;
-      jsonToSend["paperIdType"] = data.paperIdType;
+      jsonToSend["paperId"] = data.paperId ? data.paperId : document.getElementById("paperId").value;
+      jsonToSend["paperIdType"] = data.paperIdType ? data.paperIdType : document.getElementById("paperIdType").value;;
       jsonToSend["reader"] = [];
       jsonToSend["summaries"] = [];
       jsonToSend["title"] = data.paperTitle;
@@ -116,9 +118,15 @@ const Details = (props) => {
 
       httpReq("papers", "POST", JSON.stringify(jsonToSend)).then((result) => {
         console.log(result);
-        if (result.error) {
+        if (result.error) { 
+          props.onCloseLoadingScreen();
+          console.log(result.error);
           onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
         } else {
+          onOpenErrorModal("Successfully added the paper.");
+          props.onClearGraph(true);
+          props.onSimpleExpand();
+          props.onCloseLoadingScreen();
         }
       });
       
@@ -130,6 +138,7 @@ const Details = (props) => {
   const onUpdateSubmit = useCallback(
     (data, event) => {
       event.preventDefault();
+      console.log("update command");
 
       let jsonToSend = { ...state };
       jsonToSend["abstractOfPaper"] = data.abstract;
@@ -144,6 +153,7 @@ const Details = (props) => {
       httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
         console.log(result);
         if (result.error) {
+          console.log(result.error);
           onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
         } else {
         }
@@ -204,11 +214,11 @@ const Details = (props) => {
         </p>
       )}
 
-      <AddRelatedPapersModal papers={source.relatedWorks}/>
+      {/* <AddRelatedPapersModal papers={source.relatedWorks}/> */}
 
       {!props.setEditing && (
         <>
-        <h3 className="menuHeader">Use Scholar API</h3>
+        <h4 className="menuHeader">Use Scholar API</h4>
         <InputGroup>
           <FormControl
             placeholder="Paper ID"
@@ -239,7 +249,7 @@ const Details = (props) => {
       <Form style={{ color: "#142850" }} onSubmit={handleSubmit(submitFuc)}>
         {!props.setEditing && (
           <>
-            <h3 className="menuHeader">Paper Title</h3>
+            <h4 className="menuHeader">Paper Title</h4>
             <FormControl
               placeholder="Paper Title"
               aria-label="Paper Title"
@@ -251,7 +261,7 @@ const Details = (props) => {
           </>
         )}
 
-        <h3 className="menuHeader">Paper Link</h3>
+        <h4 className="menuHeader">Paper Link</h4>
         <FormControl
           placeholder="Paper Link"
           aria-label="Paper Link"
@@ -263,7 +273,7 @@ const Details = (props) => {
 
         <br></br>
 
-        <h3 className="menuHeader">Year</h3>
+        <h4 className="menuHeader">Year</h4>
         <Form.Group controlId="year">
           <Form.Control
             defaultValue={source.year}
@@ -274,7 +284,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Abstract</h3>
+        <h4 className="menuHeader">Abstract</h4>
         <Form.Group controlId="abstract">
           <Form.Control
             defaultValue={source.abstractOfPaper}
@@ -286,7 +296,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Authors</h3>
+        <h4 className="menuHeader">Authors</h4>
         <Form.Group controlId="authors" className="noAutocomplete">
           <TagBox
             load={source.authors}
@@ -295,7 +305,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Keywords</h3>
+        <h4 className="menuHeader">Keywords</h4>
         <Form.Group controlId="keywords" className="noAutocomplete">
           <TagBox
             load={source.keywords}
@@ -304,7 +314,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Targets</h3>
+        <h4 className="menuHeader">Targets</h4>
         <Form.Group controlId="targets">
           <TagBox
             load={source.targets}
@@ -313,7 +323,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Problems</h3>
+        <h4 className="menuHeader">Problems</h4>
         <Form.Group controlId="problems" className="noAutocomplete">
           <TagBox
             load={source.problems}
@@ -322,7 +332,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Application Domains</h3>
+        <h4 className="menuHeader">Application Domains</h4>
         <Form.Group controlId="applicationDomains" className="noAutocomplete">
           <TagBox
             load={source.applicationDomains}
@@ -331,7 +341,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Components</h3>
+        <h4 className="menuHeader">Components</h4>
         <Form.Group controlId="components" className="noAutocomplete">
           <TagBox
             load={source.components}
@@ -340,7 +350,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Highlights</h3>
+        <h4 className="menuHeader">Highlights</h4>
         <Form.Group controlId="highlights" className="noAutocomplete">
           <TagBox
             load={source.highlights}
@@ -349,7 +359,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Contributions</h3>
+        <h4 className="menuHeader">Contributions</h4>
         <Form.Group controlId="contributions" className="noAutocomplete">
           <TagBox
             load={source.contributions}
@@ -358,7 +368,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Pros</h3>
+        <h4 className="menuHeader">Pros</h4>
         <Form.Group controlId="pros" className="noAutocomplete">
           <TagBox
             load={source.pros}
@@ -367,7 +377,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Cons</h3>
+        <h4 className="menuHeader">Cons</h4>
         <Form.Group controlId="cons" className="noAutocomplete">
           <TagBox
             load={source.cons}
@@ -376,7 +386,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Future Works</h3>
+        <h4 className="menuHeader">Future Works</h4>
         <Form.Group controlId="futureWorks" className="noAutocomplete">
           <TagBox
             load={source.futureWorks}
@@ -385,7 +395,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Notes</h3>
+        <h4 className="menuHeader">Notes</h4>
         <Form.Group controlId="notes" className="noAutocomplete">
           <TagBox
             load={source.notes}
@@ -394,10 +404,10 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Datasets</h3>
+        <h4 className="menuHeader">Datasets</h4>
         <DatasetTagBox onChange={handleDatasetsChange} load={source.datasets} />
 
-        <h3 className="menuHeader">Libraries</h3>
+        <h4 className="menuHeader">Libraries</h4>
         <Form.Group controlId="libraries">
           <LibraryTagBox
             load={source.libraries}
@@ -405,7 +415,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Evaluations</h3>
+        <h4 className="menuHeader">Evaluations</h4>
         <Form.Group controlId="evaluations" className="noAutocomplete">
           <TagBox
             load={source.evaluations}
@@ -414,7 +424,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Constraints</h3>
+        <h4 className="menuHeader">Constraints</h4>
         <Form.Group controlId="constraints" className="noAutocomplete">
           <TagBox
             load={source.constraints}
@@ -423,7 +433,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Comments</h3>
+        <h4 className="menuHeader">Comments</h4>
         <Form.Group controlId="comments" className="noAutocomplete">
           <TagBox
             load={source.comments}
@@ -432,7 +442,7 @@ const Details = (props) => {
           />
         </Form.Group>
 
-        <h3 className="menuHeader">Related Works</h3>
+        <h4 className="menuHeader">Related Works</h4>
         <Form.Group controlId="comments" className="noAutocomplete">
           <RelatedWorksTagBox
             onChange={handleRelatedWorksChange}

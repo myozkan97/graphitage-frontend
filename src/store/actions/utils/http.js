@@ -20,7 +20,7 @@ const httpReq = async (path, method, body) => {
       return { data: data, error: false };
     }
   } catch (error) {
-    return { data: null, error: true };
+    return { data: null, error: error };
   }
   //   if (response.status !== 200) throw Error();
   //   else return { data: response, error: false };
