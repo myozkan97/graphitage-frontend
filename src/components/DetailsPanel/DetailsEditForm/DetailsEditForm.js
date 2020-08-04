@@ -12,6 +12,7 @@ import TagBox from "../../TagBox/TagBox";
 import LibraryTagBox from "./LibraryTagBox/LibraryTagBox";
 import DatasetTagBox from "./DatasetTagBox/DatasetTagBox";
 import RelatedWorksTagBox from "./RelatedWorksTagBox/RelatedWorksTagBox";
+import AddRelatedPapersModal from '../../AddRelatedPapersModal/AddRelatedPapersModal';
 
 import { useForm } from "react-hook-form";
 
@@ -120,6 +121,7 @@ const Details = (props) => {
         } else {
         }
       });
+      
     },
     [state, onOpenErrorModal]
   );
@@ -201,6 +203,8 @@ const Details = (props) => {
           ID: {source.paperId}/{source.paperIdType}
         </p>
       )}
+
+      <AddRelatedPapersModal papers={source.relatedWorks}/>
 
       {!props.setEditing && (
         <>

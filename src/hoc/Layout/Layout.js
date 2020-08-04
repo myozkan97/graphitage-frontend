@@ -5,8 +5,8 @@ import SearchMenu from "../../containers/SearchMenu/SearchMenu";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import DetailsPanel from "../../components/DetailsPanel/DetailsPanel";
 import OptionsMenu from "../../containers/OptionsMenu/OptionsMenu";
-import ErrorModal from '../../components/ErrorModal/ErrorModal';
-import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
+import ErrorModal from "../../components/ErrorModal/ErrorModal";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
 import * as actionTypes from "../../store/actions/actionTypes";
 
@@ -23,7 +23,6 @@ const Layout = (props) => {
   const [nodeId, setNodeId] = useState("");
   const [detailOnEdit, setDetailOnEdit] = useState(false);
   const [collapsedDetails, setCollapsedDetails] = useState(true);
-
 
   const searchClosedHandler = useCallback(() => {
     setSearch(false);
@@ -93,10 +92,8 @@ const Layout = (props) => {
           detailsMenuHandler: detailsPanelOpenedHandler,
         })}
       </main>
-      { props.showError &&
-      <ErrorModal/>}
-      { props.loading &&
-      <LoadingScreen/>}
+      {props.showError && <ErrorModal />}
+      {props.loading && <LoadingScreen />}
     </React.Fragment>
   );
 };
