@@ -167,7 +167,7 @@ export const setToHideNodeId = (id) => {
 export const expandReaderByPapers = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(`readers/{readerId}/papers?readerId=${sourceNode.data.id}`, "GET").then(
+      httpReq(`readers/${sourceNode.data.id}/papers`, "GET").then(
         (result) => {
           if (result.error === true) {
             dispatch(setError(true));
