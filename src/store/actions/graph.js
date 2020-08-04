@@ -50,17 +50,16 @@ export const simpleExpand = (sourceNode) => {
         }
       });
     } else {
-      httpReq(
-        `papers/${sourceNode.data.id}/relatedWorks/`,
-        "GET"
-      ).then((result) => {
-        if (result.error === true) {
-          dispatch(setError(true));
-        } else {
-          const graphElements = simpleExpandElements(result.data, sourceNode);
-          dispatch(setElements(graphElements));
+      httpReq(`papers/${sourceNode.data.id}/relatedWorks/`, "GET").then(
+        (result) => {
+          if (result.error === true) {
+            dispatch(setError(true));
+          } else {
+            const graphElements = simpleExpandElements(result.data, sourceNode);
+            dispatch(setElements(graphElements));
+          }
         }
-      });
+      );
     }
   };
 };
@@ -117,19 +116,14 @@ export const expandByKeywords = (sourceNode) => {
 export const expandByReaders = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(`papers/${sourceNode.data.id}/readers/`, "GET").then(
-        (result) => {
-          if (result.error === true) {
-            dispatch(setError(true));
-          } else {
-            const graphElements = readersElementCreator(
-              result.data,
-              sourceNode
-            );
-            dispatch(setElements(graphElements));
-          }
+      httpReq(`papers/${sourceNode.data.id}/readers/`, "GET").then((result) => {
+        if (result.error === true) {
+          dispatch(setError(true));
+        } else {
+          const graphElements = readersElementCreator(result.data, sourceNode);
+          dispatch(setElements(graphElements));
         }
-      );
+      });
     }
   };
 };
@@ -154,32 +148,24 @@ export const expandByDatasets = (sourceNode) => {
   };
 };
 
-
 export const setToHideNodeId = (id) => {
   return {
     type: actionTypes.SET_TO_HIDE_NODE,
-    id
-  }
-}
-
-
+    id,
+  };
+};
 
 export const expandReaderByPapers = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(`readers/${sourceNode.data.id}/papers`, "GET").then(
-        (result) => {
-          if (result.error === true) {
-            dispatch(setError(true));
-          } else {
-            const graphElements = simpleExpandElements(
-              result.data,
-              sourceNode
-            );
-            dispatch(setElements(graphElements));
-          }
+      httpReq(`readers/${sourceNode.data.id}/papers`, "GET").then((result) => {
+        if (result.error === true) {
+          dispatch(setError(true));
+        } else {
+          const graphElements = simpleExpandElements(result.data, sourceNode);
+          dispatch(setElements(graphElements));
         }
-      );
+      });
     }
   };
 };
@@ -187,19 +173,17 @@ export const expandReaderByPapers = (sourceNode) => {
 export const expandLibraryByPapers = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(`libraries/{libraryId}/papers?libraryId=${sourceNode.data.id}`, "GET").then(
-        (result) => {
-          if (result.error === true) {
-            dispatch(setError(true));
-          } else {
-            const graphElements = simpleExpandElements(
-              result.data,
-              sourceNode
-            );
-            dispatch(setElements(graphElements));
-          }
+      httpReq(
+        `libraries/${sourceNode.data.id}/papers`,
+        "GET"
+      ).then((result) => {
+        if (result.error === true) {
+          dispatch(setError(true));
+        } else {
+          const graphElements = simpleExpandElements(result.data, sourceNode);
+          dispatch(setElements(graphElements));
         }
-      );
+      });
     }
   };
 };
@@ -207,20 +191,22 @@ export const expandLibraryByPapers = (sourceNode) => {
 export const expandDatasetByPapers = (sourceNode) => {
   return (dispatch, getState) => {
     if (sourceNode != null) {
-      httpReq(`datasets/{datasetId}/papers?datasetId=${sourceNode.data.id}`, "GET").then(
-        (result) => {
-          if (result.error === true) {
-            dispatch(setError(true));
-          } else {
-            const graphElements = simpleExpandElements(
-              result.data,
-              sourceNode,
-              "datasetEdge"
-            );
-            dispatch(setElements(graphElements));
-          }
+      httpReq(
+        `datasets/${sourceNode.data.id}/papers`,
+        "GET"
+      ).then((result) => {
+        if (result.error === true) {
+          dispatch(setError(true));
+        } else {
+          console.log(result.data)
+          const graphElements = simpleExpandElements(
+            result.data,
+            sourceNode,
+            "datasetEdge"
+          );
+          dispatch(setElements(graphElements));
         }
-      );
+      });
     }
   };
 };
