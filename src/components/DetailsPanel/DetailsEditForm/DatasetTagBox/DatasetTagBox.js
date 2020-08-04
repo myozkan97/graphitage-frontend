@@ -28,10 +28,6 @@ const DatasetTagBox = (props) => {
 
   let nameRef = useRef();
 
-  useEffect(() => {
-    console.log(datasets);
-  });
-
   const handleChangeDatasetName = useCallback((e) => {
     if (nameRef.current.value.length > 1) setDatasetLegal(true);
     else setDatasetLegal(false);
