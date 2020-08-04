@@ -3,6 +3,14 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
+import ListGroup from "react-bootstrap/ListGroup";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrash,
+  faTimes,
+  faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 const LibraryTagBox = (props) => {
   const [elements, setElements] = useState([]);
@@ -55,14 +63,22 @@ const LibraryTagBox = (props) => {
 
   return (
     <div>
-      {elements.map((obj) => (
-        <div
-          onClick={() => handleRemove(obj.name || obj.link)}
-          key={obj.name || obj.link}
-        >
-          <a href={obj.link}>{obj.name}</a>
-        </div>
-      ))}
+      <div style={{overflow:"auto"}}>
+      <ListGroup>
+        {elements.map((obj) => (
+            <ListGroup.Item action variant="secondary">
+              <div
+                key={obj.name || obj.link}>
+                <a href={obj.link} style={{color:"black", maxWidth:"100%"}}>{obj.name}</a>{' '}
+                <Button variant={"danger"} style={{ padding: "0.15rem 0.3rem", float:"right" }} onClick={() => handleRemove(obj.name || obj.link)}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </Button>
+              </div>
+              
+            </ListGroup.Item>
+        ))}
+        </ListGroup>
+      </div>
 
       <InputGroup>
         <FormControl
