@@ -13,15 +13,20 @@ import * as actionCreators from "../../store/actions/index";
 function AddRelatedPapersModal(props) {
   const [checkedElements, setCheckedElements] = useState([]);
 
-  const clickHandler = useCallback((e, obj) => {
-    const clone = JSON.parse(JSON.stringify(checkedElements));
-    if (e.target.checked) {
-      clone.push({ ...obj });
-      setCheckedElements(clone);
-    } else {
-      setCheckedElements(clone.filter((cObj) => cObj.paperId !== obj.paperId));
-    }
-  }, [checkedElements]);
+  const clickHandler = useCallback(
+    (e, obj) => {
+      const clone = JSON.parse(JSON.stringify(checkedElements));
+      if (e.target.checked) {
+        clone.push({ ...obj });
+        setCheckedElements(clone);
+      } else {
+        setCheckedElements(
+          clone.filter((cObj) => cObj.paperId !== obj.paperId)
+        );
+      }
+    },
+    [checkedElements]
+  );
 
   const {
     onOpenLoadingScreen,
@@ -29,7 +34,7 @@ function AddRelatedPapersModal(props) {
     sourcePaperId,
     onClose,
     onOptionsClosed,
-    onSimpleExpand
+    onSimpleExpand,
   } = props;
   const addPapersHandler = useCallback(async () => {
     onOpenLoadingScreen();
@@ -65,11 +70,12 @@ function AddRelatedPapersModal(props) {
           const referenceClone = JSON.parse(JSON.stringify(result.data));
           const references = referenceClone.references;
 
-          references.forEach((obj) => {
-            if (map.has(obj.paperId)) {
-              relatedWorks.push({ ...obj });
-            }
-          });
+          if (Array.isArray(references))
+            references.forEach((obj) => {
+              if (map.has(obj.paperId)) {
+                relatedWorks.push({ ...obj });
+              }
+            });
 
           referenceClone["relatedWorks"] = relatedWorks;
           console.log(referenceClone);
@@ -93,7 +99,7 @@ function AddRelatedPapersModal(props) {
     onOpenLoadingScreen,
     onClose,
     onOptionsClosed,
-    onSimpleExpand
+    onSimpleExpand,
   ]);
 
   return (
@@ -163,7 +169,7 @@ const mapDispatchToProps = (dispatch) => {
     onCloseLoadingScreen: () => dispatch(actionCreators.closeLoadingScreen()),
     onOpenErrorModal: (errorMessage) =>
       dispatch(actionCreators.openErrorModal(errorMessage)),
-      onSimpleExpand: () => dispatch(actionCreators.simpleExpand())
+    onSimpleExpand: () => dispatch(actionCreators.simpleExpand()),
   };
 };
 

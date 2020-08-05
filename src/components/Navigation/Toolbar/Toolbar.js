@@ -38,7 +38,7 @@ const toolbar = (props) => (
           Clear
         </Nav.Link>
         <Nav.Link style={styles.links} onClick={() => props.optionsClick()}>
-          Options
+          Add Paper
         </Nav.Link>
       </Nav>
     </Navbar>

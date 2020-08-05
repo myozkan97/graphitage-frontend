@@ -139,9 +139,7 @@ const Details = (props) => {
       jsonToSend["abstractOfPaper"] = data.abstract;
       jsonToSend["year"] = data.year;
       jsonToSend["linkOfPaper"] = data.linkOfPaper;
-      jsonToSend["paperId"] = data.paperId
-        ? data.paperId
-        : document.getElementById("paperId").value;
+      jsonToSend["paperId"] = semanticState.paperId;
       jsonToSend["paperIdType"] = data.paperIdType
         ? data.paperIdType
         : document.getElementById("paperIdType").value;
@@ -149,7 +147,6 @@ const Details = (props) => {
       jsonToSend["summaries"] = [];
       jsonToSend["title"] = data.paperTitle;
       jsonToSend["relatedWorks"] = relatedWorks;
-
       httpReq("papers", "POST", JSON.stringify(jsonToSend)).then((result) => {
         if (result.error) {
           onCloseLoadingScreen();
@@ -172,6 +169,7 @@ const Details = (props) => {
       onClearGraph,
       onSimpleExpand,
       onCloseLoadingScreen,
+      semanticState
     ]
   );
 
@@ -230,6 +228,7 @@ const Details = (props) => {
           setCollapsed(false);
           result.data.relatedWorks = result.data.references;
           setSemanticState(result.data);
+          console.log('semantic response', result.data)
         }
       }
     });
