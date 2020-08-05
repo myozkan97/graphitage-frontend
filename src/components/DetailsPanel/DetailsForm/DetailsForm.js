@@ -46,7 +46,6 @@ const Details = (props) => {
     props.onOpenLoadingScreen();
     httpReq("papers/" + props.nodeId, "DELETE")
       .then((result) => {
-        console.log("deleted node:" + props.nodeId);
         props.onClearGraph(true);
         props.onSimpleExpand();
         props.onCloseLoadingScreen();

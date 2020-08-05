@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import InputGroup from "react-bootstrap/InputGroup";
@@ -9,15 +9,15 @@ import Form from "react-bootstrap/Form";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTrash,
+//   faTrash,
   faTimes,
-  faTimesCircle,
+//   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const RelatedWorkdsTagBox = (props) => {
   const [elements, setElements] = useState([]);
   //   const [legal, setLegal] = useState(false); // state to activate/deactivate submit button
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const handleAdd = useCallback((obj) => {
     setElements((prevState) => {
@@ -95,7 +95,7 @@ const RelatedWorkdsTagBox = (props) => {
 
     <br/>
     <h5 className="menuHeader">Edit Related Papers</h5>
-    <div style={{'max-height': 'calc(100vh - 210px)', 'overflow-y': 'auto', 'border': 'solid gray 1px'}}>
+    <div style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto', 'border': 'solid gray 1px'}}>
       {elements.map((obj) => (
         <Card body key={obj.paperId}>
           {obj.title} ({obj.paperId}/{obj.paperIdType}){' '}

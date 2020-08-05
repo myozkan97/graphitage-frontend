@@ -9,9 +9,9 @@ import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTrash,
+//   faTrash,
   faTimes,
-  faTimesCircle,
+//   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const boxStyle = {
@@ -55,7 +55,6 @@ const DatasetTagBox = (props) => {
   );
 
   const handleRemove = useCallback((key) => {
-    console.log(key);
     setDatasets((prevState) =>
       prevState.filter((obj) => obj.dataset.datasetName !== key)
     );

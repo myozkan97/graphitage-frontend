@@ -28,7 +28,6 @@ const OptionsForm = (props) => {
     }
 
     async function runConn() {
-      console.log("loading start");
       props.onOpenLoadingScreen();
 
       const jsonData = await getData(objectURL);

@@ -20,9 +20,7 @@ export const fetchPreprocessing = (sourceNodeId, datasetId) => {
   return (dispatch, getState) => {
     httpReq("papers/" + sourceNodeId, "GET").then((result) => {
       let preps = {};
-      console.log(result.data);
       result.data.datasets.forEach((obj) => {
-        console.log(obj.dataset.datasetId, datasetId);
         if (String(obj.dataset.datasetId) === datasetId)
           preps = {
             datasetName: obj.dataset.datasetName,

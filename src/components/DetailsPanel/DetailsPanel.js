@@ -56,7 +56,7 @@ var searchMenuStyles = {
 const detailsPanel = (props) => (
     <Menu right onClose={() => props.detailsClosed()} isOpen={props.details} styles={searchMenuStyles}>
     {props.isEditing
-    ?    <DetailsEditForm setEditing={props.setEditing} collapsed={false} />
+    ?    <DetailsEditForm detailsClosed={props.detailsClosed} setEditing={props.setEditing} collapsed={false} />
     :   <DetailsForm nodeId={props.nodeId} setEditing={props.setEditing} detailsClosed={props.detailsClosed} />
     }
     </Menu>

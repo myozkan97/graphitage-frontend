@@ -74,7 +74,6 @@ const Graph = (props) => {
 
     Graph.cy.on("click", "edge", (event) => {
       if (event.target._private.data.type === "datasetEdge") {
-        console.log(event.target._private);
         detailsMenuHandler(event.target._private.data.id);
         onFetchPreprocessing(
           event.target._private.data.source,

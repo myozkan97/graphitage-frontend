@@ -12,7 +12,7 @@ import TagBox from "../../TagBox/TagBox";
 import LibraryTagBox from "./LibraryTagBox/LibraryTagBox";
 import DatasetTagBox from "./DatasetTagBox/DatasetTagBox";
 import RelatedWorksTagBox from "./RelatedWorksTagBox/RelatedWorksTagBox";
-import AddRelatedPapersModal from '../../AddRelatedPapersModal/AddRelatedPapersModal';
+import AddRelatedPapersModal from "../../AddRelatedPapersModal/AddRelatedPapersModal";
 
 import { useForm } from "react-hook-form";
 
@@ -40,6 +40,7 @@ const Details = (props) => {
     mode: "onChange",
   });
   const [semanticState, setSemanticState] = useState({});
+  const [addRelatedPaperModal, setAddRelatedPaperModal] = useState(false);
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -98,10 +99,33 @@ const Details = (props) => {
     dispatch({ type: "relatedWorks", payload: array });
   }, []);
 
+  const onCloseAddRelatedPapersModal = useCallback(() => {
+    setAddRelatedPaperModal(false);
+  }, []);
+
+  const onOpenAddRelatedPapersModal = useCallback(() => {
+    setAddRelatedPaperModal(true);
+  }, []);
+
   const { onOpenErrorModal } = props;
   const onAddSubmit = useCallback(
     (data, event) => {
       event.preventDefault();
+
+      const references = JSON.parse(JSON.stringify(state.relatedWorks));
+      const relatedWorks = [];
+      const map = new Map();
+      httpReq("papers", "GET").then((res) => {
+        res.data.forEach((obj) => {
+          map.set(obj.paperId, 0);
+        });
+
+        references.forEach((obj) => {
+          if (map.has(obj.paperId)) {
+            relatedWorks.push(obj);
+          }
+        });
+      });
 
       let jsonToSend = { ...state };
       jsonToSend["abstractOfPaper"] = data.abstract;
@@ -112,18 +136,18 @@ const Details = (props) => {
       jsonToSend["reader"] = [];
       jsonToSend["summaries"] = [];
       jsonToSend["title"] = data.paperTitle;
-      console.log(jsonToSend);
+      jsonToSend["relatedWorks"] = relatedWorks;
 
       httpReq("papers", "POST", JSON.stringify(jsonToSend)).then((result) => {
-        console.log(result);
         if (result.error) {
           onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
         } else {
+          onOpenAddRelatedPapersModal();
         }
       });
-      
     },
-    [state, onOpenErrorModal]
+
+    [state, onOpenErrorModal, onOpenAddRelatedPapersModal]
   );
 
   const { dtl } = props;
@@ -142,7 +166,6 @@ const Details = (props) => {
       jsonToSend["title"] = dtl.title;
 
       httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
-        console.log(result);
         if (result.error) {
           onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
         } else {
@@ -177,8 +200,8 @@ const Details = (props) => {
           props.setCollapsed(true);
         } else {
           props.setCollapsed(false);
+          result.data.relatedWorks = result.data.references;
           setSemanticState(result.data);
-          console.log(result.data);
         }
       }
     });
@@ -204,39 +227,53 @@ const Details = (props) => {
         </p>
       )}
 
-      <AddRelatedPapersModal papers={source.relatedWorks}/>
-
-      {!props.setEditing && (
-        <>
-        <h3 className="menuHeader">Use Scholar API</h3>
-        <InputGroup>
-          <FormControl
-            placeholder="Paper ID"
-            aria-label="Paper ID"
-            aria-describedby="basic-addon2"
-            name="paperId"
-            id="paperId"
-          />
-          <Form.Control name="paperIdType" as="select" custom id="paperIdType">
-            <option>ARXIV</option>
-            <option>DOI</option>
-            <option>SEMANTIC</option>
-          </Form.Control>
-          <InputGroup.Append>
-            <Button
-              onClick={handleGetDetailsButton}
-              variant="outline-secondary"
-            >
-              Get Details
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
-
-        <br></br>
-        </>
+      {addRelatedPaperModal && (
+        <AddRelatedPapersModal
+          papers={source.references}
+          sourcePaperId={source.paperId}
+          onClose={onCloseAddRelatedPapersModal}
+          onOptionsClosed={props.optionsClosed}
+        />
       )}
 
       <Form style={{ color: "#142850" }} onSubmit={handleSubmit(submitFuc)}>
+        {!props.setEditing && (
+          <>
+            <h3 className="menuHeader">Use Scholar API</h3>
+            <InputGroup>
+              <FormControl
+                placeholder="Paper ID"
+                aria-label="Paper ID"
+                aria-describedby="basic-addon2"
+                name="paperId"
+                ref={register()}
+                id="paperId"
+              />
+              <Form.Control
+                name="paperIdType"
+                ref={register()}
+                as="select"
+                custom
+                id="paperIdType"
+              >
+                <option>ARXIV</option>
+                <option>DOI</option>
+                <option>SEMANTIC</option>
+              </Form.Control>
+              <InputGroup.Append>
+                <Button
+                  onClick={handleGetDetailsButton}
+                  variant="outline-secondary"
+                >
+                  Get Details
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
+
+            <br></br>
+          </>
+        )}
+
         {!props.setEditing && (
           <>
             <h3 className="menuHeader">Paper Title</h3>

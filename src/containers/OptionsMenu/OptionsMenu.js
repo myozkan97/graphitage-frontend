@@ -2,7 +2,6 @@ import React from "react";
 
 import { slide as Menu } from "react-burger-menu";
 import OptionsForm from "./OptionsForm/OptionsForm";
-import OptionsManualForm from "./OptionsForm/OptionsManualForm";
 import DetailsEditForm from "../../components/DetailsPanel/DetailsEditForm/DetailsEditForm";
 
 import Card from "react-bootstrap/Card";
@@ -92,7 +91,7 @@ const optionsMenu = (props) => (
               <Card.Body>
                   {/* <OptionsManualForm /> */}
 
-                  <DetailsEditForm add collapsed={props.collapsedDetails} setCollapsed={props.setCollapsedDetails} />
+                  <DetailsEditForm optionsClosed={props.optionsClosed}  collapsed={props.collapsedDetails} setCollapsed={props.setCollapsedDetails} />
                 </Card.Body>
             </Accordion.Collapse>
           </Card>

@@ -64,8 +64,6 @@ const SearchForm = (props) => {
         urlToSend += "&title=" + data.Title;
       }
 
-      console.log(urlToSend);
-
       httpReq(urlToSend, "GET").then((result) => {
         if (result.error) {
           onOpenErrorModal("Connection Error!");
@@ -102,7 +100,6 @@ const SearchForm = (props) => {
       datasets.length > 0 ||
       libraries.length > 0
     ) {
-      console.log(datasets.length);
       button.disabled = false;
     } else {
       button.disabled = true;

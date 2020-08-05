@@ -1,6 +1,7 @@
 import { url } from "../../../globalVars";
 
 const httpReq = async (path, method, body) => {
+  console.log(body)
   try {
     let response = await fetch(url + path, {
       method,
@@ -9,10 +10,11 @@ const httpReq = async (path, method, body) => {
         "Content-Type": "application/json",
       },
     });
-
-    console.log(body)
+    
     if (response.status !== 200) {
-      throw Error();
+      console.log(response)
+      throw Error(response.status);
+      
     } else {
       let data = [];
       if (method !== "POST") data = await response.json();
@@ -20,6 +22,7 @@ const httpReq = async (path, method, body) => {
       return { data: data, error: false };
     }
   } catch (error) {
+    console.log(error)
     return { data: null, error: true };
   }
   //   if (response.status !== 200) throw Error();

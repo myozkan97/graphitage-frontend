@@ -7,9 +7,9 @@ import ListGroup from "react-bootstrap/ListGroup";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTrash,
+  // faTrash,
   faTimes,
-  faTimesCircle,
+  // faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const LibraryTagBox = (props) => {
@@ -44,7 +44,6 @@ const LibraryTagBox = (props) => {
   );
 
   const handleRemove = useCallback((key) => {
-    console.log(key);
     setElements((prevState) => prevState.filter((obj) => obj.name !== key));
   }, []);
 
