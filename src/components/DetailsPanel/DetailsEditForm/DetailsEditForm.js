@@ -107,11 +107,17 @@ const Details = (props) => {
     setAddRelatedPaperModal(true);
   }, []);
 
-  const { onOpenErrorModal } = props;
+  const {
+    onOpenErrorModal,
+    onCloseLoadingScreen,
+    onSimpleExpand,
+    onClearGraph,
+    onOpenLoadingScreen,
+  } = props;
   const onAddSubmit = useCallback(
     (data, event) => {
       event.preventDefault();
-      props.onOpenLoadingScreen();
+      onOpenLoadingScreen();
       console.log(data);
 
       const references = JSON.parse(JSON.stringify(state.relatedWorks));
@@ -133,32 +139,43 @@ const Details = (props) => {
       jsonToSend["abstractOfPaper"] = data.abstract;
       jsonToSend["year"] = data.year;
       jsonToSend["linkOfPaper"] = data.linkOfPaper;
-      jsonToSend["paperId"] = data.paperId ? data.paperId : document.getElementById("paperId").value;
-      jsonToSend["paperIdType"] = data.paperIdType ? data.paperIdType : document.getElementById("paperIdType").value;;
+      jsonToSend["paperId"] = data.paperId
+        ? data.paperId
+        : document.getElementById("paperId").value;
+      jsonToSend["paperIdType"] = data.paperIdType
+        ? data.paperIdType
+        : document.getElementById("paperIdType").value;
       jsonToSend["reader"] = [];
       jsonToSend["summaries"] = [];
       jsonToSend["title"] = data.paperTitle;
       jsonToSend["relatedWorks"] = relatedWorks;
 
       httpReq("papers", "POST", JSON.stringify(jsonToSend)).then((result) => {
-        if (result.error) { 
-          props.onCloseLoadingScreen();
+        if (result.error) {
+          onCloseLoadingScreen();
           console.log(result.error);
           onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
         } else {
-          onOpenErrorModal("Successfully added the paper.");
-          props.onClearGraph(true);
-          props.onSimpleExpand();
-          props.onCloseLoadingScreen();
+          onClearGraph(true);
+          onSimpleExpand();
+          onCloseLoadingScreen();
           onOpenAddRelatedPapersModal();
         }
       });
     },
 
-    [state, onOpenErrorModal, onOpenAddRelatedPapersModal]
+    [
+      state,
+      onOpenLoadingScreen,
+      onOpenErrorModal,
+      onOpenAddRelatedPapersModal,
+      onClearGraph,
+      onSimpleExpand,
+      onCloseLoadingScreen,
+    ]
   );
 
-  const { dtl } = props;
+  const { dtl, detailsClosed } = props;
   const onUpdateSubmit = useCallback(
     (data, event) => {
       event.preventDefault();
@@ -176,17 +193,18 @@ const Details = (props) => {
 
       httpReq("papers", "PUT", JSON.stringify(jsonToSend)).then((result) => {
         if (result.error) {
-          console.log(result.error);
-          onOpenErrorModal("Connection Error!"); //TODO: Fix - Returns response status 200, but this opens anyway.
+          onOpenErrorModal("Connection Error!");
         } else {
+          detailsClosed();
         }
       });
     },
-    [state, onOpenErrorModal, dtl]
+    [state, onOpenErrorModal, dtl, detailsClosed]
   );
 
+  const { setCollapsed } = props;
   const handleGetDetailsButton = useCallback(() => {
-    props.onOpenLoadingScreen();
+    onOpenLoadingScreen();
     const paperId = document.getElementById("paperId").value;
     const paperIdType = document.getElementById("paperIdType").value;
 
@@ -197,25 +215,30 @@ const Details = (props) => {
         paperIdType,
       "GET"
     ).then((result) => {
-      props.onCloseLoadingScreen();
+      onCloseLoadingScreen();
       if (result.error) {
-        props.onOpenErrorModal("Connection Error!");
-        props.setCollapsed(true);
+        onOpenErrorModal("Connection Error!");
+        setCollapsed(true);
       } else {
         if (
           Object.keys(result.data).length === 0 &&
           result.data.constructor === Object
         ) {
-          props.onOpenErrorModal("No such paper found!");
-          props.setCollapsed(true);
+          onOpenErrorModal("No such paper found!");
+          setCollapsed(true);
         } else {
-          props.setCollapsed(false);
+          setCollapsed(false);
           result.data.relatedWorks = result.data.references;
           setSemanticState(result.data);
         }
       }
     });
-  }, []);
+  }, [
+    setCollapsed,
+    onOpenErrorModal,
+    onOpenLoadingScreen,
+    onCloseLoadingScreen,
+  ]);
 
   let submitFuc;
   let source;

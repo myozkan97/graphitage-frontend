@@ -12,12 +12,10 @@ const httpReq = async (path, method, body) => {
     });
     
     if (response.status !== 200) {
-      console.log(response)
       throw Error(response.status);
-      
     } else {
       let data = [];
-      if (method !== "POST") data = await response.json();
+      if (method !== "POST" && method !== "PUT") data = await response.json();
 
       return { data: data, error: false };
     }

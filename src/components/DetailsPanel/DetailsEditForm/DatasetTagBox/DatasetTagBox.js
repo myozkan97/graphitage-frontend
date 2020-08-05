@@ -124,7 +124,7 @@ const DatasetTagBox = (props) => {
                     <ListGroup className="list-group-flush">
                       {obj.preprocessingSteps.map((str, index) => (
                         <div key={obj.dataset.datasetName + String(index)}>
-                          <ListGroupItem variant={index%2==0 ? 'info' : 'warning'}>
+                          <ListGroupItem variant={index%2 === 0 ? 'info' : 'warning'}>
                           
                             {str}{" "}
                             <Button
