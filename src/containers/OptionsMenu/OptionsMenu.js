@@ -68,7 +68,7 @@ const optionsMenu = (props) => (
     <h3 className="menuHeader" style={{width: "100%"}}>Options</h3>
     <br/><br/>
     <Card className="text-center" style={{width: "100%"}}>
-      <Card.Header style={{ color: "black" }}>Add Nodes</Card.Header>
+      <Card.Header style={{ color: "black" }}><h3>Add Nodes</h3></Card.Header>
       <Card.Body>
         <Card.Title style={{ color: "black" }}>With JSON File</Card.Title>
         <Card.Text >
